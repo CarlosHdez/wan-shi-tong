@@ -1,11 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {Navbar, NavItem} from 'react-materialize'
 
 class App extends React.PureComponent {
   render() {
+    const brand = (<a>Wan Shi Tong</a>)
     return (
-      <div className="App">
+      <div className="app">
+        <Navbar brand={brand}>
+        </Navbar>
       </div>
     )
   }
