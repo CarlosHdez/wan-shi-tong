@@ -8,7 +8,9 @@ class App extends React.PureComponent {
     return (
       <div className="app">
         <Header />
-        {/* <Sidebar /> */}
+        <div className='main-container'>
+          <Sidebar />
+        </div>
       </div>
     )
   }

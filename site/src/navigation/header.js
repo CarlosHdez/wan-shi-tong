@@ -1,20 +1,14 @@
 import React from 'react'
-import {
-  AppBar,
-  Typography,
-  Toolbar
-} from '@material-ui/core'
+
+import '../stylesheets/header.scss'
 
 class Header extends React.PureComponent {
   render() {
     return (
-      <AppBar position='absolute'>
-        <Toolbar>
-          <Typography component='h1' variant='h6' color='inherit' noWrap>
-            Wan Shi Tong
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <div className='main-header'>
+        <img src='icons/menu.png' />
+        <h1>Wan Shi Tong</h1>
+      </div>
     )
   }
 }
