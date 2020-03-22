@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Wan Shi Tong's Library</title>
+  </head>
+  <body>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDTzG7XPFB8DWMps5dFWSQbZZd6KiEo7fs",
+        authDomain: "wan-shi-tong-9bf7e.firebaseapp.com",
+        databaseURL: "https://wan-shi-tong-9bf7e.firebaseio.com",
+        projectId: "wan-shi-tong-9bf7e",
+        storageBucket: "wan-shi-tong-9bf7e.appspot.com",
+        messagingSenderId: "364668558048",
+        appId: "1:364668558048:web:3349198d2642116e"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <div id="root"></div>
+  </body>
+</html>
+
