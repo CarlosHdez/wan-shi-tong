@@ -1,12 +1,12 @@
 import React from 'react'
 
-import '../stylesheets/header.scss'
+import '../../stylesheets/header.scss'
 
 class Header extends React.PureComponent {
   render() {
     return (
       <div className='main-header'>
-        <img src='icons/menu.png' />
+        <img alt='menu' src='icons/menu.png' />
         <h1>Wan Shi Tong</h1>
       </div>
     )

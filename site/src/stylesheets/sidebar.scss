@@ -1,3 +1,9 @@
 .main-sidebar {
   width: 220px;
+
+  li {
+    list-style-type: none;
+
+    &.selected {font-weight: bold;}
+  }
 }
