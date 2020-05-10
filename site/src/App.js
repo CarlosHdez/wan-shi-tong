@@ -2,6 +2,7 @@ import React from 'react'
 
 import Header from './displays/navigation/header'
 import Sidebar from './displays/navigation/sidebar'
+import MainWrapper from './displays/main_wrapper'
 import {SECTIONS} from './lib/constants'
 
 const APP_STATE = {
@@ -28,14 +29,16 @@ class App extends React.PureComponent {
   }
 
   render() {
+    const {selectedSection} = this.state.display
     return (
       <div className="app">
         <Header />
         <div className='main-container'>
           <Sidebar
             onChangeSelectedSection={this.onChangeSelectedSection}
-            selectedSection={this.state.display.selectedSection}
+            selectedSection={selectedSection}
           />
+          <MainWrapper selectedSection={selectedSection} />
         </div>
       </div>
     )

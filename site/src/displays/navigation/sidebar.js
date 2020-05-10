@@ -8,7 +8,9 @@ import '../../stylesheets/sidebar.scss'
 class Sidebar extends React.PureComponent {
   static propTypes = {
     onChangeSelectedSection: PropTypes.func.isRequired,
-    selectedSection: PropTypes.string.isRequired
+    selectedSection: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }).isRequired
   }
 
   onMenuItemClick = ({target}) => {
