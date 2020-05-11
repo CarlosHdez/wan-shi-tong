@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {SECTIONS} from '../../lib/constants'
+import {SECTIONS} from 'lib/constants'
 
-import '../../stylesheets/sidebar.scss'
+import 'stylesheets/sidebar.scss'
 
 class Sidebar extends React.PureComponent {
   static propTypes = {

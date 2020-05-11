@@ -1,6 +1,6 @@
 import React from 'react'
 
-import '../../stylesheets/header.scss'
+import 'stylesheets/header.scss'
 
 class Header extends React.PureComponent {
   render() {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Table from '../components/table'
+import Table from 'components/table'
 
 const mockList = [
   {name: 'Coup', author: 'somebody', type: 'cards'},

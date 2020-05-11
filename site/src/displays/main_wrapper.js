@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import BoardGamesShelf from './board_game_shelf'
-import {SECTIONS} from '../lib/constants'
+import BoardGamesShelf from 'displays/board_game_shelf'
+import {SECTIONS} from 'lib/constants'
 
 class MainWrapper extends React.PureComponent {
   static propTypes = {

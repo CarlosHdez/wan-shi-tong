@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Header from './displays/navigation/header'
-import Sidebar from './displays/navigation/sidebar'
-import MainWrapper from './displays/main_wrapper'
-import {SECTIONS} from './lib/constants'
+import Header from 'displays/navigation/header'
+import Sidebar from 'displays/navigation/sidebar'
+import MainWrapper from 'displays/main_wrapper'
+import {SECTIONS} from 'lib/constants'
 
 const APP_STATE = {
   collections: {
