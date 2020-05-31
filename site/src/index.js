@@ -1,9 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import * as firebase from 'firebase'
+// import * as firebase from 'firebase'
 
-import App from './App'
-import './stylesheets/index.scss'
+import App from 'App'
+import 'stylesheets/index.scss'
+import 'stylesheets/fonts.scss'
 
 // TODO: Move to an .env file
 const firebaseConfig = {
@@ -16,6 +17,6 @@ const firebaseConfig = {
   appId: "1:364668558048:web:3349198d2642116e"
 }
 
-firebase.initializeApp(firebaseConfig)
+// firebase.initializeApp(firebaseConfig)
 
 ReactDOM.render(<App />, document.getElementById('root'))

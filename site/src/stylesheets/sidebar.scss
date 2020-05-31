@@ -1,9 +1,27 @@
+@import 'colors';
+
 .main-sidebar {
   width: 220px;
+  background-color: $secondary-dark;
+  color: $secondary-text-dark;
+
+  ul {
+    margin-top: 8px;
+    padding: 0;
+  }
 
   li {
+    padding: 14px 0px;
+    border-radius: 3px;
     list-style-type: none;
 
-    &.selected {font-weight: bold;}
+    &:hover{
+      background-color: $secondary-darker-20;
+      color: $secondary-text-darker;
+    }
+
+    &.selected {
+      color: $secondary-text-darker;
+    }
   }
 }

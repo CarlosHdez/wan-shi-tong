@@ -1,10 +1,12 @@
+@import 'colors';
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  font-familiy: 'Roboto', sans-serif;
+  font-weight: light;
+  color: $primary-text-dark;
+  background-color: $main-background;
 }
 
 code {
@@ -17,6 +19,7 @@ code {
   width: 100vw;
   height: 100vh;
   flex-direction: column;
+  overflow: hidden;
 
   .main-container{
     display: flex;
