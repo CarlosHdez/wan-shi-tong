@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import BoardGamesShelf from 'displays/board_game_shelf'
+import BooksWrapper from 'displays/books/wrapper'
 import {SECTIONS} from 'lib/constants'
 
 class MainWrapper extends React.PureComponent {
@@ -12,12 +12,13 @@ class MainWrapper extends React.PureComponent {
   renderContent = () => {
     switch(this.props.selectedSection) {
       case SECTIONS.books:
-        return <div>Books</div>
+        return <BooksWrapper />
       case SECTIONS.videogames:
         return <div>Vidieo games </div>
       case SECTIONS.boardgames:
+        return <div>Board games </div>
       default:
-        return <BoardGamesShelf />
+        return <div> wtf </div>
     }
   }
 
