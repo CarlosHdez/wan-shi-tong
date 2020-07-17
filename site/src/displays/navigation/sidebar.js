@@ -28,7 +28,7 @@ class Sidebar extends React.PureComponent {
         onClick={this.onMenuItemClick}
         className={selectedClass}
       >
-        <span class='material-icons'>{icon}</span>
+        <span className='material-icons'>{icon}</span>
         {title}
       </li>
     )

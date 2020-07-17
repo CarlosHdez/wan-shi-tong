@@ -2,16 +2,16 @@ export const SECTIONS = {
   books: {
     title: 'Books',
     id: 'books',
-    icon: ''
+    icon: 'library_books'
   },
   videogames: {
     title: 'Video Games',
     id: 'videogames',
-    icon: ''
+    icon: 'videogame_asset'
   },
   boardgames: {
     title: 'Board Games',
     id: 'boardgames',
-    icon: ''
+    icon: 'toys'
   }
 }

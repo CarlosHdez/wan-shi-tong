@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import BooksWrapper from 'displays/books/wrapper'
 import {SECTIONS} from 'lib/constants'
 
+import 'stylesheets/main_wrapper.scss'
+
 class MainWrapper extends React.PureComponent {
   static propTypes = {
     selectedSection: PropTypes.object.isRequired
@@ -23,7 +25,11 @@ class MainWrapper extends React.PureComponent {
   }
 
   render() {
-    return this.renderContent()
+    return (
+      <div className='main-wrapper'>
+        {this.renderContent()}
+      </div>
+    )
   }
 }
 

@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {useTable} from 'react-table'
 
+import 'stylesheets/components/table.scss'
+
 const Table = (props) => {
   const {
     getTableProps,
@@ -45,10 +47,16 @@ const Table = (props) => {
   }
 
   return (
-    <table id={props.id} {...getTableProps()}>
-      <thead>{headerGroups.map(renderHeaderRow)}</thead>
-      <tbody {...getTableBodyProps()}>{rows.map(renderRow)}</tbody>
-    </table>
+    <div className='table-wrapper'>
+      <table
+        id={props.id}
+        className='component-table'
+        {...getTableProps()}
+      >
+        <thead>{headerGroups.map(renderHeaderRow)}</thead>
+        <tbody {...getTableBodyProps()}>{rows.map(renderRow)}</tbody>
+      </table>
+    </div>
   )
 }
 
