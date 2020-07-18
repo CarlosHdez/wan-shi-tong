@@ -15,7 +15,6 @@ const Sidebar = ({expanded, onChangeSelectedSection, selectedSection}) => {
 
   const onMenuItemClick = ({target}) => {
     const {id} = target.dataset
-    console.log(id, SECTIONS[id])
     onChangeSelectedSection(SECTIONS[id])
   }
 
