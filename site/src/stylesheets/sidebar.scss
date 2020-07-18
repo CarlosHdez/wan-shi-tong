@@ -5,27 +5,45 @@
   min-width: 220px;
   background-color: $secondary-dark;
   color: $secondary-text-dark;
+  transition: width 200ms ease-in-out, min-width 200ms ease-in-out;
 
   ul {
     margin-top: 8px;
     padding: 0;
   }
 
-  li {
+  .item__title {
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 160ms ease-in;
+  }
+
+  .sidebar__item {
     padding: 1rem 23px;
     padding-right: 0;
     border-radius: 3px;
     display: flex;
     align-items: center;
     list-style-type: none;
+    white-space: nowrap;
+    overflow: hidden;
 
     &:hover{
       background-color: $secondary-darker-20;
       color: $secondary-text-darker;
     }
+    &--selected {color: $secondary-text-darker;}
 
-    &.selected {color: $secondary-text-darker;}
+    .material-icons {
+      padding-right: 1rem;
+      pointer-events: none;
+    }
+  }
 
-    .material-icons {padding-right: 1rem;}
+  &--expanded {
+    width: 70px;
+    min-width: 70px;
+
+    .item__title {opacity: 0;}
   }
 }
