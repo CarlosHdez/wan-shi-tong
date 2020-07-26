@@ -5,4 +5,3 @@ export const listBooks = async () => {
   const {data} = await request.json()
   return data
 }
-

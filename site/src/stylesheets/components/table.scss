@@ -11,8 +11,13 @@
 
     td {
       border-right: 1px solid grey;
-      padding: 0;
-      min-width: 200px;
+      padding: 8px;
+      min-width: 110px;
+      white-space: nowrap;
+    }
+
+    .cell {
+      &__number {text-align: right;}
     }
   }
 }

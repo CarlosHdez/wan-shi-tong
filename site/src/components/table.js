@@ -31,7 +31,7 @@ const Table = (props) => {
 
   const renderCell = (cell) => {
     return (
-      <td {...cell.getCellProps()}>
+      <td className={cell.column.className} {...cell.getCellProps()}>
         {cell.render('Cell')}
       </td>
     )
