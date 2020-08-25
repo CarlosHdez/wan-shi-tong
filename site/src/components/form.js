@@ -1,5 +1,6 @@
 import React from 'react'
 import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
+import {Button} from '@material-ui/core'
 
 const theme = createMuiTheme({
   palette: {
@@ -25,10 +26,35 @@ const theme = createMuiTheme({
   }
 })
 
-const FormWrapper = ({children}) => {
+const FormWrapper = ({children, wrapperClass, hasControls}) => {
+  const getSaveButtons = () => {
+    if (hasControls) {
+      return (
+        <footer className={`${wrapperClass}__controls`}>
+          <Button
+            color='primary'
+            size='medium'
+            variant='contained'
+          >
+            Save
+          </Button>
+          <Button
+            color='default'
+            size='medium'
+          >
+            Cancel
+          </Button>
+        </footer>
+      )
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      {children}
+      <div className={wrapperClass}>
+        {children}
+        {getSaveButtons()}
+      </div>
     </ThemeProvider>
   )
 }
