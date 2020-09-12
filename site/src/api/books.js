@@ -1,4 +1,4 @@
-const endpoint = `${process.env.REACT_APP_API_HOST}/api/v1/books`
+const endpoint = `${process.env.REACT_APP_API_HOST}/v1/books`
 
 export const listBooks = async () => {
   const request = await fetch(endpoint)
