@@ -1,9 +1,8 @@
 import React, {useState, useMemo, useEffect} from 'react'
 
 import Table from 'components/table'
+import StarRating from 'components/star_rating'
 import {listBooks} from 'api/books'
-
-const MAX_RATING = new Array(5).fill(0)
 
 const BooksShelf = (props) => {
   const [data, setData] = useState([])
@@ -15,14 +14,9 @@ const BooksShelf = (props) => {
     fetchBooks()
   }, [])
 
-  const renderRatingStart = (idx, value) => {
-    const icon = idx <= value ? 'star' : 'star_border'
-    return <span key={idx} className='material-icons'>{icon}</span>
-  }
-
   const columns = useMemo(() => [
     {Header: 'Title', accessor: 'title'},
-    // {Header: 'Author', accessor: 'author'},
+    {Header: 'Author', accessor: 'author'},
     {Header: 'Description', accessor: 'description'},
     {Header: 'Type', accessor: 'type'},
     {Header: 'Language', accessor: 'language'},
@@ -31,9 +25,12 @@ const BooksShelf = (props) => {
       accessor: 'rating',
       Cell: ({value}) => {
         return (
-          <div className='book-rating'>
-            {MAX_RATING.map((_, i) => renderRatingStart(i, value))}
-          </div>
+          <StarRating
+            value={value}
+            label=''
+            className='book-rating'
+            editable={false}
+          />
         )
       }
     },

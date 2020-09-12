@@ -1,0 +1,37 @@
+.books-editor {
+  &__grid {
+    display: grid;
+    margin-bottom: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    grid-template-areas: 'title author'
+      'desc desc'
+      'rating .'
+      'tags lang'
+      'country year'
+      'isbn ddc'
+      'genre link';
+
+  }
+
+  &--title {grid-area: title;}
+  &--author {grid-area: author;}
+  &--description {grid-area: desc;}
+  &--rating {grid-area: rating;}
+  &--genre {grid-area: genre;}
+  &--tags {grid-area: tags;}
+  &--lang {grid-area: lang;}
+  &--country {grid-area: country;}
+  &--year {grid-area: year;}
+  &--isbn {grid-area: isbn;}
+  &--ddc {grid-area: ddc;}
+  &--link {grid-area: link;}
+
+  &__controls {
+    display: flex;
+    align-self: flex-end;
+    flex-direction: row-reverse;
+
+    button {margin-left: 1rem;}
+  }
+}
