@@ -1,4 +1,5 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 import {
   TextField,
   FormControl,
@@ -12,9 +13,23 @@ import StarRating from 'components/star_rating'
 import 'stylesheets/books/editor.scss'
 
 const BookEditor = () => {
+  const {push} = useHistory()
+
+  const onCancel = () => {
+    // TODO: Confirm and clear form
+    push('/books')
+  }
+
+  const onSave = () => {
+    // TODO: Get form values, send to db and then redirect
+    push('/books')
+  }
+
   return (
     <FormWrapper
       wrapperClass='books-editor'
+      onCancel={onCancel}
+      onSave={onSave}
       hasControls
     >
       <div className='books-editor__grid'>

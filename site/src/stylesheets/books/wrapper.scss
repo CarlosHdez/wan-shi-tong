@@ -1,0 +1,9 @@
+.books-wrapper {
+  position: relative;
+
+  & button.books-new-button {
+    position: absolute;
+    right: 0;
+    top: -0.4rem;
+  }
+}

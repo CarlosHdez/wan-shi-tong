@@ -1,10 +1,13 @@
 import React, {useState, useMemo, useEffect} from 'react'
+import {Button} from '@material-ui/core'
+import {useHistory} from 'react-router-dom'
 
 import Table from 'components/table'
 import StarRating from 'components/star_rating'
 import {listBooks} from 'api/books'
 
 const BooksShelf = (props) => {
+  const {push} = useHistory()
   const [data, setData] = useState([])
   useEffect(() => {
     const fetchBooks = async () => {
@@ -53,11 +56,23 @@ const BooksShelf = (props) => {
   ], [])
 
   return (
-    <Table
-      id='board-games-table'
-      columns={columns}
-      data={data}
-    />
+    <>
+      <Button
+        className='books-new-button'
+        color='primary'
+        size='medium'
+        variant='contained'
+        onClick={() => push('/books/new')}
+      >
+        New
+      </Button>
+      {/* TODO: Find a better way to render when loadind data or empty */}
+      <Table
+        id='board-games-table'
+        columns={columns}
+        data={data}
+      />
+    </>
   )
 }
 
