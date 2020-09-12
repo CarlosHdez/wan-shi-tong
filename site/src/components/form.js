@@ -1,30 +1,5 @@
 import React from 'react'
-import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core'
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#698c3d',
-      light: '#99bc6a',
-      dark: '#3b5f10',
-      contrastText: '#fff'
-    },
-    secondary: {
-      main: '#e1e674',
-      light: '#ffffa5',
-      dark: '#adb444',
-      contrastText: '#0a0a0'
-    }
-  },
-  overrides: {
-    MuiTextField: {
-      root: {
-        marginBottom: '1rem'
-      }
-    }
-  }
-})
 
 const FormWrapper = ({children, wrapperClass, hasControls}) => {
   const getSaveButtons = () => {
@@ -50,12 +25,10 @@ const FormWrapper = ({children, wrapperClass, hasControls}) => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={wrapperClass}>
-        {children}
-        {getSaveButtons()}
-      </div>
-    </ThemeProvider>
+    <div className={wrapperClass}>
+      {children}
+      {getSaveButtons()}
+    </div>
   )
 }
 
