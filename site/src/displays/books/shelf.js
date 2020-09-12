@@ -22,7 +22,7 @@ const BooksShelf = (props) => {
 
   const columns = useMemo(() => [
     {Header: 'Title', accessor: 'title'},
-    // {Header: 'Author', accessor: 'author'},
+    {Header: 'Author', accessor: 'author'},
     {Header: 'Description', accessor: 'description'},
     {Header: 'Type', accessor: 'type'},
     {Header: 'Language', accessor: 'language'},
