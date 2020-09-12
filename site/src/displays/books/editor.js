@@ -1,5 +1,11 @@
 import React from 'react'
-import {TextField} from '@material-ui/core'
+import {
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select
+} from '@material-ui/core'
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
@@ -18,6 +24,21 @@ const BookEditor = () => {
           className='books-editor__input books-editor--title'
           variant='filled'
         />
+        <FormControl className='books-editor__input books-editor--author'>
+          <InputLabel
+            id='book-author-label'
+            className='MuiInputLabel-filled'
+          >
+            Author
+          </InputLabel>
+          <Select
+            id='book-author'
+            labelId='book-author-label'
+            className='books-editor__input books-editor--title'
+            variant='filled'
+          >
+          </Select>
+        </FormControl>
         <TextField
           label='Description'
           className='books-editor__input books-editor--description'

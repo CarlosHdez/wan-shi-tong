@@ -4,7 +4,7 @@
     margin-bottom: 2rem;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;
-    grid-template-areas: 'title title'
+    grid-template-areas: 'title author'
       'desc desc'
       'rating .'
       'tags lang'
@@ -15,6 +15,7 @@
   }
 
   &--title {grid-area: title;}
+  &--author {grid-area: author;}
   &--description {grid-area: desc;}
   &--rating {grid-area: rating;}
   &--genre {grid-area: genre;}
