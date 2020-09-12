@@ -1,42 +1,52 @@
 import React, {useState} from 'react'
+import {BrowserRouter as Router} from 'react-router-dom'
+import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
 
 import Header from 'displays/navigation/header'
 import Sidebar from 'displays/navigation/sidebar'
 import MainWrapper from 'displays/main_wrapper'
-import {SECTIONS} from 'lib/constants'
 
-// const APP_STATE = {
-//   collections: {
-//     books: [],
-//     boardgames: [],
-//     videogames: []
-//   },
-//   display: {
-//     selectedSection: SECTIONS.books,
-//     sidebar: {
-//       expanded: true
-//     }
-//   }
-// }
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#698c3d',
+      light: '#99bc6a',
+      dark: '#3b5f10',
+      contrastText: '#fff'
+    },
+    secondary: {
+      main: '#e1e674',
+      light: '#ffffa5',
+      dark: '#adb444',
+      contrastText: '#0a0a0'
+    }
+  },
+  overrides: {
+    MuiTextField: {
+      root: {
+        marginBottom: '1rem'
+      }
+    }
+  }
+})
 
 const App = () => {
-  const [selectedSection, setSelected] = useState(SECTIONS.books)
   const [expanded, setExpanded] = useState(false)
 
   const toggleExpanded = () => setExpanded(!expanded)
 
   return (
-    <div className="app">
-      <Header onIconClick={toggleExpanded} />
-      <div className='main-container'>
-        <Sidebar
-          expanded={expanded}
-          onChangeSelectedSection={setSelected}
-          selectedSection={selectedSection}
-        />
-        <MainWrapper selectedSection={selectedSection} />
-      </div>
-    </div>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <div className="app">
+          <Header onIconClick={toggleExpanded} />
+          <div className='main-container'>
+            <Sidebar expanded={expanded} />
+            <MainWrapper />
+          </div>
+        </div>
+      </ThemeProvider>
+    </Router>
   )
 }
 

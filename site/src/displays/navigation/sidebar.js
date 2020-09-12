@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import {useHistory, useRouteMatch} from 'react-router-dom'
 
 import {SECTIONS} from 'lib/constants'
 
@@ -8,36 +9,35 @@ import 'stylesheets/sidebar.scss'
 
 const MAIN_CLASS = 'main-sidebar'
 
-const Sidebar = ({expanded, onChangeSelectedSection, selectedSection}) => {
+const SidebarItem = ({id, title, icon}) => {
+  const history = useHistory()
+  const route = `/${id}`
+  const match = useRouteMatch(route)
+  const classes = classnames('sidebar__item', {
+    'sidebar__item--selected': match
+  })
+  const onMenuItemClick = ({target}) => history.push(`/${target.dataset.id}`)
+  return (
+    <li
+      key={id}
+      data-id={id}
+      className={classes}
+      onClick={onMenuItemClick}
+    >
+      <span className='material-icons'>{icon}</span>
+      <span className='item__title'>{title}</span>
+    </li>
+  )
+}
+
+const Sidebar = ({expanded}) => {
   const classes = classnames(MAIN_CLASS, {
     [`${MAIN_CLASS}--expanded`]: expanded
   })
 
-  const onMenuItemClick = ({target}) => {
-    const {id} = target.dataset
-    onChangeSelectedSection(SECTIONS[id])
-  }
-
-  const renderItem = ({title, id, icon}) => {
-    const classes = classnames('sidebar__item', {
-      'sidebar__item--selected': selectedSection.id === id
-    })
-    return (
-      <li
-        key={id}
-        data-id={id}
-        className={classes}
-        onClick={onMenuItemClick}
-      >
-        <span className='material-icons'>{icon}</span>
-        <span className='item__title'>{title}</span>
-      </li>
-    )
-  }
-
   const renderMenu = () => {
     const items = Object.values(SECTIONS)
-    return <ul>{items.map(renderItem)}</ul>
+    return <ul>{items.map(SidebarItem)}</ul>
   }
 
   return (
@@ -48,11 +48,7 @@ const Sidebar = ({expanded, onChangeSelectedSection, selectedSection}) => {
 }
 
 Sidebar.propTypes = {
-  expanded: PropTypes.bool.isRequired,
-  onChangeSelectedSection: PropTypes.func.isRequired,
-  selectedSection: PropTypes.shape({
-    id: PropTypes.string.isRequired
-  }).isRequired
+  expanded: PropTypes.bool.isRequired
 }
 
 export default Sidebar

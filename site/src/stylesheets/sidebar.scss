@@ -1,8 +1,8 @@
 @import 'colors';
 
 .main-sidebar {
-  width: 220px;
-  min-width: 220px;
+  width: 70px;
+  min-width: 70px;
   background-color: $secondary-dark;
   color: $secondary-text-dark;
   transition: width 200ms ease-in-out, min-width 200ms ease-in-out;
@@ -14,7 +14,7 @@
 
   .item__title {
     pointer-events: none;
-    opacity: 1;
+    opacity: 0;
     transition: opacity 160ms ease-in;
   }
 
@@ -41,9 +41,9 @@
   }
 
   &--expanded {
-    width: 70px;
-    min-width: 70px;
+    width: 220px;
+    min-width: 220px;
 
-    .item__title {opacity: 0;}
+    .item__title {opacity: 1;}
   }
 }
