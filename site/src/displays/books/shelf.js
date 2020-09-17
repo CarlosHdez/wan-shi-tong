@@ -1,22 +1,12 @@
-import React, {useState, useMemo, useEffect} from 'react'
+import React, {useMemo} from 'react'
 import {Button} from '@material-ui/core'
 import {Link, useHistory} from 'react-router-dom'
 
 import Table from 'components/table'
 import StarRating from 'components/star_rating'
-import {listBooks} from 'api/books'
 
-const BooksShelf = (props) => {
+const BooksShelf = ({collection}) => {
   const {push} = useHistory()
-  const [data, setData] = useState([])
-  useEffect(() => {
-    // TODO: Do not reload if data was already there
-    const fetchBooks = async () => {
-      const books = await listBooks()
-      setData(books)
-    }
-    fetchBooks()
-  }, [])
 
   const columns = useMemo(() => [
     {
@@ -78,7 +68,7 @@ const BooksShelf = (props) => {
       <Table
         id='board-games-table'
         columns={columns}
-        data={data}
+        data={collection.data}
       />
     </>
   )

@@ -10,7 +10,7 @@ import BookEditor from 'displays/books/editor'
 
 import 'stylesheets/books/wrapper.scss'
 
-const BookWrapper = () => {
+const BookWrapper = ({collection}) => {
   const {path} = useRouteMatch()
   return (
     <div className='books-wrapper'>
@@ -23,7 +23,7 @@ const BookWrapper = () => {
           <BookEditor />
         </Route>
         <Route path='*'>
-          <BooksShelf />
+          <BooksShelf collection={collection} />
         </Route>
       </Switch>
     </div>

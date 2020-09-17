@@ -6,15 +6,18 @@ import {
 } from 'react-router-dom'
 
 import BooksWrapper from 'displays/books/wrapper'
+import {listBooks} from 'api/books'
+import {useCollection} from 'hooks/collection_hook'
 
 import 'stylesheets/main_wrapper.scss'
 
 const MainWrapper = () => {
+  const books = useCollection(listBooks)
   return (
     <div className='main-wrapper'>
       <Switch>
         <Route path='/books'>
-          <BooksWrapper />
+          <BooksWrapper collection={books} />
         </Route>
         <Route path='/videogames'>
           <div>Video games</div>
