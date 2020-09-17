@@ -17,7 +17,13 @@ const BooksShelf = ({collection}) => {
       }
     },
     // TODO: Make it a link to the author editor form
-    {Header: 'Author', accessor: 'author'},
+    {
+      Header: 'Author',
+      accessor: 'author',
+      Cell: ({value}) => {
+        return <div>{value.name} {value.surname} {value.id}</div>
+      }
+    },
     {Header: 'Description', accessor: 'description'},
     {Header: 'Type', accessor: 'type'},
     {Header: 'Language', accessor: 'language'},
