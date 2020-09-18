@@ -21,7 +21,7 @@ const BooksShelf = ({collection}) => {
       Header: 'Author',
       accessor: 'author',
       Cell: ({value}) => {
-        return <div>{value.name} {value.surname} {value.id}</div>
+        return <div>{value.name} {value.surname}</div>
       }
     },
     {Header: 'Description', accessor: 'description'},

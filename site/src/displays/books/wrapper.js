@@ -7,20 +7,23 @@ import {
 
 import BooksShelf from 'displays/books/shelf'
 import BookEditor from 'displays/books/editor'
+import {listAuthors} from 'api/books'
+import {useCollection} from 'hooks/collection_hook'
 
 import 'stylesheets/books/wrapper.scss'
 
 const BookWrapper = ({collection}) => {
+  const authors = useCollection(listAuthors)
   const {path} = useRouteMatch()
   return (
     <div className='books-wrapper'>
       <h2>Books</h2>
       <Switch>
         <Route path={`${path}/new`}>
-          <BookEditor />
+          <BookEditor authors={authors} />
         </Route>
         <Route path={`${path}/:bookId`}>
-          <BookEditor />
+          <BookEditor authors={authors} />
         </Route>
         <Route path='*'>
           <BooksShelf collection={collection} />

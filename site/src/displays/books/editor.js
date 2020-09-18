@@ -12,7 +12,7 @@ import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import 'stylesheets/books/editor.scss'
 
-const BookEditor = () => {
+const BookEditor = ({authors}) => {
   const {push} = useHistory()
 
   const onCancel = () => {
@@ -24,6 +24,10 @@ const BookEditor = () => {
     // TODO: Get form values, send to db and then redirect
     push('/books')
   }
+
+  const authorOptions = authors.data.map(({id, name, surname}) => {
+    return <MenuItem value={id} key={id}>{name} {surname}</MenuItem>
+  })
 
   return (
     <FormWrapper
