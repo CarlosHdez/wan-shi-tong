@@ -27,8 +27,10 @@ const FormWrapper = (props) => {
   const {children, wrapperClass, hasControls, onSave, onCancel} = props
 
   return (
-    <div className={wrapperClass}>
-      {children}
+    <>
+      <div className={wrapperClass}>
+        {children}
+      </div>
       {hasControls &&
         <FormFooter
           onSave={onSave}
@@ -36,7 +38,7 @@ const FormWrapper = (props) => {
           className={`${wrapperClass}__controls`}
         />
       }
-    </div>
+    </>
   )
 }
 
