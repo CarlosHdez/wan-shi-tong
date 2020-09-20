@@ -20,10 +20,10 @@ const BookWrapper = ({collection}) => {
       <h2>Books</h2>
       <Switch>
         <Route path={`${path}/new`}>
-          <BookEditor authors={authors} />
+          <BookEditor books={collection} authors={authors} />
         </Route>
         <Route path={`${path}/:bookId`}>
-          <BookEditor authors={authors} />
+          <BookEditor books={collection} authors={authors} />
         </Route>
         <Route path='*'>
           <BooksShelf collection={collection} />

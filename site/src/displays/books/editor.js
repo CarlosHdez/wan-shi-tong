@@ -1,6 +1,10 @@
-import React from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
 import {
+  useHistory,
+  useParams
+} from 'react-router-dom'
+import {
+  Button,
   TextField,
   FormControl,
   InputLabel,
@@ -13,9 +17,20 @@ import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
 import 'stylesheets/books/editor.scss'
 
-const BookEditor = ({authors}) => {
+const initialValues = {
+  author: {id: ''},
+}
+
+const BookEditor = ({books, authors}) => {
   const [open, setOpen] = useState(false)
+  const [book, setBook] = useState(initialValues)
   const {push} = useHistory()
+  const {bookId} = useParams()
+
+  useEffect(() => {
+    const book = books.data.find(({id}) => id === bookId) || initialValues
+    setBook(book)
+  }, [bookId, books.data])
 
   const onCancel = () => {
     // TODO: Confirm and clear form
@@ -53,12 +68,10 @@ const BookEditor = ({authors}) => {
             label='Title'
             className='books-editor__input books-editor--title'
             variant='filled'
+            value={book.title}
           />
           <FormControl className='books-editor__input books-editor--author'>
-            <InputLabel
-              id='book-author-label'
-              className='MuiInputLabel-filled'
-            >
+            <InputLabel id='book-author-label' className='MuiInputLabel-filled'>
               Author
             </InputLabel>
             <div className='books-editor--title'>
@@ -67,6 +80,7 @@ const BookEditor = ({authors}) => {
                 labelId='book-author-label'
                 className='books-editor__input'
                 variant='filled'
+                value={book.author.id}
               >
                 {authorOptions}
               </Select>
@@ -83,39 +97,52 @@ const BookEditor = ({authors}) => {
             className='books-editor__input books-editor--description'
             variant='filled'
             rows={5}
+            value={book.description}
             multiline
           />
-          <StarRating value={3} className='books-editor--rating'/>
+          <StarRating value={book.rating} className='books-editor--rating'/>
+          <TextField
+            id='book-type'
+            label='Type'
+            className='books-editor__input books-editor--type'
+            variant='filled'
+            value={book.type}
+          />
           <TextField
             id='book-tags'
             label='Tags'
             className='books-editor__input books-editor--tags'
             variant='filled'
+            value={book.tags}
           />
           <TextField
             id='book-language'
             label='Language'
             className='books-editor__input books-editor--lang'
             variant='filled'
+            value={book.language}
           />
           <TextField
             id='book-country'
             label='Country'
             className='books-editor__input books-editor--country'
             variant='filled'
+            value={book.country}
           />
           <TextField
-            id='book-year'
-            label='Year'
-            className='books-editor__input books-editor--year'
+            id='book-date'
+            label='date'
+            className='books-editor__input books-editor--date'
             variant='filled'
-            type='month'
+            type='date'
+            value={book.date}
           />
           <TextField
             id='book-isbn'
             label='ISBN'
             className='books-editor__input books-editor--isbn'
             variant='filled'
+            value={book.ISBN}
           />
           <TextField
             id='book-ddc'
@@ -123,12 +150,14 @@ const BookEditor = ({authors}) => {
             className='books-editor__input books-editor--ddc'
             variant='filled'
             disabled
+            value={book.code}
           />
           <TextField
             id='book-genre'
             label='Genre'
             className='books-editor__input books-editor--genre'
             variant='filled'
+            value={book.genre}
           />
           <TextField
             id='book-link'
@@ -136,6 +165,7 @@ const BookEditor = ({authors}) => {
             className='books-editor__input books-editor--link'
             type='url'
             variant='filled'
+            value={book.goodreads_link}
           />
         </div>
       </FormWrapper>

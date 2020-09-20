@@ -6,9 +6,9 @@
     grid-gap: 1rem;
     grid-template-areas: 'title author'
       'desc desc'
-      'rating .'
+      'rating type'
       'tags lang'
-      'country year'
+      'country date'
       'isbn ddc'
       'genre link';
 
@@ -29,7 +29,8 @@
   &--tags {grid-area: tags;}
   &--lang {grid-area: lang;}
   &--country {grid-area: country;}
-  &--year {grid-area: year;}
+  &--date {grid-area: date;}
+  &--type {grid-area: type;}
   &--isbn {grid-area: isbn;}
   &--ddc {grid-area: ddc;}
   &--link {grid-area: link;}

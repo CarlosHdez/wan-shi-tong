@@ -2,7 +2,8 @@ import React, {useState} from 'react'
 
 import 'stylesheets/components/star_rating.scss'
 
-const StarRating = ({value, className, label = 'Rating', editable = true}) => {
+const StarRating = (props) => {
+  const {value = 0, className, label = 'Rating', editable = true} = props
   const starValue = value -1
   const [hoverVal, setHoverVal] = useState(null)
   const MAX_RATING = new Array(5).fill(0)
