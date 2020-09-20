@@ -17,6 +17,17 @@ const authorsController = {
     } catch (err) {
       return res.status(500).json({message: err})
     }
+  },
+
+  saveAuthor: async (req, res) => {
+    const {name, surname} = req.body
+    const newAuthor = await db.collection('authors').add({name, surname})
+    console.log(`Added author ${name} ${surname}, with id ${newAuthor.id}`)
+    const result = await newAuthor.get()
+    return res.status(200).json({
+      id: newAuthor.id,
+      ...result.data()
+    })
   }
 }
 
