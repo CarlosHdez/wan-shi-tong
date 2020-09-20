@@ -8,7 +8,7 @@ const Header = ({onIconClick}) => {
     <div className='main-header'>
       <img
         alt='menu'
-        src='icons/logo.png'
+        src='/icons/logo.png'
         onClick={onIconClick}
       />
       <h1>Wan Shi Tong</h1>

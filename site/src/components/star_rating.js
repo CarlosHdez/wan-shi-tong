@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
+import PropTypes from 'prop-types'
 
 import 'stylesheets/components/star_rating.scss'
 
-const StarRating = (props) => {
-  const {value = 0, className, label = 'Rating', editable = true} = props
+const StarRating = ({value, className, label, editable, onChange}) => {
   const starValue = value -1
   const [hoverVal, setHoverVal] = useState(null)
   const MAX_RATING = new Array(5).fill(0)
@@ -13,6 +13,13 @@ const StarRating = (props) => {
       return
     }
     setHoverVal(value)
+  }
+
+  const onUpdateRating = (value) => {
+    if (!editable) {
+      return
+    }
+    onChange(value + 1)
   }
 
   const renderRatingStart = (idx, value) => {
@@ -26,6 +33,7 @@ const StarRating = (props) => {
         key={idx}
         className='material-icons'
         onMouseOver={() => onStarHover(idx)}
+        onClick={() => onUpdateRating(idx)}
       >
         {icon}
       </span>
@@ -48,6 +56,21 @@ const StarRating = (props) => {
       {MAX_RATING.map((_, i) => renderRatingStart(i, value))}
     </div>
   )
+}
+
+StarRating.propTypes = {
+  value: PropTypes.number.isRequired,
+  className: PropTypes.string,
+  label: PropTypes.string,
+  editable: PropTypes.bool,
+  onChange: PropTypes.func
+}
+
+StarRating.defaultProps = {
+  className: '',
+  label: 'Rating',
+  editable: false,
+  onChange: () => {}
 }
 
 export default StarRating

@@ -6,10 +6,7 @@ import {
 import {
   Button,
   TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select
+  MenuItem
 } from '@material-ui/core'
 
 import FormWrapper from 'components/form'
@@ -18,7 +15,19 @@ import AuthorEditor from 'displays/books/authors'
 import 'stylesheets/books/editor.scss'
 
 const initialValues = {
+  title: '',
   author: {id: ''},
+  description: '',
+  tags: '',
+  language: '',
+  country: '',
+  type: '',
+  date: '',
+  ISBN: '',
+  code: '',
+  genre: '',
+  rating: 0,
+  goodreads_link: ''
 }
 
 const BookEditor = ({books, authors}) => {
@@ -31,6 +40,29 @@ const BookEditor = ({books, authors}) => {
     const book = books.data.find(({id}) => id === bookId) || initialValues
     setBook(book)
   }, [bookId, books.data])
+
+  const onUpdateBook = ({target}) => {
+    setBook({
+      ...book,
+      [target.name]: target.value
+    })
+  }
+
+  const onRatingChange = (value) => {
+    setBook({
+      ...book,
+      rating: value
+    })
+  }
+
+  const onUpdateAuthor = ({target}) => {
+    setBook({
+      ...book,
+      author: {
+        id: target.value
+      }
+    })
+  }
 
   const onCancel = () => {
     // TODO: Confirm and clear form
@@ -66,106 +98,128 @@ const BookEditor = ({books, authors}) => {
           <TextField
             id='book-title'
             label='Title'
+            name='title'
             className='books-editor__input books-editor--title'
             variant='filled'
             value={book.title}
+            onChange={onUpdateBook}
+            required
           />
-          <FormControl className='books-editor__input books-editor--author'>
-            <InputLabel id='book-author-label' className='MuiInputLabel-filled'>
-              Author
-            </InputLabel>
-            <div className='books-editor--title'>
-              <Select
-                id='book-author'
-                labelId='book-author-label'
-                className='books-editor__input'
-                variant='filled'
-                value={book.author.id}
-              >
-                {authorOptions}
-              </Select>
-              <Button
-                onClick={onOpenModal}
-                variant='contained'
-              >
-                Add
-              </Button>
-            </div>
-          </FormControl>
+          <div className='books-editor--author'>
+            <TextField
+              id='book-author'
+              label='Author'
+              name='author'
+              className='books-editor__input'
+              variant='filled'
+              value={book.author.id}
+              onChange={onUpdateAuthor}
+              select
+              required
+            >
+              {authorOptions}
+            </TextField>
+            <Button onClick={onOpenModal} variant='contained'>Add</Button>
+          </div>
           <TextField
             label='Description'
             className='books-editor__input books-editor--description'
             variant='filled'
+            name='description'
             rows={5}
             value={book.description}
+            onChange={onUpdateBook}
             multiline
           />
-          <StarRating value={book.rating} className='books-editor--rating'/>
+          <StarRating
+            value={book.rating}
+            onChange={onRatingChange}
+            name='rating'
+            className='books-editor--rating'
+            editable
+          />
           <TextField
             id='book-type'
             label='Type'
+            name='type'
             className='books-editor__input books-editor--type'
             variant='filled'
             value={book.type}
+            onChange={onUpdateBook}
           />
           <TextField
             id='book-tags'
             label='Tags'
+            name='tags'
             className='books-editor__input books-editor--tags'
             variant='filled'
             value={book.tags}
+            onChange={onUpdateBook}
           />
           <TextField
             id='book-language'
             label='Language'
+            name='language'
             className='books-editor__input books-editor--lang'
             variant='filled'
             value={book.language}
+            onChange={onUpdateBook}
           />
           <TextField
             id='book-country'
             label='Country'
+            name='country'
             className='books-editor__input books-editor--country'
             variant='filled'
             value={book.country}
+            onChange={onUpdateBook}
           />
           <TextField
             id='book-date'
             label='date'
+            name='date'
             className='books-editor__input books-editor--date'
             variant='filled'
             type='date'
             value={book.date}
+            onChange={onUpdateBook}
           />
           <TextField
             id='book-isbn'
             label='ISBN'
+            name='ISBN'
             className='books-editor__input books-editor--isbn'
             variant='filled'
             value={book.ISBN}
+            onChange={onUpdateBook}
           />
           <TextField
             id='book-ddc'
             label='DDC'
+            name='code'
             className='books-editor__input books-editor--ddc'
             variant='filled'
-            disabled
             value={book.code}
+            disabled
           />
           <TextField
             id='book-genre'
             label='Genre'
+            name='genre'
             className='books-editor__input books-editor--genre'
             variant='filled'
             value={book.genre}
+            onChange={onUpdateBook}
           />
           <TextField
             id='book-link'
             label='Goodreads link'
+            name='goodreads_link'
             className='books-editor__input books-editor--link'
             type='url'
             variant='filled'
             value={book.goodreads_link}
+            onChange={onUpdateBook}
           />
         </div>
       </FormWrapper>

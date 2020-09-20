@@ -14,15 +14,18 @@
 
   }
 
-  &--title {
+  &--author {
     display: grid;
     grid-template-columns: 1fr 67px;
     grid-gap: 1rem;
-    grid-area: title;
+    grid-area: author;
 
-    button {align-self: center;}
+    button {
+      align-self: center;
+      margin-bottom: 1rem;
+    }
   }
-  &--author {grid-area: author;}
+  &--title {grid-area: title;}
   &--description {grid-area: desc;}
   &--rating {grid-area: rating;}
   &--genre {grid-area: genre;}
