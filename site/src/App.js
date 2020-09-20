@@ -26,6 +26,11 @@ const theme = createMuiTheme({
       root: {
         marginBottom: '1rem'
       }
+    },
+    MuiDialog: {
+      paper: {
+        padding: '2rem'
+      }
     }
   }
 })

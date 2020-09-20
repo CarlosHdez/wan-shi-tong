@@ -56,6 +56,9 @@ export const useCollection = (fetchAction) => {
     }
   }, [state.status, fetchAction])
 
-  return state
+  return {
+    dispatch,
+    ...state
+  }
 }
 
