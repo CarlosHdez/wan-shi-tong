@@ -27,8 +27,8 @@ const theme = createMuiTheme({
         marginBottom: '1rem'
       }
     },
-    MuiPaper: {
-      root: {
+    MuiDialog: {
+      paper: {
         padding: '2rem'
       }
     }

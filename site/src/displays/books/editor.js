@@ -29,6 +29,11 @@ const BookEditor = ({authors}) => {
 
   const onCloseModal = () => setOpen(false)
   const onOpenModal = () => setOpen(true)
+  const onSaveAuthor = (author) => {
+    const data = [...authors.data, author]
+    authors.dispatch({type: 'success', data})
+    onCloseModal()
+  }
 
   const authorOptions = authors.data.map(({id, name, surname}) => {
     return <MenuItem value={id} key={id}>{name} {surname}</MenuItem>
@@ -134,7 +139,11 @@ const BookEditor = ({authors}) => {
           />
         </div>
       </FormWrapper>
-      <AuthorEditor open={open} onClose={onCloseModal} />
+      <AuthorEditor
+        open={open}
+        onSave={onSaveAuthor}
+        onClose={onCloseModal}
+      />
     </>
   )
 }

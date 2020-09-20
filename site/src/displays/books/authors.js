@@ -9,7 +9,7 @@ import FormWrapper from 'components/form'
 import {saveAuthor} from 'api/books'
 import 'stylesheets/books/author.scss'
 
-const AuthorEditor = ({open, onClose}) => {
+const AuthorEditor = ({open, onSave, onClose}) => {
   const [author, setAuthor] = useState({})
 
   const onUpdatedField = ({target}) => {
@@ -19,9 +19,9 @@ const AuthorEditor = ({open, onClose}) => {
     })
   }
 
-  const onSave = async () => {
-    await saveAuthor(author)
-    onClose()
+  const onSaveClick = async () => {
+    const newAuthor = await saveAuthor(author)
+    onSave(newAuthor)
     setAuthor({})
   }
 
@@ -34,7 +34,7 @@ const AuthorEditor = ({open, onClose}) => {
       <DialogTitle id='new-author-dialog-title'>New Author</DialogTitle>
       <FormWrapper
         wrapperClass='author-editor'
-        onSave={onSave}
+        onSave={onSaveClick}
         onCancel={onClose}
         hasControls
       >
