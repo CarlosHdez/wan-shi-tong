@@ -12,6 +12,7 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
+import {saveBook} from 'api/books'
 import 'stylesheets/books/editor.scss'
 
 const initialValues = {
@@ -65,12 +66,21 @@ const BookEditor = ({books, authors}) => {
   }
 
   const onCancel = () => {
-    // TODO: Confirm and clear form
     push('/books')
   }
 
-  const onSave = () => {
-    // TODO: Get form values, send to db and then redirect
+  const onSave = async () => {
+    const val = await saveBook(book)
+    let index = books.data.length
+    if (bookId) {
+      index = books.data.findIndex(({id}) => id === bookId)
+    }
+    const newData = [
+      ...books.data.slice(0, index),
+      val,
+      ...books.data.slice(index + 1)
+    ]
+    books.dispatch({type: 'success', data: newData})
     push('/books')
   }
 
