@@ -3,18 +3,30 @@
 
   table {
     border-spacing: 0;
+    border: 1px solid #e0e0e0;
+
+    thead th {background-color: #bbb;}
 
     th {
       border-right: 1px solid grey;
       border-bottom: 2px solid grey;
+      text-align: left;
+      &:last-child {border-right: 0;}
     }
 
+    th,
     td {
-      border-right: 1px solid grey;
-      padding: 8px;
-      min-width: 110px;
+      padding: 1rem;
+      min-width: 80px;
       white-space: nowrap;
     }
+
+    tbody td {
+      background-color: #eee;
+      border-bottom: 1px solid #ccc;
+
+    }
+    tr:last-child td {border-bottom: 0;}
 
     .cell {
       &__number {text-align: right;}

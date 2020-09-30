@@ -6,4 +6,13 @@
     right: 0;
     top: -0.4rem;
   }
+
+  .table-wrapper {
+    table {margin: 0 auto;}
+    td {
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }

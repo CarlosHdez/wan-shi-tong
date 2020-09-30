@@ -16,17 +16,12 @@ const BooksShelf = ({collection}) => {
         return <Link to={`/books/${row.original.id}`}>{value}</Link>
       }
     },
-    // TODO: Make it a link to the author editor form
     {
       Header: 'Author',
       accessor: 'author',
-      Cell: ({value}) => {
-        return <div>{value.name} {value.surname}</div>
-      }
+      Cell: ({value}) => <div>{value.name} {value.surname}</div>
     },
     {Header: 'Description', accessor: 'description'},
-    {Header: 'Type', accessor: 'type'},
-    {Header: 'Language', accessor: 'language'},
     {
       Header: 'Rating',
       accessor: 'rating',
@@ -53,10 +48,12 @@ const BooksShelf = ({collection}) => {
         <a href={value} rel='noopener noreferrer' target='_blank'>Goodreads</a>
       )
     },
+    {Header: 'Type', accessor: 'type'},
+    {Header: 'Language', accessor: 'language'},
     {Header: 'ISBN', accessor: 'ISBN', className: 'cell__number'},
     {Header: 'DDC', accessor: 'code', className: 'cell__number'},
-    {Header: 'Country', accessor: 'country', },
-    {Header: 'Year', accessor: 'year', className: 'cell__number'}
+    // {Header: 'Country', accessor: 'country', },
+    // {Header: 'Year', accessor: 'year', className: 'cell__number'}
   ], [])
 
   return (
