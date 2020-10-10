@@ -47,7 +47,10 @@ const formatTags = (tags) => {
   if (typeof tags === 'string') {
     return tags.split(',').map((tag) => tag.trim())
   }
-  return
+  if (Array.isArray(tags)) {
+    return tags
+  }
+  return []
 }
 
 export const saveBook = async (book) => {
