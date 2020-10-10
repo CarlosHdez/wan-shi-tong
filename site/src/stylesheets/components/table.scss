@@ -1,15 +1,24 @@
+// TODO: Resolve scss routes
+@import '../colors';
+
 .table-wrapper {
   overflow: auto;
 
   table {
     border-spacing: 0;
-    border: 1px solid #e0e0e0;
+    border: 1px solid $borders;
+    min-width: 100%;
 
-    thead th {background-color: #bbb;}
+    thead th {
+      background-color: $darker-background;
+
+      svg {
+        height: 1rem;
+        transform: translateY(2px);
+      }
+    }
 
     th {
-      border-right: 1px solid grey;
-      border-bottom: 2px solid grey;
       text-align: left;
       &:last-child {border-right: 0;}
     }
@@ -22,9 +31,8 @@
     }
 
     tbody td {
-      background-color: #eee;
-      border-bottom: 1px solid #ccc;
-
+      background-color: white;
+      border-bottom: 1px solid $borders;
     }
     tr:last-child td {border-bottom: 0;}
 
@@ -32,4 +40,15 @@
       &__number {text-align: right;}
     }
   }
+}
+
+.table--footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 60px;
+  padding-right: 1rem;
+  background-color: white;
+
+  & > span {padding-right: 1rem;}
 }

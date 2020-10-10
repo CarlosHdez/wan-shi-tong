@@ -12,6 +12,6 @@ export const SECTIONS = {
   boardgames: {
     title: 'Board Games',
     id: 'boardgames',
-    icon: 'toys'
+    icon: 'casino'
   }
 }

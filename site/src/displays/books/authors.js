@@ -46,6 +46,7 @@ const AuthorEditor = ({open, onSave, onClose}) => {
           name='name'
           value={author.name}
           onChange={onUpdatedField}
+          autoFocus
         />
         <TextField
           id='author-surname'

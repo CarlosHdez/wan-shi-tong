@@ -19,9 +19,12 @@ const BooksShelf = ({collection}) => {
     {
       Header: 'Author',
       accessor: 'author',
-      Cell: ({value}) => <div>{value.name} {value.surname}</div>
+      Cell: ({value}) => <div>{value.name} {value.surname}</div>,
+      sortType: (rowA, rowB) => {
+        return rowA.original.author.name > rowB.original.author.name ? -1 : 1
+      }
     },
-    {Header: 'Description', accessor: 'description'},
+    {Header: 'Description', accessor: 'description', disableSortBy: true},
     {
       Header: 'Rating',
       accessor: 'rating',
@@ -39,22 +42,33 @@ const BooksShelf = ({collection}) => {
     {
       Header: 'Tags',
       accessor: 'tags',
+      disableSortBy: true,
       Cell: ({value}) => value.join(', ')
     },
     {
       Header: 'Link',
       accessor: 'goodreads_link',
+      disableSortBy: true,
       Cell: ({value}) => (
         <a href={value} rel='noopener noreferrer' target='_blank'>Goodreads</a>
       )
     },
+    {Header: 'Genre', accessor: 'genre'},
     {Header: 'Type', accessor: 'type'},
     {Header: 'Language', accessor: 'language'},
-    {Header: 'ISBN', accessor: 'ISBN', className: 'cell__number'},
-    {Header: 'DDC', accessor: 'code', className: 'cell__number'},
-    // {Header: 'Country', accessor: 'country', },
-    // {Header: 'Year', accessor: 'year', className: 'cell__number'}
+    {
+      Header: 'ISBN',
+      accessor: 'ISBN',
+      disableSortBy: true,
+      className: 'cell__number'
+    },
+    {Header: 'DDC', accessor: 'code', className: 'cell__number'}
   ], [])
+
+  const initialState = {
+    pageSize: 20,
+    sortBy: [{id: 'title', desc: false}]
+  }
 
   return (
     <>
@@ -72,6 +86,7 @@ const BooksShelf = ({collection}) => {
         id='board-games-table'
         columns={columns}
         data={collection.data}
+        initialState={initialState}
       />
     </>
   )

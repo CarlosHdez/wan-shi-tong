@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import {
   useHistory,
   useParams
@@ -89,12 +89,16 @@ const BookEditor = ({books, authors}) => {
   const onSaveAuthor = (author) => {
     const data = [...authors.data, author]
     authors.dispatch({type: 'success', data})
+    onUpdateAuthor({target: {value: author.id}})
     onCloseModal()
   }
 
-  const authorOptions = authors.data.map(({id, name, surname}) => {
-    return <MenuItem value={id} key={id}>{name} {surname}</MenuItem>
-  })
+  const authorOptions = useMemo(() => {
+    return authors.data.map(({id, name, surname}) => {
+      const key = `${name}-${surname}-${id}`
+      return <MenuItem value={id} key={key}>{name} {surname}</MenuItem>
+    }).sort((a, b) => a.key < b.key ? -1 : 1)
+  }, [authors.data])
 
   return (
     <>
@@ -113,6 +117,7 @@ const BookEditor = ({books, authors}) => {
             variant='filled'
             value={book.title}
             onChange={onUpdateBook}
+            autoFocus
             required
           />
           <div className='books-editor--author'>

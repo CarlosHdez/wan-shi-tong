@@ -1,6 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {useTable} from 'react-table'
+import {
+  useTable,
+  usePagination,
+  useSortBy
+} from 'react-table'
+import {Button} from '@material-ui/core'
+import {
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpward,
+  ArrowDownward,
+} from '@material-ui/icons'
 
 import 'stylesheets/components/table.scss'
 
@@ -10,13 +21,20 @@ const Table = (props) => {
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    rows
-  } = useTable(props)
+    page,
+    pageCount,
+    state: {pageIndex, pageSize},
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage
+  } = useTable(props, useSortBy, usePagination)
 
   const renderTH = (col) => {
     return (
-      <th {...col.getHeaderProps()}>
+      <th {...col.getHeaderProps(col.getSortByToggleProps())}>
         {col.render('Header')}
+        {col.isSorted ? (col.isSortedDesc ? <ArrowDownward />  : <ArrowUpward />) : ''}
       </th>
     )
   }
@@ -46,17 +64,41 @@ const Table = (props) => {
     )
   }
 
+  const renderPageControls = () => {
+    const {data} = props
+    if (pageCount === 1 || page.length === 0) {
+      return
+    }
+    const end = pageSize * (pageIndex + 1)
+    const start = end - pageSize + 1
+    const actualEnd = end > data.length ? data.length : end
+    return (
+      <div className='table--footer'>
+        <span>{start}-{actualEnd} of {data.length}</span>
+        <Button onClick={previousPage} disabled={!canPreviousPage}>
+          <ChevronLeft />
+        </Button>
+        <Button onClick={nextPage} disabled={!canNextPage}>
+          <ChevronRight />
+        </Button>
+      </div>
+    )
+  }
+
   return (
-    <div className='table-wrapper'>
-      <table
-        id={props.id}
-        className='component-table'
-        {...getTableProps()}
-      >
-        <thead>{headerGroups.map(renderHeaderRow)}</thead>
-        <tbody {...getTableBodyProps()}>{rows.map(renderRow)}</tbody>
-      </table>
-    </div>
+    <>
+      <div className='table-wrapper'>
+        <table
+          id={props.id}
+          className='component-table'
+          {...getTableProps()}
+        >
+          <thead>{headerGroups.map(renderHeaderRow)}</thead>
+          <tbody {...getTableBodyProps()}>{page.map(renderRow)}</tbody>
+        </table>
+      </div>
+      {renderPageControls()}
+    </>
   )
 }
 
