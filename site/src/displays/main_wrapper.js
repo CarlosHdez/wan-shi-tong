@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 
 import BooksWrapper from 'displays/books/wrapper'
+import VideogamesWrapper from 'displays/videogames/wrapper'
 import {listBooks} from 'api/books'
 import {useCollection} from 'hooks/collection_hook'
 
@@ -20,7 +21,7 @@ const MainWrapper = () => {
           <BooksWrapper collection={books} />
         </Route>
         <Route path='/videogames'>
-          <div>Video games</div>
+          <VideogamesWrapper collection={[]} />
         </Route>
         <Route path='/boardgames'>
           <div>board games</div>

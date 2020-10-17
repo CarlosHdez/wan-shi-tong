@@ -83,7 +83,7 @@ const BooksShelf = ({collection}) => {
       </Button>
       {/* TODO: Find a better way to render when loadind data or empty */}
       <Table
-        id='board-games-table'
+        id='books-table'
         columns={columns}
         data={collection.data}
         initialState={initialState}

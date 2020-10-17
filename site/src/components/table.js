@@ -32,7 +32,10 @@ const Table = (props) => {
 
   const renderTH = (col) => {
     return (
-      <th {...col.getHeaderProps(col.getSortByToggleProps())}>
+      <th
+        className={col.className ? col.className : ''}
+        {...col.getHeaderProps(col.getSortByToggleProps())}
+      >
         {col.render('Header')}
         {col.isSorted ? (col.isSortedDesc ? <ArrowDownward />  : <ArrowUpward />) : ''}
       </th>
