@@ -31,7 +31,6 @@ const videogamesController = {
     try {
       const videogameRef = collection.doc(id)
       const {body} = req
-      const authorRef = db.collection('authors').doc(author)
       await videogameRef.set(body)
       console.log('Successful Update')
       const newRef = await collection.doc(id).get()

@@ -18,6 +18,9 @@ const VideogamesWrapper = ({collection}) => {
         <Route path={`${path}/new`}>
           <VideogameEditor games={collection} />
         </Route>
+        <Route path={`${path}/:videogameId`}>
+          <VideogameEditor games={collection} />
+        </Route>
         <Route path='*'>
           <VideogamesShelf collection={collection} />
         </Route>
