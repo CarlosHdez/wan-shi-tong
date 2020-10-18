@@ -1,0 +1,32 @@
+.videogames__editor {
+  .editor__grid {
+    display: grid;
+    margin-bottom: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    grid-template-areas: 'name platform'
+      'genre company'
+      'notes notes'
+      'tags tags'
+      'completion rating'
+      'format .';
+
+    &__name {font-size: 20px; grid-area: name;}
+    &__platform {grid-area: platform;}
+    &__genre {grid-area: genre;}
+    &__notes {grid-area: notes;}
+    &__company {grid-area: company;}
+    &__rating {grid-area: rating;}
+    &__completion {grid-area: completion;}
+    &__tags {grid-area: tags;}
+    &__format {grid-area: format;}
+  }
+
+  &__controls {
+    display: flex;
+    align-self: flex-end;
+    flex-direction: row-reverse;
+
+    button {margin-left: 1rem;}
+  }
+}
