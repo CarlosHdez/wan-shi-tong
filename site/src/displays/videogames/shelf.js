@@ -1,31 +1,28 @@
 import React, {useMemo} from 'react'
+import PropTypes from 'prop-types'
+import {Button} from '@material-ui/core'
+import {Link, useHistory} from 'react-router-dom'
 
 import Table from 'components/table'
 import StarRating from 'components/star_rating'
+import {PLATFORMS} from 'lib/constants'
 
-const data = [{
-  name: 'Zelda',
-  company: 'Nintendo',
-  genre: 'Action/Adventure',
-  platform: 'Wii',
-  completion: 1,
-  rating: 5,
-  tags: ['dark', 'midna'],
-  notes: 'Completed the story at least 5 times'
-}]
-
-const VideogamesShelf = () => {
+const VideogamesShelf = ({collection}) => {
+  const {push} = useHistory()
   const columns = useMemo(() => [
     {
       Header: 'Name',
       accessor: 'name',
       Cell: ({value, row}) => {
-        return value
-        // return <Link to={`/books/${row.original.id}`}>{value}</Link>
+        return <Link to={`/videogames/${row.original.id}`}>{value}</Link>
       }
     },
     {Header: 'Company', accessor: 'company'},
-    {Header: 'Platform', accessor: 'platform'},
+    {
+      Header: 'Platform',
+      accessor: 'platform',
+      Cell: ({value}) => PLATFORMS.find(({id}) => id === value).name
+    },
     {Header: 'Genre', accessor: 'genre'},
     {
       Header: 'Rating',
@@ -62,13 +59,30 @@ const VideogamesShelf = () => {
   }
 
   return (
-    <Table
-      id='video-games-table'
-      initialState={initialState}
-      columns={columns}
-      data={data}
-    />
+    <>
+      <Button
+        className='new-button'
+        color='primary'
+        size='medium'
+        variant='contained'
+        onClick={() => push('/videogames/new')}
+      >
+        New
+      </Button>
+      <Table
+        id='video-games-table'
+        initialState={initialState}
+        columns={columns}
+        data={collection.data}
+      />
+    </>
   )
+}
+
+VideogamesShelf.propTypes = {
+  collection: PropTypes.shape({
+    data: PropTypes.array
+  }).isRequired
 }
 
 export default VideogamesShelf

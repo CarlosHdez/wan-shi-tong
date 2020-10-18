@@ -30,6 +30,11 @@
       white-space: nowrap;
     }
 
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     tbody td {
       background-color: white;
       border-bottom: 1px solid $borders;

@@ -6,14 +6,17 @@ import {
 } from 'react-router-dom'
 
 import VideogamesShelf from 'displays/videogames/shelf'
+import VideogameEditor from 'displays/videogames/editor'
+import 'stylesheets/videogames/wrapper.scss'
 
-const VideogamesWrapper = () => {
+const VideogamesWrapper = ({collection}) => {
+  const {path} = useRouteMatch()
   return (
     <div className='videogames--wrapper'>
       <h2>Videogames</h2>
       <Switch>
         <Route path='*'>
-          <VideogamesShelf />
+          <VideogamesShelf collection={collection} />
         </Route>
       </Switch>
     </div>

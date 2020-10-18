@@ -1,0 +1,13 @@
+.videogames--wrapper {
+  position: relative;
+
+  & button.new-button {
+    position: absolute;
+    top: -0.4rem;
+    right: 0;
+  }
+
+  .table-wrapper {
+    td {max-width: 250px;}
+  }
+}

@@ -15,3 +15,12 @@ export const SECTIONS = {
     icon: 'casino'
   }
 }
+
+export const PLATFORMS = [
+  {id: 'nin-1', name: 'Switch'},
+  {id: 'nin-2', name: 'Wii'},
+  {id: 'nin-3', name: 'GameCube'},
+  {id: 'nin-4', name: 'Nintendo DS'},
+  {id: 'nin-5', name: '3DS'},
+  {id: 'pc-1', name: 'Steam'}
+]
