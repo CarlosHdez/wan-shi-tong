@@ -1,46 +1,15 @@
-// TODO: Move to generic file
-const requestCollection = async (collection) => {
-  const endpoint = `${process.env.REACT_APP_API_HOST}/v1/${collection}`
-  const request = await fetch(endpoint)
-  const {data} = await request.json()
-  return data
-}
-
-// TODO: Move to generic file
-const getAPIValues = (id) => {
-  const baseEndpoint = `${process.env.REACT_APP_API_HOST}/v1/videogames`
-  if (id) {
-    return {
-      method: 'PUT',
-      endpoint: `${baseEndpoint}/${id}`
-    }
-  }
-  return {
-    method: 'POST',
-    endpoint: baseEndpoint
-  }
-}
-
-// TODO: Move to generic file
-const formatTags = (tags) => {
-  if (typeof tags === 'string') {
-    return tags.split(',').map((tag) => tag.trim())
-  }
-  if (Array.isArray(tags)) {
-    return tags
-  }
-  return []
-}
+import {formatTags} from 'lib/utils'
+import {requestCollection, getAPIValues} from 'api/utils'
 
 export const listVideogames = async () => await requestCollection('videogames')
 
-export const saveVideogame = async (book) => {
-  const {tags, ...rest} = book
+export const saveVideogame = async (game) => {
+  const {tags, ...rest} = game
   const gameToSave = {
     ...rest,
     tags: formatTags(tags)
   }
-  const {method, endpoint} = getAPIValues(book.id)
+  const {method, endpoint} = getAPIValues('videogames', game.id)
   const options = {
     method,
     mode: 'cors',

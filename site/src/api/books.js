@@ -1,9 +1,5 @@
-const requestCollection = async (collection) => {
-  const endpoint = `${process.env.REACT_APP_API_HOST}/v1/${collection}`
-  const request = await fetch(endpoint)
-  const {data} = await request.json()
-  return data
-}
+import {formatTags} from 'lib/utils'
+import {requestCollection, getAPIValues} from 'api/utils'
 
 export const listBooks = async () => await requestCollection('books')
 
@@ -29,30 +25,6 @@ export const saveAuthor = async (author) => {
   }
 }
 
-const getAPIValues = (id) => {
-  const baseEndpoint = `${process.env.REACT_APP_API_HOST}/v1/books`
-  if (id) {
-    return {
-      method: 'PUT',
-      endpoint: `${baseEndpoint}/${id}`
-    }
-  }
-  return {
-    method: 'POST',
-    endpoint: baseEndpoint
-  }
-}
-
-const formatTags = (tags) => {
-  if (typeof tags === 'string') {
-    return tags.split(',').map((tag) => tag.trim())
-  }
-  if (Array.isArray(tags)) {
-    return tags
-  }
-  return []
-}
-
 export const saveBook = async (book) => {
   const {author, tags, ...rest} = book
   const bookToSave = {
@@ -60,7 +32,7 @@ export const saveBook = async (book) => {
     tags: formatTags(tags),
     author: author.id
   }
-  const {method, endpoint} = getAPIValues(book.id)
+  const {method, endpoint} = getAPIValues('books', book.id)
   const options = {
     method,
     mode: 'cors',
