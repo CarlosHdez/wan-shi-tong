@@ -73,18 +73,17 @@ const VideogameEditor = ({games}) => {
 
   const onSave = async () => {
     const val = await saveVideogame(videogame)
-    console.log(val)
-    // let index = games.data.length
-    // if (bookId) {
-    //   index = games.data.findIndex(({id}) => id === videogameId)
-    // }
-    // const newData = [
-    //   ...games.data.slice(0, index),
-    //   val,
-    //   ...games.data.slice(index + 1)
-    // ]
-    // games.dispatch({type: 'success', data: newData})
-    // push('/videogames')
+    let index = games.data.length
+    if (videogameId) {
+      index = games.data.findIndex(({id}) => id === videogameId)
+    }
+    const newData = [
+      ...games.data.slice(0, index),
+      val,
+      ...games.data.slice(index + 1)
+    ]
+    games.dispatch({type: 'success', data: newData})
+    push('/videogames')
   }
 
   const platforms = PLATFORMS

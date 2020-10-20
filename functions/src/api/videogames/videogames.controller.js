@@ -57,7 +57,7 @@ const videogamesController = {
       console.log(newGame)
       return res.status(200).json({
         id: result.id,
-        ...newGame
+        ...newGame.data()
       })
     } catch (err) {
       console.log('Error creating', {error: err, body: req.body})
