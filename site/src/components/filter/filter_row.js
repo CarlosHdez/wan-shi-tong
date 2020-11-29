@@ -10,7 +10,7 @@ import {FilterList} from '@material-ui/icons'
 
 import FormWrapper from 'components/form'
 
-const FilterModal = ({open, onClose, filters, applyFilter}) => {
+const FilterModal = ({open, onClose, options, applyFilter}) => {
   const [option, setOption] = useState()
   const [filter, setFilter] = useState({})
 
@@ -18,18 +18,6 @@ const FilterModal = ({open, onClose, filters, applyFilter}) => {
     onClose()
     setOption()
   }
-
-  const onChangeOption = ({target}) => {
-    setOption(target.value)
-  }
-
-  const options = filters.map((option) => {
-    return (
-      <MenuItem key={option.column} value={option}>
-        {option.label}
-      </MenuItem>
-    )
-  })
 
   const filterInput = () => {
     if (!option) {
@@ -88,7 +76,7 @@ const FilterModal = ({open, onClose, filters, applyFilter}) => {
 
   const onSave = () => {
     applyFilter({...option, ...filter})
-    onClose()
+    handleClose()
   }
 
   return (
@@ -109,7 +97,7 @@ const FilterModal = ({open, onClose, filters, applyFilter}) => {
           name='column'
           variant='filled'
           value={option || ''}
-          onChange={onChangeOption}
+          onChange={({target}) => setOption(target.value)}
           select
         >
           {options}
@@ -153,6 +141,19 @@ const FilterRow = ({filters, filterData}) => {
     )
   })
 
+  const options = filters.map((option) => {
+    const disabled = activeFilters.find(({column}) => column === option.column)
+    return (
+      <MenuItem
+        key={option.column}
+        value={option}
+        disabled={!!disabled}
+      >
+        {option.label}
+      </MenuItem>
+    )
+  })
+
   return (
     <div className='table--filters'>
       <FilterList onClick={openModal} />
@@ -160,7 +161,7 @@ const FilterRow = ({filters, filterData}) => {
       <FilterModal
         open={open}
         onClose={closeModal}
-        filters={filters}
+        options={options}
         applyFilter={applyFilter}
       />
     </div>

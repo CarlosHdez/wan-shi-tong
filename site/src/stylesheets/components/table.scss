@@ -60,6 +60,15 @@
   }
 }
 
+.table--filters {
+  height: 56px;
+  padding: 1rem;
+  background: white;
+  box-sizing: border-box;
+  border: 1px solid $borders;
+  border-bottom: 0;
+}
+
 .table--footer {
   display: flex;
   align-items: center;
