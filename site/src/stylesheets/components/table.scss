@@ -9,13 +9,21 @@
     border: 1px solid $borders;
     min-width: 100%;
 
-    thead th {
-      background-color: $darker-background;
+    tr {height: 52px;}
+    tr:last-child td {border-bottom: 0;}
 
-      svg {
-        height: 1rem;
-        transform: translateY(2px);
+    thead {
+      th {
+        background-color: white;
+        border-bottom: 1px solid $borders;
+
+        svg {
+          height: 1rem;
+          transform: translateY(2px);
+        }
       }
+
+      tr {height: 56px;}
     }
 
     th {
@@ -35,11 +43,16 @@
       text-overflow: ellipsis;
     }
 
-    tbody td {
-      background-color: white;
-      border-bottom: 1px solid $borders;
+    tbody {
+      td {
+        background-color: white;
+        border-bottom: 1px solid $borders;
+      }
+      tr:hover td {
+        background-color: $hover-background;
+      }
     }
-    tr:last-child td {border-bottom: 0;}
+
 
     .cell {
       &__number {text-align: right;}

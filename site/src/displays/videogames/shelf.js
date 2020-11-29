@@ -55,7 +55,7 @@ const VideogamesShelf = ({collection}) => {
 
   const initialState = {
     pageSize: 20,
-    sortBy: [{id: 'title', desc: false}]
+    sortBy: [{id: 'name', desc: false}]
   }
 
   return (
