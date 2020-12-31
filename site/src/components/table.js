@@ -51,6 +51,17 @@ const Table = (props) => {
     let newData = props.data
     filters.forEach(({column, value, type, ...rest}) => {
       newData = newData.filter((item) => {
+        if (type === 'number') {
+          switch(rest.constraint) {
+            case 'gt':
+              return item[column] >= value
+            case 'lt':
+              return item[column] <= value
+            case 'eq':
+            default:
+              return item[column] === Number(value)
+          }
+        }
         const reg = new RegExp(value, 'i')
         return reg.test(item[column])
       })
