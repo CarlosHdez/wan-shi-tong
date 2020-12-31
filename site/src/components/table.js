@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {
   useTable,
@@ -10,12 +10,17 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowUpward,
-  ArrowDownward,
+  ArrowDownward
 } from '@material-ui/icons'
 
+import FilterRow from 'components/filter/filter_row'
 import 'stylesheets/components/table.scss'
 
 const Table = (props) => {
+  const [data, setData] = useState(props.data)
+  useEffect(() => {
+    setData(props.data)
+  }, [props.data])
   const {
     getTableProps,
     getTableBodyProps,
@@ -28,7 +33,7 @@ const Table = (props) => {
     nextPage,
     canPreviousPage,
     canNextPage
-  } = useTable(props, useSortBy, usePagination)
+  } = useTable({...props, data}, useSortBy, usePagination)
 
   const renderTH = (col) => {
     return (
@@ -39,6 +44,26 @@ const Table = (props) => {
         {col.render('Header')}
         {col.isSorted ? (col.isSortedDesc ? <ArrowDownward />  : <ArrowUpward />) : ''}
       </th>
+    )
+  }
+
+  const filterData = (filters) => {
+    let newData = props.data
+    filters.forEach(({column, value, type, ...rest}) => {
+      newData = newData.filter((item) => {
+        const reg = new RegExp(value, 'i')
+        return reg.test(item[column])
+      })
+    })
+    setData(newData)
+  }
+
+  const renderFilterRow = () => {
+    return (
+      <FilterRow
+        tableFilters={props.columnFilters}
+        applyFilters={filterData}
+      />
     )
   }
 
@@ -90,6 +115,7 @@ const Table = (props) => {
 
   return (
     <>
+      {props.filterable && renderFilterRow()}
       <div className='table-wrapper'>
         <table
           id={props.id}
@@ -111,7 +137,9 @@ Table.propTypes = {
     Header: PropTypes.string,
     accessor: PropTypes.string
   })).isRequired,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  columnFilters: PropTypes.array,
+  filterable: PropTypes.bool
 }
 
 export default Table
