@@ -19,9 +19,9 @@ const BooksShelf = ({collection}) => {
     {
       Header: 'Author',
       accessor: 'author',
-      Cell: ({value}) => <div>{value.name} {value.surname}</div>,
+      Cell: ({value}) => <div>{value.surname}, {value.name}</div>,
       sortType: (rowA, rowB) => {
-        return rowA.original.author.name > rowB.original.author.name ? -1 : 1
+        return rowA.original.author.surname > rowB.original.author.surname ? -1 : 1
       }
     },
     {Header: 'Description', accessor: 'description', disableSortBy: true},
