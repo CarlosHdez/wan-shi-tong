@@ -46,6 +46,13 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
     setFilter({...filter, value: target.value})
   }
 
+  const setFilterNumberValue = ({target}) => {
+    const value = filter.type === 'percentage' ?
+      target.value / 100 :
+      Number(target.value)
+    setFilter({...filter, value})
+  }
+
   const setFilterConstraint = ({target}) => {
     setFilter({...filter, constraint: target.value})
   }
@@ -62,6 +69,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
           />
         )
       case 'number':
+      case 'percentage':
         return (
           <>
             <TextField
@@ -80,7 +88,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
               label='Value'
               type='number'
               name='numberFilter'
-              onChange={setFilterValue}
+              onChange={setFilterNumberValue}
               variant='filled'
             />
           </>
@@ -162,6 +170,10 @@ const FilterRow = ({tableFilters, applyFilters}) => {
     }
     if (rest.type === 'number') {
       label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${value}`
+    }
+    if (rest.type === 'percentage') {
+      const val = value.toLocaleString(undefined, {style: 'percent'})
+      label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${val}`
     }
     return (
       <Chip
