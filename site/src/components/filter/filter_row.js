@@ -60,6 +60,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
   const filterInput = () => {
     switch (filter.type) {
       case 'string':
+      case 'object':
         return (
           <TextField
             label='Contains'

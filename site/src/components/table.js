@@ -62,8 +62,12 @@ const Table = (props) => {
               return item[column] === value
           }
         }
+        let test = item[column]
+        if (type === 'object') {
+          test = Object.values(item[column]).join(' ')
+        }
         const reg = new RegExp(value, 'i')
-        return reg.test(item[column])
+        return reg.test(test)
       })
     })
     setData(newData)
