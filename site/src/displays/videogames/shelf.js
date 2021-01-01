@@ -58,6 +58,37 @@ const VideogamesShelf = ({collection}) => {
     sortBy: [{id: 'name', desc: false}]
   }
 
+  const columnFilters = [{
+    column: 'name',
+    label: 'Name',
+    type: 'string'
+  }, {
+    column: 'company',
+    label: 'Company',
+    type: 'string'
+  }, {
+    column: 'platform',
+    label: 'Platform',
+    type: 'enum',
+    options: PLATFORMS
+  }, {
+    column: 'genre',
+    label: 'Genre',
+    type: 'string'
+  }, {
+    column: 'rating',
+    label: 'Rating',
+    type: 'number'
+  }, {
+    column: 'completion',
+    label: 'Completion',
+    type: 'percentage'
+  // }, {
+  // TODO: Check how to index all tags and use them as filter opionts
+  //   column: 'tags',
+  //   type: 'string'
+  }]
+
   return (
     <>
       <Button
@@ -74,6 +105,8 @@ const VideogamesShelf = ({collection}) => {
         initialState={initialState}
         columns={columns}
         data={collection.data}
+        columnFilters={columnFilters}
+        filterable
       />
     </>
   )

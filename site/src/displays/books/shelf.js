@@ -65,6 +65,32 @@ const BooksShelf = ({collection}) => {
     {Header: 'DDC', accessor: 'code', className: 'cell__number'}
   ], [])
 
+  const columnFilters = [{
+    column: 'title',
+    label: 'Title',
+    type: 'string'
+  }, {
+    column: 'author',
+    label: 'Author',
+    type: 'object'
+  }, {
+    column: 'rating',
+    label: 'Rating',
+    type: 'number'
+  }, {
+    column: 'genre',
+    label: 'Genre',
+    type: 'string'
+  }, {
+    column: 'type',
+    label: 'Type',
+    type: 'string'
+  }, {
+    column: 'language',
+    label: 'Language',
+    type: 'string'
+  }]
+
   const initialState = {
     pageSize: 20,
     sortBy: [{id: 'title', desc: false}]
@@ -87,6 +113,8 @@ const BooksShelf = ({collection}) => {
         columns={columns}
         data={collection.data}
         initialState={initialState}
+        columnFilters={columnFilters}
+        filterable
       />
     </>
   )
