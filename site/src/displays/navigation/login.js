@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   Paper,
   Button,
@@ -8,14 +8,33 @@ import {
 import {initAuth} from 'lib/firebase'
 import styles from 'stylesheets/navigation/login.module.scss'
 
-const Login = () => {
+const Login = ({onLogin}) => {
   const [credentials, setCred] = useState({username: '', pass: ''})
+  const [auth, setAuth] = useState(null)
+
+  useEffect(() => {
+    const loadAuth = async () => {
+      const resp = await initAuth()
+      setAuth(resp)
+    }
+    loadAuth()
+  }, [])
+
+  useEffect(() => {
+    if (auth) {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          onLogin(user)
+        }
+      })
+    }
+  }, [auth, onLogin])
+
   const submit = async (ev) => {
     ev.preventDefault()
     ev.stopPropagation()
-    const auth = await initAuth()
     try {
-      const user = await auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         credentials.username,
         credentials.pass
       )

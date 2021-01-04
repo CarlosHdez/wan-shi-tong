@@ -19,5 +19,6 @@ const initFirebase = () => {
 
 export const initAuth = async () => {
   initFirebase()
+  await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   return firebase.auth()
 }
