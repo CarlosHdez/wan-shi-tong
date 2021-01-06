@@ -1,48 +1,36 @@
-import React, {useState} from 'react'
-import {BrowserRouter as Router} from 'react-router-dom'
-import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
+import React, {useState, useEffect} from 'react'
+import {
+  useHistory,
+  Switch,
+  Route
+} from 'react-router-dom'
 
 import Header from 'displays/navigation/header'
 import Sidebar from 'displays/navigation/sidebar'
+import Login from 'displays/navigation/login'
 import MainWrapper from 'displays/main_wrapper'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#698c3d',
-      light: '#99bc6a',
-      dark: '#3b5f10',
-      contrastText: '#fff'
-    },
-    secondary: {
-      main: '#e1e674',
-      light: '#ffffa5',
-      dark: '#adb444',
-      contrastText: '#0a0a0'
-    }
-  },
-  overrides: {
-    MuiTextField: {
-      root: {
-        marginBottom: '1rem'
-      }
-    },
-    MuiDialog: {
-      paper: {
-        padding: '2rem'
-      }
-    }
-  }
-})
-
 const App = () => {
+  const {push} = useHistory()
+  const [logged, setLogged] = useState(false)
   const [expanded, setExpanded] = useState(false)
 
+  useEffect(() => {
+    if (!logged) {
+      return push('/login')
+    }
+    push('/')
+  }, [logged, push])
+
   const toggleExpanded = () => setExpanded(!expanded)
+  const onLogin = () => setLogged(true)
 
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
+    <Switch>
+      <Route path='/login'>
+        <Login onLogin={onLogin} />
+      </Route>
+      <Route path='*'>
         <div className="app">
           <Header onIconClick={toggleExpanded} />
           <div className='main-container'>
@@ -50,8 +38,8 @@ const App = () => {
             <MainWrapper />
           </div>
         </div>
-      </ThemeProvider>
-    </Router>
+      </Route>
+    </Switch>
   )
 }
 
