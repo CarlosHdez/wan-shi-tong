@@ -1,14 +1,15 @@
 import React from 'react'
 import {Button} from '@material-ui/core'
 
-const FormFooter = ({onSave, onCancel, className}) => {
+const FormFooter = ({onCancel, valid, className}) => {
   return (
     <footer className={className}>
       <Button
+        type='submit'
         color='primary'
         size='medium'
         variant='contained'
-        onClick={onSave}
+        disabled={!valid}
       >
         Save
       </Button>
@@ -24,25 +25,25 @@ const FormFooter = ({onSave, onCancel, className}) => {
 }
 
 const FormWrapper = (props) => {
-  const {children, wrapperClass, hasControls, onSave, onCancel} = props
+  const {children, wrapperClass, hasControls, onSave, onCancel, valid} = props
 
   return (
-    <>
+    <form onSubmit={onSave}>
       <div className={wrapperClass}>
         {children}
       </div>
       {hasControls &&
         <FormFooter
-          onSave={onSave}
+          valid={valid}
           onCancel={onCancel}
           className={`${wrapperClass}__controls`}
         />
       }
-    </>
+    </form>
   )
 }
 
-FormWrapper.defaultProps ={
+FormWrapper.defaultProps = {
   onSave: () => {},
   onCancel: () => {}
 }

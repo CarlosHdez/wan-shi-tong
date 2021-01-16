@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react'
+import React, {useState, useEffect, useMemo, useCallback} from 'react'
 import {
   useHistory,
   useParams
@@ -12,6 +12,7 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
+import useForm from 'hooks/useForm'
 import {saveBook} from 'api/books'
 import 'stylesheets/books/editor.scss'
 
@@ -31,6 +32,17 @@ const initialValues = {
   goodreads_link: ''
 }
 
+const bookValidator = (values) => {
+  const errors = {}
+  if (!values.title) {
+    errors.title = true
+  }
+  if (!values.author || !values.author.id) {
+    errors.author = true
+  }
+  return errors
+}
+
 const BookEditor = ({books, authors}) => {
   const [open, setOpen] = useState(false)
   const [book, setBook] = useState(initialValues)
@@ -42,35 +54,28 @@ const BookEditor = ({books, authors}) => {
     setBook(book)
   }, [bookId, books.data])
 
-  const onUpdateBook = ({target}) => {
-    setBook({
-      ...book,
-      [target.name]: target.value
-    })
-  }
-
   const onRatingChange = (value) => {
-    setBook({
-      ...book,
-      rating: value
-    })
-  }
-
-  const onUpdateAuthor = ({target}) => {
-    setBook({
-      ...book,
-      author: {
-        id: target.value
+    onChange({
+      target: {
+        name: 'rating',
+        value
       }
     })
   }
 
-  const onCancel = () => {
-    push('/books')
+  const onUpdateAuthor = ({target}) => {
+    onChange({
+      target: {
+        name: 'author',
+        value: {id: target.value}
+      }
+    })
   }
 
-  const onSave = async () => {
-    const val = await saveBook(book)
+  const onCancel = () => push('/books')
+
+  const onSave = async (values) => {
+    const val = await saveBook(values)
     let index = books.data.length
     if (bookId) {
       index = books.data.findIndex(({id}) => id === bookId)
@@ -83,6 +88,17 @@ const BookEditor = ({books, authors}) => {
     books.dispatch({type: 'success', data: newData})
     push('/books')
   }
+
+  const {
+    values,
+    onChange,
+    handleSubmit,
+    valid
+  } = useForm({
+    initialValues: book,
+    onSave,
+    validator: useCallback(bookValidator, [])
+  })
 
   const onCloseModal = () => setOpen(false)
   const onOpenModal = () => setOpen(true)
@@ -105,7 +121,8 @@ const BookEditor = ({books, authors}) => {
       <FormWrapper
         wrapperClass='books-editor'
         onCancel={onCancel}
-        onSave={onSave}
+        onSave={handleSubmit}
+        valid={valid}
         hasControls
       >
         <div className='books-editor__grid'>
@@ -115,8 +132,8 @@ const BookEditor = ({books, authors}) => {
             name='title'
             className='books-editor__input books-editor--title'
             variant='filled'
-            value={book.title}
-            onChange={onUpdateBook}
+            value={values.title}
+            onChange={onChange}
             autoFocus
             required
           />
@@ -127,7 +144,7 @@ const BookEditor = ({books, authors}) => {
               name='author'
               className='books-editor__input'
               variant='filled'
-              value={book.author.id}
+              value={values.author.id}
               onChange={onUpdateAuthor}
               select
               required
@@ -142,12 +159,12 @@ const BookEditor = ({books, authors}) => {
             variant='filled'
             name='description'
             rows={5}
-            value={book.description}
-            onChange={onUpdateBook}
+            value={values.description}
+            onChange={onChange}
             multiline
           />
           <StarRating
-            value={book.rating}
+            value={values.rating}
             onChange={onRatingChange}
             name='rating'
             className='books-editor--rating'
@@ -159,8 +176,8 @@ const BookEditor = ({books, authors}) => {
             name='type'
             className='books-editor__input books-editor--type'
             variant='filled'
-            value={book.type}
-            onChange={onUpdateBook}
+            value={values.type}
+            onChange={onChange}
           />
           <TextField
             id='book-tags'
@@ -168,8 +185,8 @@ const BookEditor = ({books, authors}) => {
             name='tags'
             className='books-editor__input books-editor--tags'
             variant='filled'
-            value={book.tags}
-            onChange={onUpdateBook}
+            value={values.tags}
+            onChange={onChange}
           />
           <TextField
             id='book-language'
@@ -177,8 +194,8 @@ const BookEditor = ({books, authors}) => {
             name='language'
             className='books-editor__input books-editor--lang'
             variant='filled'
-            value={book.language}
-            onChange={onUpdateBook}
+            value={values.language}
+            onChange={onChange}
           />
           <TextField
             id='book-country'
@@ -186,8 +203,8 @@ const BookEditor = ({books, authors}) => {
             name='country'
             className='books-editor__input books-editor--country'
             variant='filled'
-            value={book.country}
-            onChange={onUpdateBook}
+            value={values.country}
+            onChange={onChange}
           />
           <TextField
             id='book-date'
@@ -196,8 +213,8 @@ const BookEditor = ({books, authors}) => {
             className='books-editor__input books-editor--date'
             variant='filled'
             type='date'
-            value={book.date}
-            onChange={onUpdateBook}
+            value={values.date}
+            onChange={onChange}
           />
           <TextField
             id='book-isbn'
@@ -205,8 +222,8 @@ const BookEditor = ({books, authors}) => {
             name='ISBN'
             className='books-editor__input books-editor--isbn'
             variant='filled'
-            value={book.ISBN}
-            onChange={onUpdateBook}
+            value={values.ISBN}
+            onChange={onChange}
           />
           <TextField
             id='book-ddc'
@@ -214,7 +231,7 @@ const BookEditor = ({books, authors}) => {
             name='code'
             className='books-editor__input books-editor--ddc'
             variant='filled'
-            value={book.code}
+            value={values.code}
             disabled
           />
           <TextField
@@ -223,8 +240,8 @@ const BookEditor = ({books, authors}) => {
             name='genre'
             className='books-editor__input books-editor--genre'
             variant='filled'
-            value={book.genre}
-            onChange={onUpdateBook}
+            value={values.genre}
+            onChange={onChange}
           />
           <TextField
             id='book-link'
@@ -233,8 +250,8 @@ const BookEditor = ({books, authors}) => {
             className='books-editor__input books-editor--link'
             type='url'
             variant='filled'
-            value={book.goodreads_link}
-            onChange={onUpdateBook}
+            value={values.goodreads_link}
+            onChange={onChange}
           />
         </div>
       </FormWrapper>
