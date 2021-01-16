@@ -15,7 +15,6 @@ const useForm = ({
   }, [initialValues])
 
   useEffect(() => {
-    console.log('validation', values)
     setErrors(validator(values))
   }, [values])
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import {
   Dialog,
   DialogTitle,
@@ -9,6 +9,7 @@ import {
 import {FilterList} from '@material-ui/icons'
 
 import FormWrapper from 'components/form'
+import useForm from 'hooks/useForm'
 
 const defaultFilter = {
   column: '', // key in the data array
@@ -24,6 +25,17 @@ const TRANSLATIONS = {
   lt: '<'
 }
 
+const validateFilter = ({column, value}) => {
+  const errors = {}
+  if (!value) {
+    errors.value = true
+  }
+  if (!column) {
+    errors.column = true
+  }
+  return errors
+}
+
 const FilterModal = ({open, onClose, options, saveFilter}) => {
   const [filter, setFilter] = useState(defaultFilter)
 
@@ -32,8 +44,8 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
     setFilter(defaultFilter)
   }
 
-  const onSave = () => {
-    saveFilter(filter)
+  const onSave = (values) => {
+    saveFilter(values)
     handleClose()
   }
 
@@ -42,20 +54,40 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
     setFilter({...filter, ...values, value: ''})
   }
 
+  const editValue = (value) => {
+    onChange({
+      target: {
+        name: 'value',
+        value
+      }
+    })
+  }
+
   const setFilterValue = ({target}) => {
-    setFilter({...filter, value: target.value})
+    editValue(target.value)
   }
 
   const setFilterNumberValue = ({target}) => {
     const value = filter.type === 'percentage' ?
       target.value / 100 :
       Number(target.value)
-    setFilter({...filter, value})
+    editValue(value)
   }
 
   const setFilterConstraint = ({target}) => {
-    setFilter({...filter, constraint: target.value})
+    onChange({
+      target: {
+        name: 'constraint',
+        value: target.value
+      }
+    })
   }
+
+  const {values: formValues, onChange, handleSubmit, valid} = useForm({
+    onSave,
+    initialValues: filter,
+    validator: useCallback(validateFilter, [])
+  })
 
   const filterInput = () => {
     switch (filter.type) {
@@ -66,6 +98,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
             label='Contains'
             name='stringFilter'
             variant='filled'
+            value={formValues.value}
             onChange={setFilterValue}
           />
         )
@@ -77,7 +110,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
               label='Type'
               name='numberType'
               variant='filled'
-              value={filter.constraint}
+              value={formValues.constraint}
               onChange={setFilterConstraint}
               select
             >
@@ -89,6 +122,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
               label='Value'
               type='number'
               name='numberFilter'
+              value={formValues.value}
               onChange={setFilterNumberValue}
               variant='filled'
             />
@@ -102,7 +136,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
             label='Option'
             name='numberType'
             variant='filled'
-            value={filter.value}
+            value={formValues.value}
             onChange={setFilterValue}
             select
           >
@@ -123,15 +157,16 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
       <DialogTitle id='filter-modal'>Filter by</DialogTitle>
       <FormWrapper
         wrapperClass='author-editor'
-        onSave={onSave}
+        onSave={handleSubmit}
         onCancel={handleClose}
+        valid={valid}
         hasControls
       >
         <TextField
           label='Column'
           name='column'
           variant='filled'
-          value={filter.column}
+          value={formValues.column}
           onChange={selectColumn}
           select
         >
