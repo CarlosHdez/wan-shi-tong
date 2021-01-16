@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import {
   useHistory,
   useParams
@@ -13,6 +13,7 @@ import {
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
+import useForm from 'hooks/useForm'
 import {saveVideogame} from 'api/videogames'
 import {PLATFORMS} from 'lib/constants'
 import 'stylesheets/videogames/editor.scss'
@@ -29,6 +30,17 @@ const initialValues = {
   tags: []
 }
 
+const videogameValidator = ({name, platform}) => {
+  const errors = {}
+  if (!name) {
+    errors.name = true
+  }
+  if (!platform) {
+    errors.platform = true
+  }
+  return errors
+}
+
 const VideogameEditor = ({games}) => {
   const [videogame, setVideogame] = useState(initialValues)
   const {push} = useHistory()
@@ -39,40 +51,29 @@ const VideogameEditor = ({games}) => {
     setVideogame(game)
   }, [videogameId, games.data])
 
-  const onUpdateVideogame = ({target}) => {
-    setVideogame({
-      ...videogame,
-      [target.name]: target.value
-    })
-  }
-
   const onRatingChange = (value) => {
-    setVideogame({
-      ...videogame,
-      rating: value
-    })
+    onChange({target: {name: 'rating', value}})
   }
 
   const onCompletionChange = ({target}) => {
-    setVideogame({
-      ...videogame,
-      completion: Number(target.value) / 100
+    onChange({
+      target: {
+        name: 'completion',
+        value: Number(target.value) / 100
+      }
     })
   }
 
   const onFormatChange = ({target}) => {
-    setVideogame({
-      ...videogame,
-      isPhysical: target.checked
-    })
+    onChange({target: {name: 'isPhysical', value: target.checked}})
   }
 
   const onCancel = () => {
     push('/videogames')
   }
 
-  const onSave = async () => {
-    const val = await saveVideogame(videogame)
+  const onSave = async (values) => {
+    const val = await saveVideogame(values)
     let index = games.data.length
     if (videogameId) {
       index = games.data.findIndex(({id}) => id === videogameId)
@@ -86,6 +87,12 @@ const VideogameEditor = ({games}) => {
     push('/videogames')
   }
 
+  const {values, onChange, handleSubmit, valid} = useForm({
+    onSave,
+    initialValues: videogame,
+    validator: useCallback(videogameValidator, [])
+  })
+
   const platforms = PLATFORMS
     .map(({id, name}) => <MenuItem key={id} value={id}>{name}</MenuItem>)
 
@@ -93,7 +100,8 @@ const VideogameEditor = ({games}) => {
     <FormWrapper
       wrapperClass='videogames__editor'
       onCancel={onCancel}
-      onSave={onSave}
+      onSave={handleSubmit}
+      valid={valid}
       hasControls
     >
       <div className='editor__grid'>
@@ -103,8 +111,8 @@ const VideogameEditor = ({games}) => {
           name='name'
           className='editor__input editor__grid__name'
           variant='filled'
-          value={videogame.name}
-          onChange={onUpdateVideogame}
+          value={values.name}
+          onChange={onChange}
           autoFocus
           required
         />
@@ -114,8 +122,8 @@ const VideogameEditor = ({games}) => {
           name='platform'
           className='editor__input editor__grid__platform'
           variant='filled'
-          value={videogame.platform}
-          onChange={onUpdateVideogame}
+          value={values.platform}
+          onChange={onChange}
           select
           required
         >
@@ -127,8 +135,8 @@ const VideogameEditor = ({games}) => {
           name='genre'
           className='editor__input editor__grid__genre'
           variant='filled'
-          value={videogame.genre}
-          onChange={onUpdateVideogame}
+          value={values.genre}
+          onChange={onChange}
         />
         <TextField
           id='videogame__company'
@@ -136,8 +144,8 @@ const VideogameEditor = ({games}) => {
           name='company'
           className='editor__input editor__grid__company'
           variant='filled'
-          value={videogame.company}
-          onChange={onUpdateVideogame}
+          value={values.company}
+          onChange={onChange}
         />
         <TextField
           label='Notes'
@@ -145,8 +153,8 @@ const VideogameEditor = ({games}) => {
           variant='filled'
           name='notes'
           rows={3}
-          value={videogame.notes}
-          onChange={onUpdateVideogame}
+          value={values.notes}
+          onChange={onChange}
           multiline
         />
         <TextField
@@ -155,8 +163,8 @@ const VideogameEditor = ({games}) => {
           name='tags'
           className='editor__input editor__grid__tags'
           variant='filled'
-          value={videogame.tags}
-          onChange={onUpdateVideogame}
+          value={values.tags}
+          onChange={onChange}
         />
         <TextField
           id='videogame__completion'
@@ -166,14 +174,14 @@ const VideogameEditor = ({games}) => {
           variant='filled'
           type='number'
           inputProps={{min: 0}}
-          value={Math.round(videogame.completion * 100)}
+          value={Math.round(values.completion * 100)}
           onChange={onCompletionChange}
           InputProps={{
             endAdornment: <InputAdornment position='end'>%</InputAdornment>
           }}
         />
         <StarRating
-          value={videogame.rating}
+          value={values.rating}
           onChange={onRatingChange}
           name='rating'
           className='editor__grid__rating'
@@ -187,7 +195,7 @@ const VideogameEditor = ({games}) => {
               id='videogame__format'
               name='isPhysical'
               color='primary'
-              checked={videogame.isPhysical}
+              checked={values.isPhysical}
               onChange={onFormatChange}
             />
           }
