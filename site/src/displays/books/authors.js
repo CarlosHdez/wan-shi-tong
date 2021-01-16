@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import {
   TextField,
   Dialog,
@@ -6,24 +6,31 @@ import {
 } from '@material-ui/core'
 
 import FormWrapper from 'components/form'
+import useForm from 'hooks/useForm'
 import {saveAuthor} from 'api/books'
 import 'stylesheets/books/author.scss'
 
-const AuthorEditor = ({open, onSave, onClose}) => {
-  const [author, setAuthor] = useState({})
-
-  const onUpdatedField = ({target}) => {
-    setAuthor({
-      ...author,
-      [target.name]: target.value
-    })
+const validateAuthor = (values) => {
+  if (!values.name) {
+    return {name: true}
   }
+  return {}
+}
 
-  const onSaveClick = async () => {
-    const newAuthor = await saveAuthor(author)
+const AuthorEditor = ({open, onSave, onClose}) => {
+  const [author, setAuthor] = useState({name: '', surname: ''})
+
+  const onSaveClick = async (values) => {
+    const newAuthor = await saveAuthor()
     onSave(newAuthor)
     setAuthor({})
   }
+
+  const {values, onChange, handleSubmit, valid} = useForm({
+    initialValues: author,
+    onSave: onSaveClick,
+    validator: useCallback(validateAuthor, [])
+  })
 
   return (
     <Dialog
@@ -34,8 +41,9 @@ const AuthorEditor = ({open, onSave, onClose}) => {
       <DialogTitle id='new-author-dialog-title'>New Author</DialogTitle>
       <FormWrapper
         wrapperClass='author-editor'
-        onSave={onSaveClick}
+        onSave={handleSubmit}
         onCancel={onClose}
+        valid={valid}
         hasControls
       >
         <TextField
@@ -44,8 +52,8 @@ const AuthorEditor = ({open, onSave, onClose}) => {
           className='author-editor__input'
           variant='filled'
           name='name'
-          value={author.name}
-          onChange={onUpdatedField}
+          value={values.name}
+          onChange={onChange}
           autoFocus
         />
         <TextField
@@ -54,8 +62,8 @@ const AuthorEditor = ({open, onSave, onClose}) => {
           className='author-editor__input'
           name='surname'
           variant='filled'
-          value={author.surname}
-          onChange={onUpdatedField}
+          value={values.surname}
+          onChange={onChange}
         />
       </FormWrapper>
     </Dialog>

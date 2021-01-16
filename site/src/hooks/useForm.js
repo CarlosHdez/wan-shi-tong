@@ -11,7 +11,6 @@ const useForm = ({
   const [values, setValues] = useState(initialValues)
 
   useEffect(() => {
-    console.log('hook iv', initialValues)
     setValues(initialValues)
   }, [initialValues])
 
@@ -21,7 +20,6 @@ const useForm = ({
   }, [values])
 
   const onChange = (ev) => {
-    console.log('changes', ev.target.name)
     setValues({...values, [ev.target.name]: ev.target.value})
   }
 
