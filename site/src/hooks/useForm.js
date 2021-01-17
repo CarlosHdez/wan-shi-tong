@@ -16,7 +16,7 @@ const useForm = ({
 
   useEffect(() => {
     setErrors(validator(values))
-  }, [values])
+  }, [values, validator])
 
   const onChange = (ev) => {
     setValues({...values, [ev.target.name]: ev.target.value})

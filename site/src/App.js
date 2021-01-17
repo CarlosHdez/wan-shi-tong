@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import {
   useHistory,
+  useLocation,
   Switch,
   Route
 } from 'react-router-dom'
@@ -9,35 +10,62 @@ import Header from 'displays/navigation/header'
 import Sidebar from 'displays/navigation/sidebar'
 import Login from 'displays/navigation/login'
 import MainWrapper from 'displays/main_wrapper'
+import {initAuth} from 'lib/firebase'
 
 const App = () => {
   const {push} = useHistory()
+  const {pathname} = useLocation()
+  const [auth, setAuth] = useState(null)
   const [logged, setLogged] = useState(false)
   const [expanded, setExpanded] = useState(false)
-
-  useEffect(() => {
-    if (!logged) {
-      return push('/login')
-    }
-    push('/')
-  }, [logged, push])
+  const [prevLoc, setPrevLoc] = useState(pathname)
 
   const toggleExpanded = () => setExpanded(!expanded)
-  const onLogin = () => setLogged(true)
+  const onLogin = useCallback(() => {
+    setLogged(true)
+    if (prevLoc !== '/login') {
+      push(prevLoc)
+    } else {
+      push('/')
+    }
+  }, [prevLoc, push])
+
+  useEffect(() => {
+    const loadAuth = async () => {
+      const resp = await initAuth()
+      resp.onAuthStateChanged((user) => {
+        if (user) {
+          onLogin(user)
+        }
+      })
+      setAuth(resp)
+    }
+    loadAuth()
+  }, [onLogin])
+
+  useEffect(() => {
+    if (auth && !logged) {
+      // TODO: Only do this if auth has loaded and confirmed the user is not there
+      setPrevLoc(pathname)
+      return push('/login')
+    }
+  }, [logged, auth, pathname, push])
 
   return (
     <Switch>
       <Route path='/login'>
-        <Login onLogin={onLogin} />
+        <Login onLogin={onLogin} auth={auth}/>
       </Route>
       <Route path='*'>
-        <div className="app">
-          <Header onIconClick={toggleExpanded} />
-          <div className='main-container'>
-            <Sidebar expanded={expanded} />
-            <MainWrapper />
+        {logged &&
+          <div className="app">
+            <Header onIconClick={toggleExpanded} />
+            <div className='main-container'>
+              <Sidebar expanded={expanded} />
+              <MainWrapper />
+            </div>
           </div>
-        </div>
+        }
       </Route>
     </Switch>
   )

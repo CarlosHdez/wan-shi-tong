@@ -5,30 +5,10 @@ import {
   TextField
 } from '@material-ui/core'
 
-import {initAuth} from 'lib/firebase'
 import styles from 'stylesheets/navigation/login.module.scss'
 
-const Login = ({onLogin}) => {
+const Login = ({onLogin, auth}) => {
   const [credentials, setCred] = useState({username: '', pass: ''})
-  const [auth, setAuth] = useState(null)
-
-  useEffect(() => {
-    const loadAuth = async () => {
-      const resp = await initAuth()
-      setAuth(resp)
-    }
-    loadAuth()
-  }, [])
-
-  useEffect(() => {
-    if (auth) {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          onLogin(user)
-        }
-      })
-    }
-  }, [auth, onLogin])
 
   const submit = async (ev) => {
     ev.preventDefault()
