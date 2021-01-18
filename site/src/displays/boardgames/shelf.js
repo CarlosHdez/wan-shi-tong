@@ -17,11 +17,11 @@ const VideogamesShelf = ({collection}) => {
       }
     },
     {
-      Header: 'Author',
-      accessor: 'author',
+      Header: 'Designer',
+      accessor: 'designer',
       Cell: ({value}) => <div>{value.name} {value.surname}</div>,
       sortType: (rowA, rowB) => {
-        return rowA.original.author.surname > rowB.original.author.surname ? -1 : 1
+        return rowA.original.designer.surname > rowB.original.designer.surname ? -1 : 1
       }
     },
     {
@@ -38,7 +38,14 @@ const VideogamesShelf = ({collection}) => {
         )
       }
     },
-    {Header: '# Players', accessor: 'players'},
+    {
+      Header: '# Players',
+      accessor: 'players',
+      Cell: ({value}) => <div>{value.min}-{value.max}</div>,
+      sortType: (rowA, rowB) => {
+        return rowA.original.players.min > rowB.original.players.min ? -1 : 1
+      }
+    },
     {Header: 'Type', accessor: 'type'},
     {
       Header: 'Mechanics',
@@ -61,28 +68,28 @@ const VideogamesShelf = ({collection}) => {
     label: 'Name',
     type: 'string'
   }, {
-    column: 'author',
-    label: 'Author',
+    column: 'designer',
+    label: 'Designer',
     type: 'object'
   }, {
     column: 'rating',
     label: 'Rating',
     type: 'number'
   }, {
-    column: 'players',
-    label: '# Players',
-    type: 'number'
-  }, {
     column: 'type',
     label: 'Type',
     type: 'string'
   }, {
-    column: 'Mechanics',
-    label: 'mechanics',
+    column: 'mechanics',
+    label: 'Mechanics',
     type: 'string'
   }, {
     column: 'language',
     label: 'Language',
+    type: 'string'
+  }, {
+    column: 'publisher',
+    label: 'Publisher',
     type: 'string'
   }]
 

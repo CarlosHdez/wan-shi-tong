@@ -6,7 +6,7 @@
   grid-template-areas: 'name author'
     'players rating'
     'type mechanics'
-    'link .';
+    'link publisher';
 
   &--name {grid-area: name;}
   &--author {
@@ -36,6 +36,7 @@
   &--type {grid-area: type;}
   &--mechanics {grid-area: mechanics;}
   &--link {grid-area: link;}
+  &--publisher {grid-area: publisher;}
 
   &__controls {
     display: flex;

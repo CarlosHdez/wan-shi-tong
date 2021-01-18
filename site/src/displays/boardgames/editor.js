@@ -24,6 +24,7 @@ const initialValues = {
   players: {min: 0, max: 0},
   mechanics: '',
   language: '',
+  publisher: '',
   link: ''
 }
 
@@ -174,7 +175,7 @@ const BoardgameEditor = ({games, designers}) => {
             name='max'
             placeholder='Max'
             onChange={onUpdatePlayers}
-            value={values.players.min}
+            value={values.players.max}
           />
         </div>
         <StarRating
@@ -209,6 +210,24 @@ const BoardgameEditor = ({games, designers}) => {
           className='game-editor--link'
           variant='filled'
           value={values.link}
+          onChange={onChange}
+        />
+        <TextField
+          id='game-language'
+          label='Language'
+          name='language'
+          className='game-editor--language'
+          variant='filled'
+          value={values.language}
+          onChange={onChange}
+        />
+        <TextField
+          id='game-publisher'
+          label='Publisher'
+          name='publisher'
+          className='game-editor--publisher'
+          variant='filled'
+          value={values.publisher}
           onChange={onChange}
         />
       </FormWrapper>
