@@ -7,7 +7,6 @@ import {
 
 import FormWrapper from 'components/form'
 import useForm from 'hooks/useForm'
-import {saveAuthor} from 'api/books'
 import 'stylesheets/books/author.scss'
 
 const validateAuthor = (values) => {
@@ -17,11 +16,11 @@ const validateAuthor = (values) => {
   return {}
 }
 
-const AuthorEditor = ({open, onSave, onClose}) => {
+const AuthorEditor = ({open, onSave, apiSave, onClose, title = 'New Author'}) => {
   const [author, setAuthor] = useState({name: '', surname: ''})
 
   const onSaveClick = async (values) => {
-    const newAuthor = await saveAuthor()
+    const newAuthor = await apiSave(values)
     onSave(newAuthor)
     setAuthor({})
   }
@@ -38,7 +37,7 @@ const AuthorEditor = ({open, onSave, onClose}) => {
       onClose={onClose}
       aria-labelledby='new-author-dialog-title'
     >
-      <DialogTitle id='new-author-dialog-title'>New Author</DialogTitle>
+      <DialogTitle id='new-author-dialog-title'>{title}</DialogTitle>
       <FormWrapper
         wrapperClass='author-editor'
         onSave={handleSubmit}

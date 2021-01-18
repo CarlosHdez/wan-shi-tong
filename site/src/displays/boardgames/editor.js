@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useMemo, useEffect, useCallback} from 'react'
 import {
   useHistory,
   useParams
@@ -11,14 +11,14 @@ import {
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
-// import AuthorEditor from 'displays/books/authors'
+import AuthorEditor from 'displays/books/authors'
 import useForm from 'hooks/useForm'
-// import {saveBook} from 'api/books'
+import {saveBoardgame, saveDesigner} from 'api/boardgames'
 import 'stylesheets/boardgames/editor.scss'
 
 const initialValues = {
   name: '',
-  author: {id: ''},
+  designer: {id: ''},
   type: '',
   rating: 0,
   players: {min: 0, max: 0},
@@ -27,37 +27,42 @@ const initialValues = {
   link: ''
 }
 
-const validator = ({name, author}) => {
+const validator = ({name, designer}) => {
   const errors = {}
   if (!name) {
     errors.name = true
   }
-  if (!author || !author.id) {
-    errors.author = true
+  if (!designer || !designer.id) {
+    errors.designer = true
   }
   return errors
 }
 
-const BoardgameEditor = ({games}) => {
+const BoardgameEditor = ({games, designers}) => {
+  const [isModalOpen, setModalOpen] = useState(false)
   const [game, setGame] = useState(initialValues)
   const {push} = useHistory()
   const {gameId} = useParams()
 
+  useEffect(() => {
+    const game = games.data.find(({id}) => id === gameId) || initialValues
+    setGame(game)
+  }, [gameId, games.data])
+
   const onCancel = () => push('/boardgames')
-  const onSave = (values) => {
-    console.log(values)
-    // const val = await saveBook(values)
-    // let index = books.data.length
-    // if (bookId) {
-    //   index = books.data.findIndex(({id}) => id === bookId)
-    // }
-    // const newData = [
-    //   ...books.data.slice(0, index),
-    //   val,
-    //   ...books.data.slice(index + 1)
-    // ]
-    // books.dispatch({type: 'success', data: newData})
-    // push('/books')
+  const onSave = async (values) => {
+    const val = await saveBoardgame(values)
+    let index = games.data.length
+    if (gameId) {
+      index = games.data.findIndex(({id}) => id === gameId)
+    }
+    const newData = [
+      ...games.data.slice(0, index),
+      val,
+      ...games.data.slice(index + 1)
+    ]
+    games.dispatch({type: 'success', data: newData})
+    push('/boardgames')
   }
 
   const {values, onChange, handleSubmit, valid} = useForm({
@@ -66,10 +71,10 @@ const BoardgameEditor = ({games}) => {
     validator: useCallback(validator, [])
   })
 
-  const onUpdateAuthor = ({target}) => {
+  const onUpdateDesigner = ({target}) => {
     onChange({
       target: {
-        name: 'author',
+        name: 'designer',
         value: {id: target.value}
       }
     })
@@ -96,7 +101,21 @@ const BoardgameEditor = ({games}) => {
     })
   }
 
-  const onOpenModal = () => {}
+  const designerOptions = useMemo(() => {
+    return designers.data.map(({id, name, surname}) => {
+      const key = `${name}-${surname}-${id}`
+      return <MenuItem value={id} key={key}>{name} {surname}</MenuItem>
+    }).sort((a, b) => a.key < b.key ? -1 : 1)
+  }, [designers.data])
+
+  const onOpenModal = () => setModalOpen(true)
+  const onCloseModal = () => setModalOpen(false)
+  const onSaveDesigner = (designer) => {
+    const data = [...designers.data, designer]
+    designers.dispatch({type: 'success', data})
+    onUpdateDesigner({target: {value: designer.id}})
+    onCloseModal()
+  }
 
   return (
     <>
@@ -120,15 +139,16 @@ const BoardgameEditor = ({games}) => {
         />
         <div className='game-editor--author'>
           <TextField
-            id='game-author'
-            label='Author'
-            name='author'
+            id='game-designer'
+            label='Designer'
+            name='designer'
             variant='filled'
-            value={values.author.id}
-            onChange={onUpdateAuthor}
+            value={values.designer.id}
+            onChange={onUpdateDesigner}
             select
             required
           >
+            {designerOptions}
           </TextField>
           <Button onClick={onOpenModal} variant='contained'>Add</Button>
         </div>
@@ -177,7 +197,7 @@ const BoardgameEditor = ({games}) => {
           id='game-mechanics'
           label='Mechanics'
           name='mechanics'
-          className='game-editor--mechancis'
+          className='game-editor--mechanics'
           variant='filled'
           value={values.mechanics}
           onChange={onChange}
@@ -192,6 +212,13 @@ const BoardgameEditor = ({games}) => {
           onChange={onChange}
         />
       </FormWrapper>
+      <AuthorEditor
+        open={isModalOpen}
+        onSave={onSaveDesigner}
+        onClose={onCloseModal}
+        apiSave={saveDesigner}
+        title='New Designer'
+      />
     </>
   )
 }
