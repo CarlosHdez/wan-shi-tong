@@ -101,7 +101,7 @@ const VideogamesShelf = ({collection}) => {
   return (
     <>
       <Button
-        className='books-new-button'
+        className='new-button'
         color='primary'
         size='medium'
         variant='contained'
