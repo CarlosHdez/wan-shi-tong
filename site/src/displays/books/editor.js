@@ -13,7 +13,7 @@ import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
 import useForm from 'hooks/useForm'
-import {saveBook} from 'api/books'
+import {saveBook, saveAuthor} from 'api/books'
 import 'stylesheets/books/editor.scss'
 
 const initialValues = {
@@ -257,6 +257,7 @@ const BookEditor = ({books, authors}) => {
       </FormWrapper>
       <AuthorEditor
         open={open}
+        apiSave={saveAuthor}
         onSave={onSaveAuthor}
         onClose={onCloseModal}
       />

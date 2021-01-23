@@ -19,10 +19,7 @@ const BookWrapper = ({collection}) => {
     <div className='books-wrapper'>
       <h2>Books</h2>
       <Switch>
-        <Route path={`${path}/new`}>
-          <BookEditor books={collection} authors={authors} />
-        </Route>
-        <Route path={`${path}/:bookId`}>
+        <Route path={[`${path}/new`, `${path}/:bookId`]}>
           <BookEditor books={collection} authors={authors} />
         </Route>
         <Route path='*'>

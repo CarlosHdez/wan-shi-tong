@@ -3,5 +3,8 @@
 
   &:hover {cursor: pointer;}
 
-  label {display: block;}
+  label {
+    display: block;
+    margin-bottom: 1rem;
+  }
 }

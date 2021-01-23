@@ -1,10 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react'
-import {
-  useHistory,
-  useLocation,
-  Switch,
-  Route
-} from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import {Switch, Route} from 'react-router-dom'
 
 import Header from 'displays/navigation/header'
 import Sidebar from 'displays/navigation/sidebar'
@@ -13,59 +8,48 @@ import MainWrapper from 'displays/main_wrapper'
 import {initAuth} from 'lib/firebase'
 
 const App = () => {
-  const {push} = useHistory()
-  const {pathname} = useLocation()
   const [auth, setAuth] = useState(null)
   const [logged, setLogged] = useState(false)
   const [expanded, setExpanded] = useState(false)
-  const [prevLoc, setPrevLoc] = useState(pathname)
 
   const toggleExpanded = () => setExpanded(!expanded)
-  const onLogin = useCallback(() => {
-    setLogged(true)
-    if (prevLoc !== '/login') {
-      push(prevLoc)
-    } else {
-      push('/')
-    }
-  }, [prevLoc, push])
+  const onLogin = () => {setLogged(true)}
 
   useEffect(() => {
+    if (auth) {
+      return
+    }
     const loadAuth = async () => {
       const resp = await initAuth()
       resp.onAuthStateChanged((user) => {
         if (user) {
-          onLogin(user)
+          setLogged(true)
         }
       })
       setAuth(resp)
     }
     loadAuth()
-  }, [onLogin])
+  }, [auth])
 
-  useEffect(() => {
-    if (auth && !logged) {
-      // TODO: Only do this if auth has loaded and confirmed the user is not there
-      setPrevLoc(pathname)
-      return push('/login')
+  const renderContent = () => {
+    if (!logged) {
+      return <Login onLogin={onLogin} auth={auth}/>
     }
-  }, [logged, auth, pathname, push])
+    return (
+      <div className="app">
+        <Header onIconClick={toggleExpanded} />
+        <div className='main-container'>
+          <Sidebar expanded={expanded} />
+          <MainWrapper />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Switch>
-      <Route path='/login'>
-        <Login onLogin={onLogin} auth={auth}/>
-      </Route>
       <Route path='*'>
-        {logged &&
-          <div className="app">
-            <Header onIconClick={toggleExpanded} />
-            <div className='main-container'>
-              <Sidebar expanded={expanded} />
-              <MainWrapper />
-            </div>
-          </div>
-        }
+        {renderContent()}
       </Route>
     </Switch>
   )

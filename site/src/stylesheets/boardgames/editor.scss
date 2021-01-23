@@ -1,0 +1,48 @@
+.game-editor {
+  display: grid;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+  grid-template-areas: 'name author'
+    'players rating'
+    'type mechanics'
+    'link publisher';
+
+  &--name {grid-area: name;}
+  &--author {
+    display: grid;
+    grid-area: author;
+    grid-template-columns: 1fr 67px;
+    grid-gap: 1rem;
+
+    button {
+      align-self: center;
+      margin-bottom: 1rem;
+    }
+  }
+  &--players {
+    display: grid;
+    grid-area: players;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    grid-template-areas: 'label label'
+      'min max';
+
+    label {grid-area: label;}
+    players-min {grid-area: min;}
+    players-max {grid-area: max;}
+  }
+  &--rating {grid-area: rating;}
+  &--type {grid-area: type;}
+  &--mechanics {grid-area: mechanics;}
+  &--link {grid-area: link;}
+  &--publisher {grid-area: publisher;}
+
+  &__controls {
+    display: flex;
+    align-self: flex-end;
+    flex-direction: row-reverse;
+
+    button {margin-left: 1rem;}
+  }
+}
