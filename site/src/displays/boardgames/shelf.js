@@ -76,6 +76,10 @@ const VideogamesShelf = ({collection}) => {
     label: 'Rating',
     type: 'number'
   }, {
+    column: 'players',
+    label: 'Players',
+    type: 'range'
+  }, {
     column: 'type',
     label: 'Type',
     type: 'string'

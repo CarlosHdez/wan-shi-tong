@@ -128,6 +128,17 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
             />
           </>
         )
+      case 'range':
+        return (
+          <TextField
+            label='Value'
+            type='number'
+            name='rangeFilter'
+            value={formValues.value}
+            onChange={setFilterNumberValue}
+            variant='filled'
+          />
+        )
       case 'enum':
         const values = filter.options
           .map(({id, name}) => <MenuItem key={id} value={id}>{name}</MenuItem>)

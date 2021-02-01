@@ -62,6 +62,10 @@ const Table = (props) => {
               return item[column] === value
           }
         }
+        if (type === 'range') {
+          const {min, max} = item[column]
+          return min <= value &&  max >= value
+        }
         let test = item[column]
         if (type === 'object') {
           test = Object.values(item[column]).join(' ')

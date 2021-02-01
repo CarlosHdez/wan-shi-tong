@@ -71,7 +71,7 @@ const boardgamesController = {
       console.log(`Successful creation with id ${result.id}`)
       const newGame = await result.get()
       const translatedGame = await translateGame(newGame)
-      console.log(transltedGame)
+      console.log(translateGame)
       return res.status(200).json({
         id: result.id,
         ...translatedGame
