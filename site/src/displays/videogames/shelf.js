@@ -42,7 +42,7 @@ const VideogamesShelf = ({collection}) => {
       Header: 'Completion',
       accessor: 'completion',
       className: 'cell__number',
-      Cell: ({value}) => `${value * 100}%` // TODO: Add a better formatting
+      Cell: ({value}) => value.toLocaleString(undefined, {style: 'percent'})
     },
     {
       Header: 'Tags',

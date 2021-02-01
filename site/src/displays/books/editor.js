@@ -208,12 +208,13 @@ const BookEditor = ({books, authors}) => {
           />
           <TextField
             id='book-date'
-            label='date'
+            label='Date'
             name='date'
             className='books-editor__input books-editor--date'
             variant='filled'
             type='date'
             value={values.date}
+            InputLabelProps={{shrink: true}}
             onChange={onChange}
           />
           <TextField

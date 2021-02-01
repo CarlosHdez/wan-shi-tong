@@ -55,7 +55,7 @@ const VideogamesShelf = ({collection}) => {
     {Header: 'Language', accessor: 'language'},
     {
       Header: 'Link',
-      accessor: 'bgg_link',
+      accessor: 'link',
       disableSortBy: true,
       Cell: ({value}) => (
         <a href={value} rel='noopener noreferrer' target='_blank'>BGG</a>
