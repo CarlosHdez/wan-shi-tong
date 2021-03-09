@@ -35,14 +35,14 @@ const Table = (props) => {
     canNextPage
   } = useTable({...props, data}, useSortBy, usePagination)
 
-  const renderTH = (col) => {
+  const renderTH = ({className, render, isSorted, isSortedDesc, ...col}) => {
     return (
       <th
-        className={col.className ? col.className : ''}
+        className={className ? className : ''}
         {...col.getHeaderProps(col.getSortByToggleProps())}
       >
-        {col.render('Header')}
-        {col.isSorted ? (col.isSortedDesc ? <ArrowDownward />  : <ArrowUpward />) : ''}
+        {render('Header')}
+        {isSorted ? (isSortedDesc ? <ArrowDownward />  : <ArrowUpward />) : ''}
       </th>
     )
   }
