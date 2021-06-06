@@ -24,6 +24,7 @@ const booksController = {
       const books = await Promise.all(bookList)
       return res.status(200).json({data: books})
     } catch (err) {
+      console.log(err)
       return res.status(500).json({message: err})
     }
   },
@@ -77,6 +78,26 @@ const booksController = {
       })
     } catch (err) {
       console.log(err)
+      return res.status(500).json({message: err})
+    }
+  },
+
+  deleteBook: async (req, res) => {
+    const {id} = req.params
+    const collection = db.collection('books')
+    console.log(`Deleteing book with id ${id}`)
+    try {
+      const bookRef = collection.doc(id)
+      await bookRef.delete()
+      console.log('Successful delete')
+
+      // Reload the list of books and return the new one
+      const snapshot = await collection.get()
+      const bookList = snapshot.docs.map(translateBook)
+      const books = await Promise.all(bookList)
+      return res.status(200).json({data: books})
+    } catch (err) {
+      console.log(`Error while deleting: ${err}`)
       return res.status(500).json({message: err})
     }
   }

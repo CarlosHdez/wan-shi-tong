@@ -63,6 +63,32 @@ const videogamesController = {
       console.log('Error creating', {error: err, body: req.body})
       return res.status(500).json({message: err})
     }
+  },
+
+  deleteGame: async (req, res) => {
+    const {id} = req.params
+    const collection = db.collection('videogames')
+    console.log(`Deleteing videogame with id ${id}`)
+    try {
+      const gameRef = collection.doc(id)
+      await gameRef.delete()
+      console.log('Successful delete')
+
+      // Reload the list of books and return the new one
+      const snapshot = await collection.get()
+      const videogameList = snapshot.docs.map((game) => {
+        const data = game.data()
+        return {
+          id: game.id,
+          ...data
+        }
+      })
+      const videogames = await Promise.all(videogameList)
+      return res.status(200).json({data: videogames})
+    } catch (err) {
+      console.log(`Error while deleting: ${err}`)
+      return res.status(500).json({message: err})
+    }
   }
 }
 
