@@ -56,6 +56,19 @@
 
     .cell {
       &__number {text-align: right;}
+      &__action {
+        text-align: center;
+        span {
+          pointer-events: none;
+          cursor: pointer;
+        }
+
+        &--delete {
+          &:hover,
+          &:active,
+          &:focus {color: $error;}
+        }
+      }
     }
   }
 }
