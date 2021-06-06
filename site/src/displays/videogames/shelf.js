@@ -1,57 +1,84 @@
 import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
-import {Button} from '@material-ui/core'
+import {Button, IconButton
+} from '@material-ui/core'
 import {Link, useHistory} from 'react-router-dom'
 
 import Table from 'components/table'
 import StarRating from 'components/star_rating'
+import {deleteVideogame} from 'api/videogames'
 import {PLATFORMS} from 'lib/constants'
 
 const VideogamesShelf = ({collection}) => {
   const {push} = useHistory()
-  const columns = useMemo(() => [
-    {
-      Header: 'Name',
-      accessor: 'name',
-      Cell: ({value, row}) => {
-        return <Link to={`/videogames/${row.original.id}`}>{value}</Link>
-      }
-    },
-    {Header: 'Company', accessor: 'company'},
-    {
-      Header: 'Platform',
-      accessor: 'platform',
-      Cell: ({value}) => PLATFORMS.find(({id}) => id === value).name
-    },
-    {Header: 'Genre', accessor: 'genre'},
-    {
-      Header: 'Rating',
-      accessor: 'rating',
-      Cell: ({value}) => {
-        return (
-          <StarRating
-            value={value}
-            label=''
-            className='videogame-rating'
-            editable={false}
-          />
+  const columns = useMemo(() => {
+    const onDeleteClick = async ({target}) => {
+      // TODO: ask for comfirmation
+      const {id} = target.dataset
+      const {data} = await deleteVideogame(id)
+      collection.dispatch({type: 'success', data})
+    }
+    return [
+      {
+        Header: 'Name',
+        accessor: 'name',
+        Cell: ({value, row}) => {
+          return <Link to={`/videogames/${row.original.id}`}>{value}</Link>
+        }
+      },
+      {Header: 'Company', accessor: 'company'},
+      {
+        Header: 'Platform',
+        accessor: 'platform',
+        Cell: ({value}) => PLATFORMS.find(({id}) => id === value).name
+      },
+      {Header: 'Genre', accessor: 'genre'},
+      {
+        Header: 'Rating',
+        accessor: 'rating',
+        Cell: ({value}) => {
+          return (
+            <StarRating
+              value={value}
+              label=''
+              className='videogame-rating'
+              editable={false}
+            />
+          )
+        }
+      },
+      {
+        Header: 'Completion',
+        accessor: 'completion',
+        className: 'cell__number',
+        Cell: ({value}) => value.toLocaleString(undefined, {style: 'percent'})
+      },
+      {
+        Header: 'Tags',
+        accessor: 'tags',
+        disableSortBy: true,
+        Cell: ({value}) => value.join(', ')
+      },
+      {Header: 'Notes', accessor: 'notes', disableSortBy: true},
+      {
+        Header: '',
+        accessor: '',
+        id: 'actions',
+        className: 'cell__action',
+        disableSortBy: true,
+        Cell: ({row}) => (
+          <IconButton
+            aria-label='delete'
+            className='cell__action--delete'
+            data-id={row.original.id}
+            onClick={onDeleteClick}
+          >
+            <span className='material-icons'>delete</span>
+          </IconButton>
         )
       }
-    },
-    {
-      Header: 'Completion',
-      accessor: 'completion',
-      className: 'cell__number',
-      Cell: ({value}) => value.toLocaleString(undefined, {style: 'percent'})
-    },
-    {
-      Header: 'Tags',
-      accessor: 'tags',
-      disableSortBy: true,
-      Cell: ({value}) => value.join(', ')
-    },
-    {Header: 'Notes', accessor: 'notes', disableSortBy: true}
-  ], [])
+    ]
+  }, [collection])
 
   const initialState = {
     pageSize: 20,

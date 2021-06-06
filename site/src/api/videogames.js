@@ -26,3 +26,17 @@ export const saveVideogame = async (game) => {
     return []
   }
 }
+
+export const deleteVideogame = async (id) => {
+  const {endpoint} = getAPIValues('videogames', id)
+  const options = {
+    method: 'delete',
+    mode: 'cors'
+  }
+  try {
+    const request = await fetch(endpoint, options)
+    return await request.json()
+  } catch (e) {
+    console.log(e)
+  }
+}
