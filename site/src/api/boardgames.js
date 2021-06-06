@@ -48,3 +48,17 @@ export const saveBoardgame = async (game) => {
     console.log(e)
   }
 }
+
+export const deleteBoardgame = async (id) => {
+  const {endpoint} = getAPIValues('boardgames', id)
+  const options = {
+    method: 'delete',
+    mode: 'cors'
+  }
+  try {
+    const request = await fetch(endpoint, options)
+    return await request.json()
+  } catch (e) {
+    console.log(e)
+  }
+}
