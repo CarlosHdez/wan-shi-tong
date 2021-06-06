@@ -48,3 +48,17 @@ export const saveBook = async (book) => {
     console.log(e)
   }
 }
+
+export const deleteBook = async (id) => {
+  const {endpoint} = getAPIValues('books', id)
+  const options = {
+    method: 'delete',
+    mode: 'cors'
+  }
+  try {
+    const request = await fetch(endpoint, options)
+    return await request.json()
+  } catch (e) {
+    console.log(e)
+  }
+}
