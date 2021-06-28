@@ -1,20 +1,18 @@
 import React, {useMemo} from 'react'
 import PropTypes from 'prop-types'
-import {Button, IconButton
-} from '@material-ui/core'
+import {Button} from '@material-ui/core'
 import {Link, useHistory} from 'react-router-dom'
 
 import Table from 'components/table'
 import StarRating from 'components/star_rating'
+import DeleteIcon from 'components/delete_icon'
 import {deleteVideogame} from 'api/videogames'
 import {PLATFORMS} from 'lib/constants'
 
 const VideogamesShelf = ({collection}) => {
   const {push} = useHistory()
   const columns = useMemo(() => {
-    const onDeleteClick = async ({target}) => {
-      // TODO: ask for comfirmation
-      const {id} = target.dataset
+    const onDeleteClick = async (id) => {
       const {data} = await deleteVideogame(id)
       collection.dispatch({type: 'success', data})
     }
@@ -67,14 +65,11 @@ const VideogamesShelf = ({collection}) => {
         className: 'cell__action',
         disableSortBy: true,
         Cell: ({row}) => (
-          <IconButton
-            aria-label='delete'
-            className='cell__action--delete'
-            data-id={row.original.id}
-            onClick={onDeleteClick}
-          >
-            <span className='material-icons'>delete</span>
-          </IconButton>
+          <DeleteIcon
+            id={row.original.id}
+            name={row.original.name}
+            onDelete={onDeleteClick}
+          />
         )
       }
     ]

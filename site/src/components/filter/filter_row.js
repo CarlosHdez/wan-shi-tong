@@ -179,6 +179,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
           variant='filled'
           value={formValues.column}
           onChange={selectColumn}
+          autoFocus
           select
         >
           {options}
