@@ -22,5 +22,6 @@ export const PLATFORMS = [
   {id: 'nin-3', name: 'GameCube'},
   {id: 'nin-4', name: 'Nintendo DS'},
   {id: 'nin-5', name: '3DS'},
+  {id: 'nin-6', name: 'GameBoy Advance'},
   {id: 'pc-1', name: 'Steam'}
 ]
