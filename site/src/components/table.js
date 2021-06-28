@@ -18,9 +18,12 @@ import 'stylesheets/components/table.scss'
 
 const Table = (props) => {
   const [data, setData] = useState(props.data)
+
   useEffect(() => {
+    // TODO: Apply filters when data changes
     setData(props.data)
   }, [props.data])
+
   const {
     getTableProps,
     getTableBodyProps,
