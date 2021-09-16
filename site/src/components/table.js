@@ -5,7 +5,7 @@ import {
   usePagination,
   useSortBy
 } from 'react-table'
-import {Button} from '@material-ui/core'
+import {Paper, Button} from '@material-ui/core'
 import {
   ChevronLeft,
   ChevronRight,
@@ -136,7 +136,7 @@ const Table = (props) => {
   }
 
   return (
-    <>
+    <Paper elevation={2}>
       {props.filterable && renderFilterRow()}
       <div className='table-wrapper'>
         <table
@@ -149,7 +149,7 @@ const Table = (props) => {
         </table>
       </div>
       {renderPageControls()}
-    </>
+    </Paper>
   )
 }
 

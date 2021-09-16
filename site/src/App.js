@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react'
-import {Switch, Route} from 'react-router-dom'
 
 import Header from 'displays/navigation/header'
 import Sidebar from 'displays/navigation/sidebar'
 import Login from 'displays/navigation/login'
 import MainWrapper from 'displays/main_wrapper'
 import {initAuth} from 'lib/firebase'
+
+// TODO: Create a loading screen
+const Loading = () => <>Loading the app</>
 
 const App = () => {
   const [auth, setAuth] = useState(null)
@@ -25,33 +27,27 @@ const App = () => {
         if (user) {
           setLogged(true)
         }
+        setAuth(resp)
       })
-      setAuth(resp)
     }
     loadAuth()
   }, [auth])
 
-  const renderContent = () => {
-    if (!logged) {
-      return <Login onLogin={onLogin} auth={auth}/>
-    }
-    return (
-      <div className="app">
-        <Header onIconClick={toggleExpanded} />
-        <div className='main-container'>
-          <Sidebar expanded={expanded} />
-          <MainWrapper />
-        </div>
-      </div>
-    )
+  if (!auth) {
+    return <Loading />
+  }
+  if (!logged) {
+    return <Login onLogin={onLogin} auth={auth} />
   }
 
   return (
-    <Switch>
-      <Route path='*'>
-        {renderContent()}
-      </Route>
-    </Switch>
+    <div className="app">
+      <Header onIconClick={toggleExpanded} />
+      <div className='main-container'>
+        <Sidebar expanded={expanded} />
+        <MainWrapper />
+      </div>
+    </div>
   )
 }
 
