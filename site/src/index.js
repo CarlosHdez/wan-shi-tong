@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router} from 'react-router-dom'
-import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles'
+import {ThemeProvider, createTheme} from '@material-ui/core/styles'
 
 import App from 'App'
 import 'stylesheets/index.scss'
 import 'stylesheets/fonts.scss'
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: '#698c3d',
