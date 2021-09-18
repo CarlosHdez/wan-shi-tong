@@ -10,7 +10,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowUpward,
-  ArrowDownward
+  ArrowDownward,
+  Add
 } from '@material-ui/icons'
 
 import FilterRow from 'components/filter/filter_row'
@@ -30,7 +31,6 @@ const Table = (props) => {
     headerGroups,
     prepareRow,
     page,
-    pageCount,
     state: {pageIndex, pageSize},
     previousPage,
     nextPage,
@@ -81,11 +81,12 @@ const Table = (props) => {
   }
 
   const renderFilterRow = () => {
+    const {onAdd, filterable} = props
     return (
-      <FilterRow
-        tableFilters={props.columnFilters}
-        applyFilters={filterData}
-      />
+      <div className='table--filters'>
+        {onAdd && <Button size='small' onClick={onAdd}><Add /></Button>}
+        {filterable && <FilterRow tableFilters={props.columnFilters} applyFilters={filterData}/>}
+      </div>
     )
   }
 
@@ -115,10 +116,6 @@ const Table = (props) => {
   }
 
   const renderPageControls = () => {
-    const {data} = props
-    if (pageCount === 1 || page.length === 0) {
-      return
-    }
     const end = pageSize * (pageIndex + 1)
     const start = end - pageSize + 1
     const actualEnd = end > data.length ? data.length : end
@@ -136,8 +133,8 @@ const Table = (props) => {
   }
 
   return (
-    <Paper elevation={2}>
-      {props.filterable && renderFilterRow()}
+    <Paper elevation={2} className='table'>
+      {(props.filterable || props.onAdd) && renderFilterRow()}
       <div className='table-wrapper'>
         <table
           id={props.id}
@@ -161,7 +158,14 @@ Table.propTypes = {
   })).isRequired,
   data: PropTypes.array.isRequired,
   columnFilters: PropTypes.array,
+  onAdd: PropTypes.func,
   filterable: PropTypes.bool
+}
+
+Table.defaultTypes = {
+  columnFilters: [],
+  onAdd: null,
+  filterable: false
 }
 
 export default Table

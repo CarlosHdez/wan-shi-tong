@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {Button} from '@material-ui/core'
 import {Link, useHistory} from 'react-router-dom'
 
 import Table from 'components/table'
@@ -125,25 +124,15 @@ const BoardgamesShelf = ({collection}) => {
   }
 
   return (
-    <>
-      <Button
-        className='new-button'
-        color='primary'
-        size='medium'
-        variant='contained'
-        onClick={() => push('/boardgames/new')}
-      >
-        New
-      </Button>
-      <Table
-        id='boardgames-table'
-        columns={columns}
-        data={collection.data}
-        initialState={initialState}
-        columnFilters={columnFilters}
-        filterable
-      />
-    </>
+    <Table
+      id='boardgames-table'
+      columns={columns}
+      data={collection.data}
+      initialState={initialState}
+      columnFilters={columnFilters}
+      onAdd={() => push('/boardgames/new')}
+      filterable
+    />
   )
 }
 

@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {Button} from '@material-ui/core'
 import {Link, useHistory} from 'react-router-dom'
 
 import Table from 'components/table'
@@ -119,27 +118,17 @@ const BooksShelf = ({collection}) => {
     sortBy: [{id: 'title', desc: false}]
   }
 
+  //TODO: Find a better way to render when loadind data or empty
   return (
-    <>
-      <Button
-        className='books-new-button'
-        color='primary'
-        size='medium'
-        variant='contained'
-        onClick={() => push('/books/new')}
-      >
-        New
-      </Button>
-      {/* TODO: Find a better way to render when loadind data or empty */}
-      <Table
-        id='books-table'
-        columns={columns}
-        data={collection.data}
-        initialState={initialState}
-        columnFilters={columnFilters}
-        filterable
-      />
-    </>
+    <Table
+      id='books-table'
+      columns={columns}
+      data={collection.data}
+      initialState={initialState}
+      columnFilters={columnFilters}
+      onAdd={() => push('/books/new')}
+      filterable
+    />
   )
 }
 

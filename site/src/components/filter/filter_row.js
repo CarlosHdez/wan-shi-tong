@@ -4,6 +4,7 @@ import {
   DialogTitle,
   TextField,
   MenuItem,
+  Button,
   Chip
 } from '@material-ui/core'
 import {FilterList} from '@material-ui/icons'
@@ -227,6 +228,7 @@ const FilterRow = ({tableFilters, applyFilters}) => {
       <Chip
         key={column}
         label={label}
+        color='secondary'
         onDelete={() => removeFilter(column)}
       />
     )
@@ -247,8 +249,10 @@ const FilterRow = ({tableFilters, applyFilters}) => {
   })
 
   return (
-    <div className='table--filters'>
-      <FilterList onClick={openModal} />
+    <>
+      <Button size='small' onClick={openModal}>
+        <FilterList />
+      </Button>
       {chips}
       <FilterModal
         open={open}
@@ -256,7 +260,7 @@ const FilterRow = ({tableFilters, applyFilters}) => {
         options={options}
         saveFilter={saveFilter}
       />
-    </div>
+    </>
   )
 }
 

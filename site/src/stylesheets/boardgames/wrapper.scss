@@ -1,5 +1,8 @@
 .boardgames--wrapper {
+  display: flex;
+  flex-direction: column;
   position: relative;
+  height: 100%;
 
   & button.new-button {
     position: absolute;
