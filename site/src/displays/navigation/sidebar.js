@@ -1,7 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {useState} from 'react'
 import classnames from 'classnames'
 import {useHistory, useRouteMatch} from 'react-router-dom'
+import {ChevronRight} from '@material-ui/icons'
+import {Paper} from '@material-ui/core'
 
 import {SECTIONS} from 'lib/constants'
 
@@ -30,25 +31,25 @@ const SidebarItem = ({id, title, icon}) => {
   )
 }
 
-const Sidebar = ({expanded}) => {
+const Sidebar = () => {
+  const [expanded, setExpanded] = useState(false)
+
+  const toggleExpanded = () => setExpanded(!expanded)
+
   const classes = classnames(MAIN_CLASS, {
     [`${MAIN_CLASS}--expanded`]: expanded
   })
 
-  const renderMenu = () => {
-    const items = Object.values(SECTIONS)
-    return <ul>{items.map(SidebarItem)}</ul>
-  }
+  const menu = Object.values(SECTIONS).map(SidebarItem)
 
   return (
     <div className={classes}>
-      {renderMenu()}
+      <Paper elevation={2} className='control' onClick={toggleExpanded}>
+        <ChevronRight />
+      </Paper>
+      <ul>{menu}</ul>
     </div>
   )
-}
-
-Sidebar.propTypes = {
-  expanded: PropTypes.bool.isRequired
 }
 
 export default Sidebar

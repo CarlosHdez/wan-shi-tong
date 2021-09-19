@@ -12,9 +12,7 @@ const Loading = () => <>Loading the app</>
 const App = () => {
   const [auth, setAuth] = useState(null)
   const [logged, setLogged] = useState(false)
-  const [expanded, setExpanded] = useState(false)
 
-  const toggleExpanded = () => setExpanded(!expanded)
   const onLogin = () => {setLogged(true)}
 
   useEffect(() => {
@@ -42,9 +40,9 @@ const App = () => {
 
   return (
     <div className="app">
-      <Header onIconClick={toggleExpanded} />
+      <Header onIconClick={() => {}} />
       <div className='main-container'>
-        <Sidebar expanded={expanded} />
+        <Sidebar />
         <MainWrapper />
       </div>
     </div>
