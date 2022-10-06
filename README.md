@@ -1,5 +1,17 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+To start
+ - `export=GOOGLE_APPLICATION_CREDENTIALS=[PATH_TO_JSON_FILE]`
+ - `firebase serve --only functions`
+ - `npm start`
+
+To deploy
+  - `npm run build`
+  - `npm deploy --only hosting,functions`
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
