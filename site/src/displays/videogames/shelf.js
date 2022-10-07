@@ -1,14 +1,20 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
+import {Add} from '@material-ui/icons'
 import {Link, useHistory} from 'react-router-dom'
+import {Button} from '@material-ui/core'
 
 import Table from 'components/table'
+import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
 import {deleteVideogame} from 'api/videogames'
-import {PLATFORMS} from 'lib/constants'
+import {PLATFORMS, VIDEOGAME_FILTERS} from 'lib/constants'
+import {filterData} from 'lib/utils'
 
 const VideogamesShelf = ({collection}) => {
+  const [tableData, setTableData] = useState(collection.data)
+  const [filters, setFilters] = useState([])
   const {push} = useHistory()
   const columns = useMemo(() => {
     const onDeleteClick = async (id) => {
@@ -74,52 +80,31 @@ const VideogamesShelf = ({collection}) => {
     ]
   }, [collection])
 
-  const initialState = {
-    pageSize: 20,
-    sortBy: [{id: 'name', desc: false}]
-  }
+  useEffect(() => {
+    setTableData(filterData(collection.data, filters))
+  }, [filters, collection.data])
 
-  const columnFilters = [{
-    column: 'name',
-    label: 'Name',
-    type: 'string'
-  }, {
-    column: 'company',
-    label: 'Company',
-    type: 'string'
-  }, {
-    column: 'platform',
-    label: 'Platform',
-    type: 'enum',
-    options: PLATFORMS
-  }, {
-    column: 'genre',
-    label: 'Genre',
-    type: 'string'
-  }, {
-    column: 'rating',
-    label: 'Rating',
-    type: 'number'
-  }, {
-    column: 'completion',
-    label: 'Completion',
-    type: 'percentage'
-  // }, {
-  // TODO: Check how to index all tags and use them as filter opionts
-  //   column: 'tags',
-  //   type: 'string'
-  }]
+  const filterRow = (
+    <FilterRow
+      filters={filters}
+      setFilters={setFilters}
+      filterOptions={VIDEOGAME_FILTERS}
+    />
+  )
 
   return (
-    <Table
-      id='video-games-table'
-      initialState={initialState}
-      columns={columns}
-      data={collection.data}
-      columnFilters={columnFilters}
-      onAdd={() => push('/videogames/new')}
-      filterable
-    />
+    <>
+      <div className='table--filters'>
+        <Button size='small' onClick={() => push('/videogames/new')}><Add /></Button>
+        {filterRow}
+      </div>
+      <Table
+        id='video-games-table'
+        initialState={{pageSize: 20, sortBy: [{id: 'name', desc: false}]}}
+        columns={columns}
+        data={tableData}
+      />
+    </>
   )
 }
 

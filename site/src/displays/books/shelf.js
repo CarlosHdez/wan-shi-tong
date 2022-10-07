@@ -1,13 +1,25 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState, useEffect} from 'react'
 import {Link, useHistory} from 'react-router-dom'
+import {Add} from '@material-ui/icons'
+import {Button} from '@material-ui/core'
 
 import Table from 'components/table'
+import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
 import {deleteBook} from 'api/books'
+import {BOOK_FILTERS} from 'lib/constants'
+import {filterData} from 'lib/utils'
 
 const BooksShelf = ({collection}) => {
   const {push} = useHistory()
+  const [tableData, setTableData] = useState(collection.data)
+  // TODO: Save in localstorage
+  const [filters, setFilters] = useState([])
+
+  useEffect(() => {
+    setTableData(filterData(collection.data, filters))
+  }, [filters, collection.data])
 
   const columns = useMemo(() => {
     const onDeleteClick = async (id) => {
@@ -87,48 +99,28 @@ const BooksShelf = ({collection}) => {
     ]
   }, [collection])
 
-  const columnFilters = [{
-    column: 'title',
-    label: 'Title',
-    type: 'string'
-  }, {
-    column: 'author',
-    label: 'Author',
-    type: 'object'
-  }, {
-    column: 'rating',
-    label: 'Rating',
-    type: 'number'
-  }, {
-    column: 'genre',
-    label: 'Genre',
-    type: 'string'
-  }, {
-    column: 'type',
-    label: 'Type',
-    type: 'string'
-  }, {
-    column: 'language',
-    label: 'Language',
-    type: 'string'
-  }]
-
-  const initialState = {
-    pageSize: 20,
-    sortBy: [{id: 'title', desc: false}]
-  }
+  const filterRow = (
+    <FilterRow
+      filters={filters}
+      setFilters={setFilters}
+      filterOptions={BOOK_FILTERS}
+    />
+  )
 
   //TODO: Find a better way to render when loadind data or empty
   return (
-    <Table
-      id='books-table'
-      columns={columns}
-      data={collection.data}
-      initialState={initialState}
-      columnFilters={columnFilters}
-      onAdd={() => push('/books/new')}
-      filterable
-    />
+    <>
+      <div className='table--filters'>
+        <Button size='small' onClick={() => push('/books/new')}><Add /></Button>
+        {filterRow}
+      </div>
+      <Table
+        id='books-table'
+        columns={columns}
+        data={tableData}
+        initialState={{pageSize: 20, sortBy: [{id: 'title', desc: false}]}}
+      />
+    </>
   )
 }
 

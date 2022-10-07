@@ -51,3 +51,68 @@ export const BOOK_FILTERS = [{
   label: 'Language',
   type: 'string'
 }]
+
+export const VIDEOGAME_FILTERS = [{
+  column: 'name',
+  label: 'Name',
+  type: 'string'
+}, {
+  column: 'company',
+  label: 'Company',
+  type: 'string'
+}, {
+  column: 'platform',
+  label: 'Platform',
+  type: 'enum',
+  options: PLATFORMS
+}, {
+  column: 'genre',
+  label: 'Genre',
+  type: 'string'
+}, {
+  column: 'rating',
+  label: 'Rating',
+  type: 'number'
+}, {
+  column: 'completion',
+  label: 'Completion',
+  type: 'percentage'
+  // }, {
+  // TODO: Check how to index all tags and use them as filter opionts
+  //   column: 'tags',
+  //   type: 'string'
+}]
+
+export const BOARDGAME_FILTERS = [{
+  column: 'name',
+  label: 'Name',
+  type: 'string'
+}, {
+  column: 'designer',
+  label: 'Designer',
+  type: 'object'
+}, {
+  column: 'rating',
+  label: 'Rating',
+  type: 'number'
+}, {
+  column: 'players',
+  label: 'Players',
+  type: 'range'
+}, {
+  column: 'type',
+  label: 'Type',
+  type: 'string'
+}, {
+  column: 'mechanics',
+  label: 'Mechanics',
+  type: 'string'
+}, {
+  column: 'language',
+  label: 'Language',
+  type: 'string'
+}, {
+  column: 'publisher',
+  label: 'Publisher',
+  type: 'string'
+}]

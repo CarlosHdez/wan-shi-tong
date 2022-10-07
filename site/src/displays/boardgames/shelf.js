@@ -1,12 +1,19 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState, useEffect} from 'react'
 import {Link, useHistory} from 'react-router-dom'
+import {Add} from '@material-ui/icons'
+import {Button} from '@material-ui/core'
 
 import Table from 'components/table'
+import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
 import {deleteBoardgame} from 'api/boardgames'
+import {BOARDGAME_FILTERS} from 'lib/constants'
+import {filterData} from 'lib/utils'
 
 const BoardgamesShelf = ({collection}) => {
+  const [tableData, setTableData] = useState(collection.data)
+  const [filters, setFilters] = useState([])
   const {push} = useHistory()
 
   const columns = useMemo(() => {
@@ -84,55 +91,31 @@ const BoardgamesShelf = ({collection}) => {
     ]
   }, [collection])
 
-  const columnFilters = [{
-    column: 'name',
-    label: 'Name',
-    type: 'string'
-  }, {
-    column: 'designer',
-    label: 'Designer',
-    type: 'object'
-  }, {
-    column: 'rating',
-    label: 'Rating',
-    type: 'number'
-  }, {
-    column: 'players',
-    label: 'Players',
-    type: 'range'
-  }, {
-    column: 'type',
-    label: 'Type',
-    type: 'string'
-  }, {
-    column: 'mechanics',
-    label: 'Mechanics',
-    type: 'string'
-  }, {
-    column: 'language',
-    label: 'Language',
-    type: 'string'
-  }, {
-    column: 'publisher',
-    label: 'Publisher',
-    type: 'string'
-  }]
+  useEffect(() => {
+    setTableData(filterData(collection.data, filters))
+  }, [filters, collection.data])
 
-  const initialState = {
-    pageSize: 20,
-    sortBy: [{id: 'name', desc: false}]
-  }
+  const filterRow = (
+    <FilterRow
+      filters={filters}
+      setFilters={setFilters}
+      filterOptions={BOARDGAME_FILTERS}
+    />
+  )
 
   return (
-    <Table
-      id='boardgames-table'
-      columns={columns}
-      data={collection.data}
-      initialState={initialState}
-      columnFilters={columnFilters}
-      onAdd={() => push('/boardgames/new')}
-      filterable
-    />
+    <>
+      <div className='table--filters'>
+        <Button size='small' onClick={() => push('/boardgames/new')}><Add /></Button>
+        {filterRow}
+      </div>
+      <Table
+        id='boardgames-table'
+        columns={columns}
+        data={tableData}
+        initialState={{pageSize: 20, sortBy: [{id: 'name', desc: false}]}}
+      />
+    </>
   )
 }
 
