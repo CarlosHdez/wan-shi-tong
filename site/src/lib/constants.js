@@ -25,3 +25,29 @@ export const PLATFORMS = [
   {id: 'nin-6', name: 'GameBoy Advance'},
   {id: 'pc-1', name: 'Steam'}
 ]
+
+export const BOOK_FILTERS = [{
+  column: 'title',
+  label: 'Title',
+  type: 'string'
+}, {
+  column: 'author',
+  label: 'Author',
+  type: 'object'
+}, {
+  column: 'rating',
+  label: 'Rating',
+  type: 'number'
+}, {
+  column: 'genre',
+  label: 'Genre',
+  type: 'string'
+}, {
+  column: 'type',
+  label: 'Type',
+  type: 'string'
+}, {
+  column: 'language',
+  label: 'Language',
+  type: 'string'
+}]
