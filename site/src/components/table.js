@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
   useTable,
@@ -10,21 +10,12 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowUpward,
-  ArrowDownward,
-  Add
+  ArrowDownward
 } from '@material-ui/icons'
 
-import FilterRow from 'components/filter/filter_row'
 import 'stylesheets/components/table.scss'
 
 const Table = (props) => {
-  const [data, setData] = useState(props.data)
-
-  useEffect(() => {
-    // TODO: Apply filters when data changes
-    setData(props.data)
-  }, [props.data])
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -36,7 +27,7 @@ const Table = (props) => {
     nextPage,
     canPreviousPage,
     canNextPage
-  } = useTable({...props, data}, useSortBy, usePagination)
+  } = useTable(props, useSortBy, usePagination)
 
   const renderTH = ({className, render, isSorted, isSortedDesc, ...col}) => {
     return (
@@ -47,46 +38,6 @@ const Table = (props) => {
         {render('Header')}
         {isSorted ? (isSortedDesc ? <ArrowDownward />  : <ArrowUpward />) : ''}
       </th>
-    )
-  }
-
-  const filterData = (filters) => {
-    let newData = props.data
-    filters.forEach(({column, value, type, ...rest}) => {
-      newData = newData.filter((item) => {
-        if (type === 'number' || type === 'percentage') {
-          switch(rest.constraint) {
-            case 'gt':
-              return item[column] >= value
-            case 'lt':
-              return item[column] <= value
-            case 'eq':
-            default:
-              return item[column] === value
-          }
-        }
-        if (type === 'range') {
-          const {min, max} = item[column]
-          return min <= value &&  max >= value
-        }
-        let test = item[column]
-        if (type === 'object') {
-          test = Object.values(item[column]).join(' ')
-        }
-        const reg = new RegExp(value, 'i')
-        return reg.test(test)
-      })
-    })
-    setData(newData)
-  }
-
-  const renderFilterRow = () => {
-    const {onAdd, filterable} = props
-    return (
-      <div className='table--filters'>
-        {onAdd && <Button size='small' onClick={onAdd}><Add /></Button>}
-        {filterable && <FilterRow tableFilters={props.columnFilters} applyFilters={filterData}/>}
-      </div>
     )
   }
 
@@ -118,10 +69,10 @@ const Table = (props) => {
   const renderPageControls = () => {
     const end = pageSize * (pageIndex + 1)
     const start = end - pageSize + 1
-    const actualEnd = end > data.length ? data.length : end
+    const actualEnd = end > props.data.length ? props.data.length : end
     return (
       <div className='table--footer'>
-        <span>{start}-{actualEnd} of {data.length}</span>
+        <span>{start}-{actualEnd} of {props.data.length}</span>
         <Button onClick={previousPage} disabled={!canPreviousPage}>
           <ChevronLeft />
         </Button>
@@ -134,7 +85,6 @@ const Table = (props) => {
 
   return (
     <Paper elevation={2} className='table'>
-      {(props.filterable || props.onAdd) && renderFilterRow()}
       <div className='table-wrapper'>
         <table
           id={props.id}
@@ -156,16 +106,7 @@ Table.propTypes = {
     Header: PropTypes.string,
     accessor: PropTypes.string
   })).isRequired,
-  data: PropTypes.array.isRequired,
-  columnFilters: PropTypes.array,
-  onAdd: PropTypes.func,
-  filterable: PropTypes.bool
-}
-
-Table.defaultTypes = {
-  columnFilters: [],
-  onAdd: null,
-  filterable: false
+  data: PropTypes.array.isRequired
 }
 
 export default Table

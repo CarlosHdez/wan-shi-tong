@@ -191,28 +191,22 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
   )
 }
 
-const FilterRow = ({tableFilters, applyFilters}) => {
+const FilterRow = ({filters, setFilters, filterOptions}) => {
   const [open, setOpen] = useState(false)
-  const [activeFilters, setActiveFilters] = useState([])
 
   const openModal = () => setOpen(true)
   const closeModal = () => setOpen(false)
 
-  const updateFilters = (filters) => {
-    setActiveFilters(filters)
-    applyFilters(filters)
-  }
-
   const saveFilter = (filter) => {
-    updateFilters([...activeFilters, filter])
+    setFilters([...filters, filter])
   }
 
   const removeFilter = (column) => {
-    updateFilters(activeFilters.filter((i) => i.column !== column))
+    setFilters(filters.filter((i) => i.column !== column))
   }
 
   // TODO: Move to their component
-  const chips = activeFilters.map(({column, value, ...rest}, i) => {
+  const chips = filters.map(({column, value, ...rest}, i) => {
     let label = `${rest.label}: ${value}`
     if (rest.type === 'enum') {
       label = `${rest.label}: ${rest.options.find(({id}) => id === value).name}`
@@ -234,8 +228,8 @@ const FilterRow = ({tableFilters, applyFilters}) => {
     )
   })
 
-  const options = tableFilters.map((option) => {
-    const disabled = activeFilters.find(({column}) => column === option.column)
+  const options = filterOptions.map((option) => {
+    const disabled = filters.find(({column}) => column === option.column)
     return (
       <MenuItem
         key={option.column}
