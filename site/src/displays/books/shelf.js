@@ -10,12 +10,22 @@ import DeleteIcon from 'components/delete_icon'
 import {deleteBook} from 'api/books'
 import {BOOK_FILTERS} from 'lib/constants'
 import {filterData} from 'lib/utils'
+import {useStorage} from 'hooks/useStorage'
 
+const BOOK_STORAGE_KEY = 'book-table-filters'
 const BooksShelf = ({collection}) => {
   const {push} = useHistory()
   const [tableData, setTableData] = useState(collection.data)
-  // TODO: Save in localstorage
-  const [filters, setFilters] = useState([])
+  const {value, storage} = useStorage(BOOK_STORAGE_KEY)
+  const [filters, setFilters] = useState(value || [])
+
+  useEffect(() => {
+    if (filters.length) {
+      storage.setItem(BOOK_STORAGE_KEY, JSON.stringify(filters))
+    } else {
+      storage.removeItem(BOOK_STORAGE_KEY)
+    }
+  }, [filters, storage])
 
   useEffect(() => {
     setTableData(filterData(collection.data, filters))

@@ -10,10 +10,13 @@ import DeleteIcon from 'components/delete_icon'
 import {deleteBoardgame} from 'api/boardgames'
 import {BOARDGAME_FILTERS} from 'lib/constants'
 import {filterData} from 'lib/utils'
+import {useStorage} from 'hooks/useStorage'
 
+const BOARDGAMES_STORAGE_KEY = 'board-table-storage'
 const BoardgamesShelf = ({collection}) => {
   const [tableData, setTableData] = useState(collection.data)
-  const [filters, setFilters] = useState([])
+  const {value, storage} = useStorage(BOARDGAMES_STORAGE_KEY)
+  const [filters, setFilters] = useState(value || [])
   const {push} = useHistory()
 
   const columns = useMemo(() => {
@@ -90,6 +93,14 @@ const BoardgamesShelf = ({collection}) => {
       }
     ]
   }, [collection])
+
+  useEffect(() => {
+    if (filters.length) {
+      storage.setItem(BOARDGAMES_STORAGE_KEY, JSON.stringify(filters))
+    } else {
+      storage.removeItem(BOARDGAMES_STORAGE_KEY)
+    }
+  }, [filters, storage])
 
   useEffect(() => {
     setTableData(filterData(collection.data, filters))

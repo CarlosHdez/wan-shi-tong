@@ -11,11 +11,14 @@ import DeleteIcon from 'components/delete_icon'
 import {deleteVideogame} from 'api/videogames'
 import {PLATFORMS, VIDEOGAME_FILTERS} from 'lib/constants'
 import {filterData} from 'lib/utils'
+import {useStorage} from 'hooks/useStorage'
 
+const VIDEOGAMES_STORAGE_KEY = 'video-table-storage'
 const VideogamesShelf = ({collection}) => {
   const [tableData, setTableData] = useState(collection.data)
-  const [filters, setFilters] = useState([])
   const {push} = useHistory()
+  const {value, storage} = useStorage(VIDEOGAMES_STORAGE_KEY)
+  const [filters, setFilters] = useState(value || [])
   const columns = useMemo(() => {
     const onDeleteClick = async (id) => {
       const {data} = await deleteVideogame(id)
@@ -79,6 +82,14 @@ const VideogamesShelf = ({collection}) => {
       }
     ]
   }, [collection])
+
+  useEffect(() => {
+    if (filters.length) {
+      storage.setItem(VIDEOGAMES_STORAGE_KEY, JSON.stringify(filters))
+    } else {
+      storage.removeItem(VIDEOGAMES_STORAGE_KEY)
+    }
+  }, [filters, storage])
 
   useEffect(() => {
     setTableData(filterData(collection.data, filters))
