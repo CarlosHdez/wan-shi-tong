@@ -7,6 +7,7 @@ import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
+import {TableTagCell} from 'components/table/tag_cell'
 import {deleteBoardgame} from 'api/boardgames'
 import {BOARDGAME_FILTERS} from 'lib/constants'
 import {filterData} from 'lib/utils'
@@ -66,7 +67,21 @@ const BoardgamesShelf = ({collection}) => {
       {
         Header: 'Mechanics',
         accessor: 'mechanics',
-        Cell: ({value}) => value.join(', ')
+        className: 'cell__tags',
+        Cell: ({value}) => (
+          <>
+            {value.map((val, i) => (
+              <TableTagCell
+                key={i}
+                label={val}
+                column='mechanics'
+                filterLabel='Mechanic'
+                filters={filters}
+                setFilters={setFilters}
+              />
+            ))}
+          </>
+        )
       },
       {Header: 'Language', accessor: 'language'},
       {
@@ -92,7 +107,7 @@ const BoardgamesShelf = ({collection}) => {
         )
       }
     ]
-  }, [collection])
+  }, [collection, filters])
 
   useEffect(() => {
     if (filters.length) {

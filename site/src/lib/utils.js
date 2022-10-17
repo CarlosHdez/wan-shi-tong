@@ -26,18 +26,22 @@ export const filterData = (data, filters) => {
   let newData = data
   filters.forEach(({column, value, type, ...rest}) => {
     newData = newData.filter((item) => {
+      const reg = new RegExp(value, 'i')
       if (type === 'number' || type === 'percentage') {
         return numericFilter(rest.constraint, item[column], value)
       }
       if (type === 'range') {
         return rangeFilter(item[column].min, item[column].max, value)
       }
+      if (type === 'array') {
+        return item[column].some((tag) => reg.test(tag))
+      }
 
       let test = item[column]
       if (type === 'object') {
+        // Join the text values in the object item and filter mathing those
         test = Object.values(item[column]).join(' ')
       }
-      const reg = new RegExp(value, 'i')
       return reg.test(test)
     })
   })

@@ -54,6 +54,17 @@
       text-overflow: ellipsis;
     }
 
+    td.cell__tags {
+      overflow-x: auto;
+      text-overflow: unset;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .MuiChip-root { margin-right: 5px; }
+    }
+
     tbody {
       td {
         background-color: white;

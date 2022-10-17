@@ -7,6 +7,7 @@ import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
+import {TableTagCell} from 'components/table/tag_cell'
 import {deleteBook} from 'api/books'
 import {BOOK_FILTERS} from 'lib/constants'
 import {filterData} from 'lib/utils'
@@ -68,12 +69,24 @@ const BooksShelf = ({collection}) => {
           )
         }
       },
-      // {
-      //   Header: 'Tags',
-      //   accessor: 'tags',
-      //   disableSortBy: true,
-      //   Cell: ({value}) => value.join(', ')
-      // },
+      {
+        Header: 'Tags',
+        accessor: 'tags',
+        disableSortBy: true,
+        className: 'cell__tags',
+        Cell: ({value}) => (
+          <>
+            {value.map((val, i) => (
+              <TableTagCell
+                key={i}
+                label={val}
+                filters={filters}
+                setFilters={setFilters}
+              />
+            ))}
+          </>
+        )
+      },
       {
         Header: 'Link',
         accessor: 'goodreads_link',
@@ -107,7 +120,7 @@ const BooksShelf = ({collection}) => {
       },
       // {Header: 'DDC', accessor: 'code', className: 'cell__number'}
     ]
-  }, [collection])
+  }, [collection, filters])
 
   const filterRow = (
     <FilterRow

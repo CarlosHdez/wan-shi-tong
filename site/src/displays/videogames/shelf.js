@@ -8,6 +8,7 @@ import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
+import {TableTagCell} from 'components/table/tag_cell'
 import {deleteVideogame} from 'api/videogames'
 import {PLATFORMS, VIDEOGAME_FILTERS} from 'lib/constants'
 import {filterData} from 'lib/utils'
@@ -63,7 +64,19 @@ const VideogamesShelf = ({collection}) => {
         Header: 'Tags',
         accessor: 'tags',
         disableSortBy: true,
-        Cell: ({value}) => value.join(', ')
+        className: 'cell__tags',
+        Cell: ({value}) => (
+          <>
+            {value.map((val, i) => (
+              <TableTagCell
+                key={i}
+                label={val}
+                filters={filters}
+                setFilters={setFilters}
+              />
+            ))}
+          </>
+        )
       },
       {Header: 'Notes', accessor: 'notes', disableSortBy: true},
       {
@@ -81,7 +94,7 @@ const VideogamesShelf = ({collection}) => {
         )
       }
     ]
-  }, [collection])
+  }, [collection, filters])
 
   useEffect(() => {
     if (filters.length) {
