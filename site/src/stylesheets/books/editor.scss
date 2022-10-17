@@ -6,12 +6,11 @@
     grid-gap: 1rem;
     grid-template-areas: 'title author'
       'desc desc'
-      'rating type'
-      'tags lang'
-      'country date'
-      'isbn ddc'
-      'genre link';
-
+      'genre type'
+      'country lang'
+      'date isbn'
+      'rating link'
+      'tags .';
   }
 
   &--author {
@@ -29,7 +28,6 @@
   &--description {grid-area: desc;}
   &--rating {grid-area: rating;}
   &--genre {grid-area: genre;}
-  &--tags {grid-area: tags;}
   &--lang {grid-area: lang;}
   &--country {grid-area: country;}
   &--date {grid-area: date;}
@@ -37,6 +35,7 @@
   &--isbn {grid-area: isbn;}
   &--ddc {grid-area: ddc;}
   &--link {grid-area: link;}
+  &--tags {grid-area: tags;}
 
   &__controls {
     display: flex;

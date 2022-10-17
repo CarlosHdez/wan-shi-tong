@@ -12,6 +12,7 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
+import TagInput from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveBook, saveAuthor} from 'api/books'
 import 'stylesheets/books/editor.scss'
@@ -20,7 +21,7 @@ const initialValues = {
   title: '',
   author: {id: ''},
   description: '',
-  tags: '',
+  tags: [],
   language: '',
   country: '',
   type: '',
@@ -58,6 +59,15 @@ const BookEditor = ({books, authors}) => {
     onChange({
       target: {
         name: 'rating',
+        value
+      }
+    })
+  }
+
+  const onTagChange = (value) => {
+    onChange({
+      target: {
+        name: 'tags',
         value
       }
     })
@@ -163,12 +173,14 @@ const BookEditor = ({books, authors}) => {
             onChange={onChange}
             multiline
           />
-          <StarRating
-            value={values.rating}
-            onChange={onRatingChange}
-            name='rating'
-            className='books-editor--rating'
-            editable
+          <TextField
+            id='book-genre'
+            label='Genre'
+            name='genre'
+            className='books-editor__input books-editor--genre'
+            variant='filled'
+            value={values.genre}
+            onChange={onChange}
           />
           <TextField
             id='book-type'
@@ -180,12 +192,12 @@ const BookEditor = ({books, authors}) => {
             onChange={onChange}
           />
           <TextField
-            id='book-tags'
-            label='Tags'
-            name='tags'
-            className='books-editor__input books-editor--tags'
+            id='book-country'
+            label='Country'
+            name='country'
+            className='books-editor__input books-editor--country'
             variant='filled'
-            value={values.tags}
+            value={values.country}
             onChange={onChange}
           />
           <TextField
@@ -195,15 +207,6 @@ const BookEditor = ({books, authors}) => {
             className='books-editor__input books-editor--lang'
             variant='filled'
             value={values.language}
-            onChange={onChange}
-          />
-          <TextField
-            id='book-country'
-            label='Country'
-            name='country'
-            className='books-editor__input books-editor--country'
-            variant='filled'
-            value={values.country}
             onChange={onChange}
           />
           <TextField
@@ -226,23 +229,12 @@ const BookEditor = ({books, authors}) => {
             value={values.ISBN}
             onChange={onChange}
           />
-          <TextField
-            id='book-ddc'
-            label='DDC'
-            name='code'
-            className='books-editor__input books-editor--ddc'
-            variant='filled'
-            value={values.code}
-            disabled
-          />
-          <TextField
-            id='book-genre'
-            label='Genre'
-            name='genre'
-            className='books-editor__input books-editor--genre'
-            variant='filled'
-            value={values.genre}
-            onChange={onChange}
+          <StarRating
+            value={values.rating}
+            onChange={onRatingChange}
+            name='rating'
+            className='books-editor--rating'
+            editable
           />
           <TextField
             id='book-link'
@@ -253,6 +245,15 @@ const BookEditor = ({books, authors}) => {
             variant='filled'
             value={values.goodreads_link}
             onChange={onChange}
+          />
+          <TagInput
+            id='book-tags'
+            label='Tags'
+            name='tags'
+            wrapperClass='books-editor--tags'
+            inputClass='books-editor__input'
+            value={values.tags}
+            onChange={onTagChange}
           />
         </div>
       </FormWrapper>
