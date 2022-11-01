@@ -1,12 +1,14 @@
 .game-editor {
   display: grid;
+  align-items: start;
   margin-bottom: 2rem;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
   grid-template-areas: 'name author'
+    'type language'
+    'link publisher'
     'players rating'
-    'type mechanics'
-    'link publisher';
+    'mechanics .';
 
   &--name {grid-area: name;}
   &--author {
@@ -37,6 +39,7 @@
   &--mechanics {grid-area: mechanics;}
   &--link {grid-area: link;}
   &--publisher {grid-area: publisher;}
+  &--language {grid-area: language;}
 
   &__controls {
     display: flex;

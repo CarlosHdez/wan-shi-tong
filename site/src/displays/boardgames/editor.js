@@ -12,6 +12,7 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
+import TagInput from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveBoardgame, saveDesigner} from 'api/boardgames'
 import 'stylesheets/boardgames/editor.scss'
@@ -22,7 +23,7 @@ const initialValues = {
   type: '',
   rating: 0,
   players: {min: 0, max: 0},
-  mechanics: '',
+  mechanics: [],
   language: '',
   publisher: '',
   link: ''
@@ -102,6 +103,15 @@ const BoardgameEditor = ({games, designers}) => {
     })
   }
 
+  const onMechanicsChange = (value) => {
+    onChange({
+      target: {
+        name: 'mechanics',
+        value
+      }
+    })
+  }
+
   const designerOptions = useMemo(() => {
     return designers.data.map(({id, name, surname}) => {
       const key = `${name}-${surname}-${id}`
@@ -153,6 +163,42 @@ const BoardgameEditor = ({games, designers}) => {
           </TextField>
           <Button onClick={onOpenModal} variant='contained'>Add</Button>
         </div>
+        <TextField
+          id='game-type'
+          label='Type'
+          name='type'
+          className='game-editor--type'
+          variant='filled'
+          value={values.type}
+          onChange={onChange}
+        />
+        <TextField
+          id='game-language'
+          label='Language'
+          name='language'
+          className='game-editor--language'
+          variant='filled'
+          value={values.language}
+          onChange={onChange}
+        />
+        <TextField
+          id='game-link'
+          label='BGG Link'
+          name='link'
+          className='game-editor--link'
+          variant='filled'
+          value={values.link}
+          onChange={onChange}
+        />
+        <TextField
+          id='game-publisher'
+          label='Publisher'
+          name='publisher'
+          className='game-editor--publisher'
+          variant='filled'
+          value={values.publisher}
+          onChange={onChange}
+        />
         <div className='game-editor--players'>
           <label>Players</label>
           <TextField
@@ -185,50 +231,14 @@ const BoardgameEditor = ({games, designers}) => {
           className='game-editor--rating'
           editable
         />
-        <TextField
-          id='game-name'
-          label='Type'
-          name='type'
-          className='game-editor--type'
-          variant='filled'
-          value={values.type}
-          onChange={onChange}
-        />
-        <TextField
+        <TagInput
           id='game-mechanics'
           label='Mechanics'
           name='mechanics'
-          className='game-editor--mechanics'
+          wrapperClass='game-editor--mechanics'
           variant='filled'
           value={values.mechanics}
-          onChange={onChange}
-        />
-        <TextField
-          id='game-link'
-          label='BGG Link'
-          name='link'
-          className='game-editor--link'
-          variant='filled'
-          value={values.link}
-          onChange={onChange}
-        />
-        <TextField
-          id='game-language'
-          label='Language'
-          name='language'
-          className='game-editor--language'
-          variant='filled'
-          value={values.language}
-          onChange={onChange}
-        />
-        <TextField
-          id='game-publisher'
-          label='Publisher'
-          name='publisher'
-          className='game-editor--publisher'
-          variant='filled'
-          value={values.publisher}
-          onChange={onChange}
+          onChange={onMechanicsChange}
         />
       </FormWrapper>
       <AuthorEditor
