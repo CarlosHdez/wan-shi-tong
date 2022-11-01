@@ -6,8 +6,24 @@ import Login from 'displays/navigation/login'
 import MainWrapper from 'displays/main_wrapper'
 import {initAuth} from 'lib/firebase'
 
-// TODO: Create a loading screen
-const Loading = () => <>Loading the app</>
+import {CircularProgress} from '@material-ui/core'
+const Loading = () => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      height: '100vh',
+      width: '100%',
+      color: 'black',
+      backgroundColor: '#99bc6a9f'
+    }}
+  >
+    <CircularProgress color='primary' />
+    <h2>Loading ...</h2>
+  </div>
+)
 
 const App = () => {
   const [auth, setAuth] = useState(null)
