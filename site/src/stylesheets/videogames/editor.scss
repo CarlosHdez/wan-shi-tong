@@ -2,14 +2,12 @@
   .editor__grid {
     display: grid;
     margin-bottom: 2rem;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 1rem;
-    grid-template-areas: 'name platform'
-      'genre company'
-      'notes notes'
-      'tags tags'
-      'completion rating'
-      'format .';
+    grid-template-areas: 'name name platform platform'
+      'genre genre company company'
+      'notes notes notes notes'
+      'tags completion rating format';
 
     &__name {font-size: 20px; grid-area: name;}
     &__platform {grid-area: platform;}

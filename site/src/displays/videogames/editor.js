@@ -13,6 +13,7 @@ import {
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
+import TagInput from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveVideogame} from 'api/videogames'
 import {PLATFORMS} from 'lib/constants'
@@ -53,6 +54,15 @@ const VideogameEditor = ({games}) => {
 
   const onRatingChange = (value) => {
     onChange({target: {name: 'rating', value}})
+  }
+
+  const onTagChange = (value) => {
+    onChange({
+      target: {
+        name: 'tags',
+        value
+      }
+    })
   }
 
   const onCompletionChange = ({target}) => {
@@ -157,14 +167,15 @@ const VideogameEditor = ({games}) => {
           onChange={onChange}
           multiline
         />
-        <TextField
+        <TagInput
           id='videogame__tags'
           label='Tags'
           name='tags'
-          className='editor__input editor__grid__tags'
+          wrapperClass='editor__grid__tags'
+          inputClass='editor__input'
           variant='filled'
           value={values.tags}
-          onChange={onChange}
+          onChange={onTagChange}
         />
         <TextField
           id='videogame__completion'
