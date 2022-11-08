@@ -124,6 +124,7 @@ const VideogamesShelf = ({collection}) => {
       </div>
       <Table
         id='video-games-table'
+        status={collection.status}
         initialState={{pageSize: 20, sortBy: [{id: 'name', desc: false}]}}
         columns={columns}
         data={tableData}

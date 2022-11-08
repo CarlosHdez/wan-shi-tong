@@ -12,10 +12,11 @@ import {
   ArrowUpward,
   ArrowDownward
 } from '@material-ui/icons'
+import {CircularProgress} from '@material-ui/core'
 
 import 'stylesheets/components/table.scss'
 
-const Table = (props) => {
+const Table = ({status, ...props}) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -83,17 +84,34 @@ const Table = (props) => {
     )
   }
 
+
   return (
     <Paper elevation={2} className='table'>
       <div className='table-wrapper'>
-        <table
-          id={props.id}
-          className='component-table'
-          {...getTableProps()}
-        >
-          <thead>{headerGroups.map(renderHeaderRow)}</thead>
-          <tbody {...getTableBodyProps()}>{page.map(renderRow)}</tbody>
-        </table>
+        {status === 'loading' ? (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              height: '100%',
+              width: '100%',
+              backgroundColor: '#99bc6a09'
+            }}
+          >
+            <CircularProgress color='primary' />
+          </div>
+        ) : (
+          <table
+            id={props.id}
+            className='component-table'
+            {...getTableProps()}
+          >
+            <thead>{headerGroups.map(renderHeaderRow)}</thead>
+            <tbody {...getTableBodyProps()}>{page.map(renderRow)}</tbody>
+          </table>
+        )}
       </div>
       {renderPageControls()}
     </Paper>
@@ -106,6 +124,7 @@ Table.propTypes = {
     Header: PropTypes.string,
     accessor: PropTypes.string
   })).isRequired,
+  status: PropTypes.string,
   data: PropTypes.array.isRequired
 }
 

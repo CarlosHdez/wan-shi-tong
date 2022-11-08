@@ -137,6 +137,7 @@ const BoardgamesShelf = ({collection}) => {
       </div>
       <Table
         id='boardgames-table'
+        status={collection.status}
         columns={columns}
         data={tableData}
         initialState={{pageSize: 20, sortBy: [{id: 'name', desc: false}]}}

@@ -139,6 +139,7 @@ const BooksShelf = ({collection}) => {
       </div>
       <Table
         id='books-table'
+        status={collection.status}
         columns={columns}
         data={tableData}
         initialState={{pageSize: 20, sortBy: [{id: 'title', desc: false}]}}
