@@ -8,7 +8,7 @@ import {
 import BooksShelf from 'displays/books/shelf'
 import BookEditor from 'displays/books/editor'
 import {listAuthors} from 'api/books'
-import {useCollection} from 'hooks/collection_hook'
+import {useCollection} from 'hooks/useCollection'
 
 import 'stylesheets/books/wrapper.scss'
 

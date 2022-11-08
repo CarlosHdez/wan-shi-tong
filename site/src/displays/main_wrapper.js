@@ -11,7 +11,7 @@ import BoardgamesWrapper from 'displays/boardgames/wrapper'
 import {listBooks} from 'api/books'
 import {listVideogames} from 'api/videogames'
 import {listBoardgames} from 'api/boardgames'
-import {useCollection} from 'hooks/collection_hook'
+import {useCollection} from 'hooks/useCollection'
 
 import 'stylesheets/main_wrapper.scss'
 
