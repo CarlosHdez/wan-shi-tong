@@ -9,6 +9,7 @@ const useForm = ({
 }) => {
   const [errors, setErrors] = useState({})
   const [values, setValues] = useState(initialValues)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     setValues(initialValues)
@@ -25,13 +26,22 @@ const useForm = ({
   const handleSubmit = async (ev) => {
     ev.preventDefault()
     ev.stopPropagation()
-    return await onSave(values)
+    setSaving(true)
+    try {
+      const response = await onSave(values)
+      setSaving(false)
+      return response
+    } catch (e) {
+      setSaving(false)
+      throw e
+    }
   }
 
   return {
     values,
     onChange,
     handleSubmit,
+    saving,
     valid: Object.keys(errors).length === 0
   }
 }

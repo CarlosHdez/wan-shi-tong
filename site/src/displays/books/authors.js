@@ -25,7 +25,7 @@ const AuthorEditor = ({open, onSave, apiSave, onClose, title = 'New Author'}) =>
     setAuthor({})
   }
 
-  const {values, onChange, handleSubmit, valid} = useForm({
+  const {values, onChange, handleSubmit, valid, saving} = useForm({
     initialValues: author,
     onSave: onSaveClick,
     validator: useCallback(validateAuthor, [])
@@ -42,7 +42,8 @@ const AuthorEditor = ({open, onSave, apiSave, onClose, title = 'New Author'}) =>
         wrapperClass='author-editor'
         onSave={handleSubmit}
         onCancel={onClose}
-        valid={valid}
+        canSave={valid && !saving}
+        saving={saving}
         hasControls
       >
         <TextField

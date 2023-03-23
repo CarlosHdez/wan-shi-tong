@@ -67,7 +67,7 @@ const BoardgameEditor = ({games, designers}) => {
     push('/boardgames')
   }
 
-  const {values, onChange, handleSubmit, valid} = useForm({
+  const {values, onChange, handleSubmit, valid, saving} = useForm({
     onSave,
     initialValues: game,
     validator: useCallback(validator, [])
@@ -133,7 +133,8 @@ const BoardgameEditor = ({games, designers}) => {
       <FormWrapper
         onCancel={onCancel}
         onSave={handleSubmit}
-        valid={valid}
+        canSave={valid && !saving}
+        saving={saving}
         wrapperClass='game-editor'
         hasControls
       >

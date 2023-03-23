@@ -1,17 +1,15 @@
 .books-editor {
-  &__grid {
-    display: grid;
-    margin-bottom: 2rem;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1rem;
-    grid-template-areas: 'title author'
-      'desc desc'
-      'genre type'
-      'country lang'
-      'date isbn'
-      'rating link'
-      'tags .';
-  }
+  display: grid;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+  grid-template-areas: 'title author'
+    'desc desc'
+    'genre type'
+    'country lang'
+    'date isbn'
+    'rating link'
+    'tags .';
 
   &--author {
     display: grid;

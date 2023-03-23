@@ -1,5 +1,4 @@
 .videogames__editor {
-  .editor__grid {
     display: grid;
     margin-bottom: 2rem;
     grid-template-columns: repeat(4, 1fr);
@@ -18,7 +17,6 @@
     &__completion {grid-area: completion;}
     &__tags {grid-area: tags;}
     &__format {grid-area: format;}
-  }
 
   &__controls {
     display: flex;

@@ -1,7 +1,12 @@
 import React from 'react'
-import {Button} from '@material-ui/core'
+import {
+  Button,
+  CircularProgress
+} from '@material-ui/core'
 
-const FormFooter = ({onCancel, valid, className}) => {
+import 'stylesheets/components/form.scss'
+
+const FormFooter = ({onCancel, canSave, className}) => {
   return (
     <footer className={className}>
       <Button
@@ -9,7 +14,7 @@ const FormFooter = ({onCancel, valid, className}) => {
         color='primary'
         size='medium'
         variant='contained'
-        disabled={!valid}
+        disabled={!canSave}
       >
         Save
       </Button>
@@ -25,16 +30,41 @@ const FormFooter = ({onCancel, valid, className}) => {
 }
 
 const FormWrapper = (props) => {
-  const {children, wrapperClass, hasControls, onSave, onCancel, valid} = props
+  const {
+    children,
+    wrapperClass = '',
+    hasControls,
+    onSave,
+    onCancel,
+    canSave = true,
+    saving = false
+  } = props
 
   return (
     <form onSubmit={onSave}>
-      <div className={wrapperClass}>
+      <div className={`${wrapperClass} form-wrapper`}>
         {children}
+        { saving && (
+            <div
+              style={{
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                height: '100%',
+                width: '100%',
+                zIndex: 10,
+                backdropFilter: 'blur(3px)'
+              }}
+            >
+              <CircularProgress color='primary' />
+            </div>
+        )}
       </div>
       {hasControls &&
         <FormFooter
-          valid={valid}
+          canSave={canSave}
           onCancel={onCancel}
           className={`${wrapperClass}__controls`}
         />

@@ -171,7 +171,7 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
         wrapperClass='author-editor'
         onSave={handleSubmit}
         onCancel={handleClose}
-        valid={valid}
+        canSave={valid}
         hasControls
       >
         <TextField

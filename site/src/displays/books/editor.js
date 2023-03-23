@@ -103,7 +103,8 @@ const BookEditor = ({books, authors}) => {
     values,
     onChange,
     handleSubmit,
-    valid
+    valid,
+    saving
   } = useForm({
     initialValues: book,
     onSave,
@@ -132,130 +133,129 @@ const BookEditor = ({books, authors}) => {
         wrapperClass='books-editor'
         onCancel={onCancel}
         onSave={handleSubmit}
-        valid={valid}
+        canSave={valid && !saving}
+        saving={saving}
         hasControls
       >
-        <div className='books-editor__grid'>
+        <TextField
+          id='book-title'
+          label='Title'
+          name='title'
+          className='books-editor__input books-editor--title'
+          variant='filled'
+          value={values.title}
+          onChange={onChange}
+          autoFocus
+          required
+        />
+        <div className='books-editor--author'>
           <TextField
-            id='book-title'
-            label='Title'
-            name='title'
-            className='books-editor__input books-editor--title'
+            id='book-author'
+            label='Author'
+            name='author'
+            className='books-editor__input'
             variant='filled'
-            value={values.title}
-            onChange={onChange}
-            autoFocus
+            value={values.author.id}
+            onChange={onUpdateAuthor}
+            select
             required
-          />
-          <div className='books-editor--author'>
-            <TextField
-              id='book-author'
-              label='Author'
-              name='author'
-              className='books-editor__input'
-              variant='filled'
-              value={values.author.id}
-              onChange={onUpdateAuthor}
-              select
-              required
-            >
-              {authorOptions}
-            </TextField>
-            <Button onClick={onOpenModal} variant='contained'>Add</Button>
-          </div>
-          <TextField
-            label='Description'
-            className='books-editor__input books-editor--description'
-            variant='filled'
-            name='description'
-            rows={5}
-            value={values.description}
-            onChange={onChange}
-            multiline
-          />
-          <TextField
-            id='book-genre'
-            label='Genre'
-            name='genre'
-            className='books-editor__input books-editor--genre'
-            variant='filled'
-            value={values.genre}
-            onChange={onChange}
-          />
-          <TextField
-            id='book-type'
-            label='Type'
-            name='type'
-            className='books-editor__input books-editor--type'
-            variant='filled'
-            value={values.type}
-            onChange={onChange}
-          />
-          <TextField
-            id='book-country'
-            label='Country'
-            name='country'
-            className='books-editor__input books-editor--country'
-            variant='filled'
-            value={values.country}
-            onChange={onChange}
-          />
-          <TextField
-            id='book-language'
-            label='Language'
-            name='language'
-            className='books-editor__input books-editor--lang'
-            variant='filled'
-            value={values.language}
-            onChange={onChange}
-          />
-          <TextField
-            id='book-date'
-            label='Date'
-            name='date'
-            className='books-editor__input books-editor--date'
-            variant='filled'
-            type='date'
-            value={values.date}
-            InputLabelProps={{shrink: true}}
-            onChange={onChange}
-          />
-          <TextField
-            id='book-isbn'
-            label='ISBN'
-            name='ISBN'
-            className='books-editor__input books-editor--isbn'
-            variant='filled'
-            value={values.ISBN}
-            onChange={onChange}
-          />
-          <StarRating
-            value={values.rating}
-            onChange={onRatingChange}
-            name='rating'
-            className='books-editor--rating'
-            editable
-          />
-          <TextField
-            id='book-link'
-            label='Goodreads link'
-            name='goodreads_link'
-            className='books-editor__input books-editor--link'
-            type='url'
-            variant='filled'
-            value={values.goodreads_link}
-            onChange={onChange}
-          />
-          <TagInput
-            id='book-tags'
-            label='Tags'
-            name='tags'
-            wrapperClass='books-editor--tags'
-            inputClass='books-editor__input'
-            value={values.tags}
-            onChange={onTagChange}
-          />
+          >
+            {authorOptions}
+          </TextField>
+          <Button onClick={onOpenModal} variant='contained'>Add</Button>
         </div>
+        <TextField
+          label='Description'
+          className='books-editor__input books-editor--description'
+          variant='filled'
+          name='description'
+          rows={5}
+          value={values.description}
+          onChange={onChange}
+          multiline
+        />
+        <TextField
+          id='book-genre'
+          label='Genre'
+          name='genre'
+          className='books-editor__input books-editor--genre'
+          variant='filled'
+          value={values.genre}
+          onChange={onChange}
+        />
+        <TextField
+          id='book-type'
+          label='Type'
+          name='type'
+          className='books-editor__input books-editor--type'
+          variant='filled'
+          value={values.type}
+          onChange={onChange}
+        />
+        <TextField
+          id='book-country'
+          label='Country'
+          name='country'
+          className='books-editor__input books-editor--country'
+          variant='filled'
+          value={values.country}
+          onChange={onChange}
+        />
+        <TextField
+          id='book-language'
+          label='Language'
+          name='language'
+          className='books-editor__input books-editor--lang'
+          variant='filled'
+          value={values.language}
+          onChange={onChange}
+        />
+        <TextField
+          id='book-date'
+          label='Date'
+          name='date'
+          className='books-editor__input books-editor--date'
+          variant='filled'
+          type='date'
+          value={values.date}
+          InputLabelProps={{shrink: true}}
+          onChange={onChange}
+        />
+        <TextField
+          id='book-isbn'
+          label='ISBN'
+          name='ISBN'
+          className='books-editor__input books-editor--isbn'
+          variant='filled'
+          value={values.ISBN}
+          onChange={onChange}
+        />
+        <StarRating
+          value={values.rating}
+          onChange={onRatingChange}
+          name='rating'
+          className='books-editor--rating'
+          editable
+        />
+        <TextField
+          id='book-link'
+          label='Goodreads link'
+          name='goodreads_link'
+          className='books-editor__input books-editor--link'
+          type='url'
+          variant='filled'
+          value={values.goodreads_link}
+          onChange={onChange}
+        />
+        <TagInput
+          id='book-tags'
+          label='Tags'
+          name='tags'
+          wrapperClass='books-editor--tags'
+          inputClass='books-editor__input'
+          value={values.tags}
+          onChange={onTagChange}
+        />
       </FormWrapper>
       <AuthorEditor
         open={open}
