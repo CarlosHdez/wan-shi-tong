@@ -4,6 +4,8 @@ import {
   useParams
 } from 'react-router-dom'
 import {
+  Dialog,
+  DialogTitle,
   Button,
   TextField,
   MenuItem
@@ -129,7 +131,15 @@ const BoardgameEditor = ({games, designers}) => {
   }
 
   return (
-    <>
+    <Dialog
+      aria-labelledby='boardgames-editor-dialog'
+      className='editor-dialog'
+      onClose={onCancel}
+      open
+    >
+      <DialogTitle id='boardgames-editor-dialog'>
+        {game.id ? `Edit ${game.name}` : 'New boardgame'}
+      </DialogTitle>
       <FormWrapper
         onCancel={onCancel}
         onSave={handleSubmit}
@@ -249,7 +259,7 @@ const BoardgameEditor = ({games, designers}) => {
         apiSave={saveDesigner}
         title='New Designer'
       />
-    </>
+    </Dialog>
   )
 }
 

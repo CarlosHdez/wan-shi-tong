@@ -1,3 +1,14 @@
+.editor-dialog {
+  .MuiDialog-paper {
+    max-width: 60%;
+    width: 60%;
+  }
+  .MuiDialogTitle-root {
+    padding-left: 0;
+    padding-top: 0;
+  }
+}
+
 .game-editor {
   display: grid;
   align-items: start;
