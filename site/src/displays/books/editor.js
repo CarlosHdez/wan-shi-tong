@@ -4,6 +4,8 @@ import {
   useParams
 } from 'react-router-dom'
 import {
+  Dialog,
+  DialogTitle,
   Button,
   TextField,
   MenuItem
@@ -128,7 +130,15 @@ const BookEditor = ({books, authors}) => {
   }, [authors.data])
 
   return (
-    <>
+    <Dialog
+      aria-labelledby='book-editor-dialog'
+      className='editor-dialog'
+      onClose={onCancel}
+      open
+    >
+      <DialogTitle id='book-editor-dialog'>
+        {book.id ? `Edit ${book.name}` : 'New book'}
+      </DialogTitle>
       <FormWrapper
         wrapperClass='books-editor'
         onCancel={onCancel}
@@ -263,7 +273,7 @@ const BookEditor = ({books, authors}) => {
         onSave={onSaveAuthor}
         onClose={onCloseModal}
       />
-    </>
+    </Dialog>
   )
 }
 
