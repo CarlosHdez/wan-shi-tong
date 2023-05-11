@@ -15,16 +15,16 @@ const VideogamesWrapper = ({collection}) => {
     <div className='videogames--wrapper'>
       <h2>Videogames</h2>
       <Switch>
-        <Route path={`${path}/new`}>
-          <VideogameEditor games={collection} />
-        </Route>
-        <Route path={`${path}/:videogameId`}>
-          <VideogameEditor games={collection} />
-        </Route>
         <Route path='*'>
           <VideogamesShelf collection={collection} />
         </Route>
       </Switch>
+      <Route path={`${path}/new`}>
+        <VideogameEditor games={collection} />
+      </Route>
+      <Route path={`${path}/:videogameId`}>
+        <VideogameEditor games={collection} />
+      </Route>
     </div>
   )
 }

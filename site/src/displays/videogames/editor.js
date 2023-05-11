@@ -4,6 +4,8 @@ import {
   useParams
 } from 'react-router-dom'
 import {
+  Dialog,
+  DialogTitle,
   TextField,
   InputAdornment,
   FormControlLabel,
@@ -107,111 +109,121 @@ const VideogameEditor = ({games}) => {
     .map(({id, name}) => <MenuItem key={id} value={id}>{name}</MenuItem>)
 
   return (
-    <FormWrapper
-      wrapperClass='videogames__editor'
-      onCancel={onCancel}
-      onSave={handleSubmit}
-      canSave={valid || !saving}
-      saving={saving}
-      hasControls
+    <Dialog
+      aria-labelledby='videogame-editor-dialog'
+      className='editor-dialog'
+      onClose={onCancel}
+      open
     >
-      <TextField
-        id='videogame__name'
-        label='Name'
-        name='name'
-        className='editor__input videogames__editor__name'
-        variant='filled'
-        value={values.name}
-        onChange={onChange}
-        autoFocus
-        required
-      />
-      <TextField
-        id='videogame__platform'
-        label='Platform'
-        name='platform'
-        className='editor__input videogames__editor__platform'
-        variant='filled'
-        value={values.platform}
-        onChange={onChange}
-        select
-        required
+      <DialogTitle id='videogame-editor-dialog'>
+        {videogame.id ? `Edit ${videogame.name}` : 'New videogame'}
+      </DialogTitle>
+      <FormWrapper
+        wrapperClass='videogames__editor'
+        onCancel={onCancel}
+        onSave={handleSubmit}
+        canSave={valid || !saving}
+        saving={saving}
+        hasControls
       >
-        {platforms}
-      </TextField>
-      <TextField
-        id='videogame__genre'
-        label='Genre'
-        name='genre'
-        className='editor__input videogames__editor__genre'
-        variant='filled'
-        value={values.genre}
-        onChange={onChange}
-      />
-      <TextField
-        id='videogame__company'
-        label='Company'
-        name='company'
-        className='editor__input videogames__editor__company'
-        variant='filled'
-        value={values.company}
-        onChange={onChange}
-      />
-      <TextField
-        label='Notes'
-        className='editor__input videogames__editor__notes'
-        variant='filled'
-        name='notes'
-        rows={3}
-        value={values.notes}
-        onChange={onChange}
-        multiline
-      />
-      <TagInput
-        id='videogame__tags'
-        label='Tags'
-        name='tags'
-        wrapperClass='videogames__editor__tags'
-        inputClass='editor__input'
-        variant='filled'
-        value={values.tags}
-        onChange={onTagChange}
-      />
-      <TextField
-        id='videogame__completion'
-        label='Completion'
-        name='completion'
-        className='editor__input videogames__editor__completion'
-        variant='filled'
-        type='number'
-        inputProps={{min: 0}}
-        value={Math.round(values.completion * 100)}
-        onChange={onCompletionChange}
-        InputProps={{
-          endAdornment: <InputAdornment position='end'>%</InputAdornment>
-        }}
-      />
-      <StarRating
-        value={values.rating}
-        onChange={onRatingChange}
-        name='rating'
-        className='videogames__editor__rating'
-        editable
-      />
-      <FormControlLabel
-        label='Physical copy'
-        className='editor__input videogames__editor__format'
-        control={
-          <Checkbox
-            id='videogame__format'
-            name='isPhysical'
-            color='primary'
-            checked={values.isPhysical}
-            onChange={onFormatChange}
-          />
-        }
-      />
-    </FormWrapper>
+        <TextField
+          id='videogame__name'
+          label='Name'
+          name='name'
+          className='editor__input videogames__editor__name'
+          variant='filled'
+          value={values.name}
+          onChange={onChange}
+          autoFocus
+          required
+        />
+        <TextField
+          id='videogame__platform'
+          label='Platform'
+          name='platform'
+          className='editor__input videogames__editor__platform'
+          variant='filled'
+          value={values.platform}
+          onChange={onChange}
+          select
+          required
+        >
+          {platforms}
+        </TextField>
+        <TextField
+          id='videogame__genre'
+          label='Genre'
+          name='genre'
+          className='editor__input videogames__editor__genre'
+          variant='filled'
+          value={values.genre}
+          onChange={onChange}
+        />
+        <TextField
+          id='videogame__company'
+          label='Company'
+          name='company'
+          className='editor__input videogames__editor__company'
+          variant='filled'
+          value={values.company}
+          onChange={onChange}
+        />
+        <TextField
+          label='Notes'
+          className='editor__input videogames__editor__notes'
+          variant='filled'
+          name='notes'
+          rows={3}
+          value={values.notes}
+          onChange={onChange}
+          multiline
+        />
+        <TagInput
+          id='videogame__tags'
+          label='Tags'
+          name='tags'
+          wrapperClass='videogames__editor__tags'
+          inputClass='editor__input'
+          variant='filled'
+          value={values.tags}
+          onChange={onTagChange}
+        />
+        <TextField
+          id='videogame__completion'
+          label='Completion'
+          name='completion'
+          className='editor__input videogames__editor__completion'
+          variant='filled'
+          type='number'
+          inputProps={{min: 0}}
+          value={Math.round(values.completion * 100)}
+          onChange={onCompletionChange}
+          InputProps={{
+            endAdornment: <InputAdornment position='end'>%</InputAdornment>
+          }}
+        />
+        <StarRating
+          value={values.rating}
+          onChange={onRatingChange}
+          name='rating'
+          className='videogames__editor__rating'
+          editable
+        />
+        <FormControlLabel
+          label='Physical copy'
+          className='editor__input videogames__editor__format'
+          control={
+            <Checkbox
+              id='videogame__format'
+              name='isPhysical'
+              color='primary'
+              checked={values.isPhysical}
+              onChange={onFormatChange}
+            />
+          }
+        />
+      </FormWrapper>
+    </Dialog>
   )
 }
 
