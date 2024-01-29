@@ -46,6 +46,17 @@ const bookValidator = (values) => {
   return errors
 }
 
+const TypeOptions = [
+  <MenuItem key='hc' value='Hardcover'>Hardcover</MenuItem>,
+  <MenuItem key='pb' value='Paperback'>Paperback</MenuItem>,
+  <MenuItem key='eb' value='Ebook'>eBook</MenuItem>,
+  <MenuItem key='cm' value='Comic'>Comic</MenuItem>
+]
+const LanguageOptions = [
+  <MenuItem key='en' value='English'>English</MenuItem>,
+  <MenuItem key='es' value='Español'>Español</MenuItem>
+]
+
 const BookEditor = ({books, authors}) => {
   const [open, setOpen] = useState(false)
   const [book, setBook] = useState(initialValues)
@@ -201,7 +212,10 @@ const BookEditor = ({books, authors}) => {
           variant='filled'
           value={values.type}
           onChange={onChange}
-        />
+          select
+        >
+          {TypeOptions}
+        </TextField>
         <TextField
           id='book-country'
           label='Country'
@@ -219,7 +233,10 @@ const BookEditor = ({books, authors}) => {
           variant='filled'
           value={values.language}
           onChange={onChange}
-        />
+          select
+        >
+          {LanguageOptions}
+        </TextField>
         <TextField
           id='book-date'
           label='Date'
