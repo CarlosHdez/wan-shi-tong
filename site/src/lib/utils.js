@@ -27,6 +27,9 @@ export const filterData = (data, filters) => {
   filters.forEach(({column, value, type, ...rest}) => {
     newData = newData.filter((item) => {
       const reg = new RegExp(value, 'i')
+      if (column === 'search') { // Special column to search directly
+        return reg.test(item[rest.key])
+      }
       if (type === 'number' || type === 'percentage') {
         return numericFilter(rest.constraint, item[column], value)
       }

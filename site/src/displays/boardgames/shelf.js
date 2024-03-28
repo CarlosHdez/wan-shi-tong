@@ -1,7 +1,8 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import {Add} from '@material-ui/icons'
-import {Button} from '@material-ui/core'
+import {debounce} from 'lodash'
+import {Button, TextField} from '@material-ui/core'
 
 import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
@@ -110,8 +111,9 @@ const BoardgamesShelf = ({collection}) => {
   }, [collection, filters])
 
   useEffect(() => {
-    if (filters.length) {
-      storage.setItem(BOARDGAMES_STORAGE_KEY, JSON.stringify(filters))
+    const value = filters.filter(({column}) => column !== 'search') // Don't save the search column
+    if (value.length) {
+      storage.setItem(BOARDGAMES_STORAGE_KEY, JSON.stringify(value))
     } else {
       storage.removeItem(BOARDGAMES_STORAGE_KEY)
     }
@@ -128,11 +130,28 @@ const BoardgamesShelf = ({collection}) => {
       filterOptions={BOARDGAME_FILTERS}
     />
   )
+  const doSearch = debounce(({target}) => {
+    const newFilters = filters
+      .filter(({column}) => column !== 'search') // Remove old search
+    newFilters.push({ value: target.value, column: 'search', key: 'name' })
+    setFilters(newFilters)
+  }, 500)
+  const search = (e) => {
+    e.persist();
+    doSearch(e);
+  }
 
   return (
     <>
       <div className='table--filters'>
         <Button size='small' onClick={() => push('/boardgames/new')}><Add /></Button>
+        <TextField
+          label='Search'
+          className='search-box'
+          variant='standard'
+          size="small"
+          onChange={search}
+        />
         {filterRow}
       </div>
       <Table

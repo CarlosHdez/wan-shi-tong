@@ -206,27 +206,29 @@ const FilterRow = ({filters, setFilters, filterOptions}) => {
   }
 
   // TODO: Move to their component
-  const chips = filters.map(({column, value, ...rest}, i) => {
-    let label = `${rest.label}: ${value}`
-    if (rest.type === 'enum') {
-      label = `${rest.label}: ${rest.options.find(({id}) => id === value).name}`
-    }
-    if (rest.type === 'number') {
-      label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${value}`
-    }
-    if (rest.type === 'percentage') {
-      const val = value.toLocaleString(undefined, {style: 'percent'})
-      label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${val}`
-    }
-    return (
-      <Chip
-        key={column}
-        label={label}
-        color='secondary'
-        onDelete={() => removeFilter(column)}
-      />
-    )
-  })
+  const chips = filters
+    .filter(({label}) => !!label)
+    .map(({column, value, ...rest}, i) => {
+      let label = `${rest.label}: ${value}`
+      if (rest.type === 'enum') {
+        label = `${rest.label}: ${rest.options.find(({id}) => id === value).name}`
+      }
+      if (rest.type === 'number') {
+        label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${value}`
+      }
+      if (rest.type === 'percentage') {
+        const val = value.toLocaleString(undefined, {style: 'percent'})
+        label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${val}`
+      }
+      return (
+        <Chip
+          key={column}
+          label={label}
+          color='secondary'
+          onDelete={() => removeFilter(column)}
+        />
+      )
+    })
 
   const options = filterOptions.map((option) => {
     const disabled = filters.find(({column}) => column === option.column)

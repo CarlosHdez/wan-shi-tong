@@ -1,7 +1,8 @@
 import React, {useMemo, useState, useEffect} from 'react'
+import {debounce} from 'lodash'
 import {Link, useHistory} from 'react-router-dom'
 import {Add} from '@material-ui/icons'
-import {Button} from '@material-ui/core'
+import {Button, TextField} from '@material-ui/core'
 
 import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
@@ -21,8 +22,9 @@ const BooksShelf = ({collection}) => {
   const [filters, setFilters] = useState(value || [])
 
   useEffect(() => {
-    if (filters.length) {
-      storage.setItem(BOOK_STORAGE_KEY, JSON.stringify(filters))
+    const value = filters.filter(({column}) => column !== 'search') // Don't save the search column
+    if (value.length) {
+      storage.setItem( BOOK_STORAGE_KEY, JSON.stringify(value))
     } else {
       storage.removeItem(BOOK_STORAGE_KEY)
     }
@@ -122,6 +124,18 @@ const BooksShelf = ({collection}) => {
     ]
   }, [collection, filters])
 
+  const doSearch = debounce(({target}) => {
+    const newFilters = filters
+      .filter(({column}) => column !== 'search') // Remove old search
+    newFilters.push({ value: target.value, column: 'search', key: 'title' })
+    setFilters(newFilters)
+  }, 500)
+
+  const search = (e) => {
+    e.persist();
+    doSearch(e);
+  }
+
   const filterRow = (
     <FilterRow
       filters={filters}
@@ -135,6 +149,13 @@ const BooksShelf = ({collection}) => {
     <>
       <div className='table--filters'>
         <Button size='small' onClick={() => push('/books/new')}><Add /></Button>
+        <TextField
+          label='Search'
+          className='search-box'
+          variant='standard'
+          size="small"
+          onChange={search}
+        />
         {filterRow}
       </div>
       <Table

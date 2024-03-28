@@ -27,10 +27,6 @@ export const PLATFORMS = [
 ]
 
 export const BOOK_FILTERS = [{
-  column: 'title',
-  label: 'Title',
-  type: 'string'
-}, {
   column: 'author',
   label: 'Author',
   type: 'object'
@@ -53,10 +49,6 @@ export const BOOK_FILTERS = [{
 }]
 
 export const VIDEOGAME_FILTERS = [{
-  column: 'name',
-  label: 'Name',
-  type: 'string'
-}, {
   column: 'company',
   label: 'Company',
   type: 'string'
@@ -84,10 +76,6 @@ export const VIDEOGAME_FILTERS = [{
 }]
 
 export const BOARDGAME_FILTERS = [{
-  column: 'name',
-  label: 'Name',
-  type: 'string'
-}, {
   column: 'designer',
   label: 'Designer',
   type: 'object'

@@ -1,8 +1,9 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {Add} from '@material-ui/icons'
+import {debounce} from 'lodash'
 import {Link, useHistory} from 'react-router-dom'
-import {Button} from '@material-ui/core'
+import {Button, TextField} from '@material-ui/core'
 
 import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
@@ -97,8 +98,9 @@ const VideogamesShelf = ({collection}) => {
   }, [collection, filters])
 
   useEffect(() => {
-    if (filters.length) {
-      storage.setItem(VIDEOGAMES_STORAGE_KEY, JSON.stringify(filters))
+    const value = filters.filter(({column}) => column !== 'search') // Don't save the search column
+    if (value.length) {
+      storage.setItem(VIDEOGAMES_STORAGE_KEY, JSON.stringify(value))
     } else {
       storage.removeItem(VIDEOGAMES_STORAGE_KEY)
     }
@@ -116,10 +118,28 @@ const VideogamesShelf = ({collection}) => {
     />
   )
 
+  const doSearch = debounce(({target}) => {
+    const newFilters = filters
+      .filter(({column}) => column !== 'search') // Remove old search
+    newFilters.push({ value: target.value, column: 'search', key: 'name' })
+    setFilters(newFilters)
+  }, 500)
+  const search = (e) => {
+    e.persist();
+    doSearch(e);
+  }
+
   return (
     <>
       <div className='table--filters'>
         <Button size='small' onClick={() => push('/videogames/new')}><Add /></Button>
+        <TextField
+          label='Search'
+          className='search-box'
+          variant='standard'
+          size="small"
+          onChange={search}
+        />
         {filterRow}
       </div>
       <Table
