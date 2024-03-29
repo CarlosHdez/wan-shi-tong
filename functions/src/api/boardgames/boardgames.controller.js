@@ -2,12 +2,24 @@ const admin = require('../../setup_firebase')
 
 const db = admin.firestore()
 
+const translateMechanics = (mechanics) => {
+  return mechanics.map(async (doc) => {
+    const ref = await doc.get()
+    return {
+      id: doc.id,
+      ...ref.data()
+    }
+  })
+}
+
 const translateGame = async (game) => {
-  const {designer, ...data} = game.data()
+  const {designer, mechanics, ...data} = game.data()
   const desRef = await designer.get()
+  const newMechs = await Promise.all(translateMechanics(mechanics))
   return {
     id: game.id,
     ...data,
+    mechanics: newMechs,
     designer: {
       id: designer.id,
       ...desRef.data()
@@ -99,6 +111,22 @@ const boardgamesController = {
       return res.status(200).json({data: boardgames})
     } catch (err) {
       console.log(`Error while deleting: ${err}`)
+      return res.status(500).json({message: err})
+    }
+  },
+
+  loadMechanics: async (req, res) => {
+    try {
+      console.log('Request received to list mechanics')
+      const collection = db.collection('boardgameMechanics')
+      const snapshot = await collection.get()
+      const mechanics = snapshot.docs.map((mechanic) => ({
+        id: mechanic.id,
+        ...mechanic.data()
+      }));
+      return res.status(200).json({data: mechanics})
+    } catch (err) {
+      console.log(err)
       return res.status(500).json({message: err})
     }
   }
