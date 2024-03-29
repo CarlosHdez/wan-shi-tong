@@ -7,12 +7,13 @@ import {
 
 import BoardgamesShelf from 'displays/boardgames/shelf'
 import BoardgamesEditor from 'displays/boardgames/editor'
-import {listDesigners} from 'api/boardgames'
+import {listDesigners, listMechanics} from 'api/boardgames'
 import {useCollection} from 'hooks/useCollection'
 import 'stylesheets/boardgames/wrapper.scss'
 
 const BoardgamesWrapper = ({collection}) => {
   const designers = useCollection(listDesigners)
+  const mechanics = useCollection(listMechanics)
   const {path} = useRouteMatch()
 
   return (

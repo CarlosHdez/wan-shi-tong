@@ -242,15 +242,15 @@ const BoardgameEditor = ({games, designers}) => {
           className='game-editor--rating'
           editable
         />
-        <TagInput
-          id='game-mechanics'
-          label='Mechanics'
-          name='mechanics'
-          wrapperClass='game-editor--mechanics'
-          variant='filled'
-          value={values.mechanics}
-          onChange={onMechanicsChange}
-        />
+        {/* <TagInput */}
+        {/*   id='game-mechanics' */}
+        {/*   label='Mechanics' */}
+        {/*   name='mechanics' */}
+        {/*   wrapperClass='game-editor--mechanics' */}
+        {/*   variant='filled' */}
+        {/*   value={values.mechanics} */}
+        {/*   onChange={onMechanicsChange} */}
+        {/* /> */}
       </FormWrapper>
       <AuthorEditor
         open={isModalOpen}

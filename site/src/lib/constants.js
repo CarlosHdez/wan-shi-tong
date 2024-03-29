@@ -92,10 +92,6 @@ export const BOARDGAME_FILTERS = [{
   label: 'Type',
   type: 'string'
 }, {
-  column: 'mechanics',
-  label: 'Mechanics',
-  type: 'string'
-}, {
   column: 'language',
   label: 'Language',
   type: 'string'

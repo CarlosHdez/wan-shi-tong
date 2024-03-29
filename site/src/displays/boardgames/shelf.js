@@ -72,13 +72,14 @@ const BoardgamesShelf = ({collection}) => {
         Cell: ({value}) => (
           <>
             {value.map((val, i) => (
+              /* Recover the filters once all tags are migrated */
               <TableTagCell
-                key={i}
-                label={val}
+                key={val.id}
+                label={val.name}
                 column='mechanics'
                 filterLabel='Mechanic'
-                filters={filters}
-                setFilters={setFilters}
+                filters={[]}
+                setFilters={() => {}}
               />
             ))}
           </>

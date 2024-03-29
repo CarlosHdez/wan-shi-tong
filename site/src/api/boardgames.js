@@ -4,6 +4,7 @@ import {requestCollection, getAPIValues} from 'api/utils'
 export const listBoardgames = async () => await requestCollection('boardgames')
 
 export const listDesigners = async () => await requestCollection('designers')
+export const listMechanics = async () => await requestCollection('mechanics')
 
 export const saveDesigner = async (designer) => {
   const options = {
