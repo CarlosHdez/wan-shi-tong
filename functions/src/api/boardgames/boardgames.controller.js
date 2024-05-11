@@ -50,12 +50,14 @@ const boardgamesController = {
     console.log(`Updating boardgame with id ${id}`)
     try {
       const boardgameRef = collection.doc(id)
-      const {designer, ...body} = req.body
-      console.log(designer)
+      const {designer, mechanics, ...body} = req.body
       const desRef = db.collection('designers').doc(designer)
+      const mechanicsList = db.collection('boardgameMechanics')
+      const refs = mechanics.map((mec) => mechanicsList.doc(mec.id))
       const game = {
         ...body,
-        designer: desRef
+        designer: desRef,
+        mechanics: refs
       }
       await boardgameRef.set(game)
       console.log('Successful Update')
