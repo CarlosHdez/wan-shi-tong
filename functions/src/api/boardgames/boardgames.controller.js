@@ -2,7 +2,8 @@ const admin = require('../../setup_firebase')
 
 const db = admin.firestore()
 
-const translateMechanics = (mechanics) => {
+// Convert from firebase reference to JSON
+const refToObjMechanics = (mechanics) => {
   return mechanics.map(async (doc) => {
     const ref = await doc.get()
     return {
@@ -12,10 +13,24 @@ const translateMechanics = (mechanics) => {
   })
 }
 
+// Convert from JSON to firebase reference, create if not existing
+const objToRefMechanics = async (mechanics) => {
+  const mechanicsList = db.collection('boardgameMechanics')
+  const refs = mechanics.map(async (mec) => {
+    if (typeof mec === 'string') { // New mechanic
+      console.log('New mechanic', mec)
+      return await mechanicsList.add({name: mec}) 
+    } else {
+      return mechanicsList.doc(mec.id)
+    }
+  })
+  return Promise.all(refs)
+}
+
 const translateGame = async (game) => {
   const {designer, mechanics, ...data} = game.data()
   const desRef = await designer.get()
-  const newMechs = await Promise.all(translateMechanics(mechanics))
+  const newMechs = await Promise.all(refToObjMechanics(mechanics))
   return {
     id: game.id,
     ...data,
@@ -52,12 +67,11 @@ const boardgamesController = {
       const boardgameRef = collection.doc(id)
       const {designer, mechanics, ...body} = req.body
       const desRef = db.collection('designers').doc(designer)
-      const mechanicsList = db.collection('boardgameMechanics')
-      const refs = mechanics.map((mec) => mechanicsList.doc(mec.id))
+      const mechRefs = await objToRefMechanics(mechanics)
       const game = {
         ...body,
         designer: desRef,
-        mechanics: refs
+        mechanics: mechRefs
       }
       await boardgameRef.set(game)
       console.log('Successful Update')
