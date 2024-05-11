@@ -23,7 +23,7 @@ const BoardgamesWrapper = ({collection}) => {
         <Route path='*'><BoardgamesShelf collection={collection} /></Route>
       </Switch>
       <Route path={[`${path}/new`, `${path}/:gameId`]}>
-        <BoardgamesEditor games={collection} designers={designers} />
+        <BoardgamesEditor games={collection} designers={designers} mechanics={mechanics}/>
       </Route>
     </div>
   )

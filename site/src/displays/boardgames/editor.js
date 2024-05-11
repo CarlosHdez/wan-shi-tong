@@ -14,7 +14,7 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
-import TagInput from 'components/tag_input'
+import {TagInputV2} from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveBoardgame, saveDesigner} from 'api/boardgames'
 import 'stylesheets/boardgames/editor.scss'
@@ -42,7 +42,7 @@ const validator = ({name, designer}) => {
   return errors
 }
 
-const BoardgameEditor = ({games, designers}) => {
+const BoardgameEditor = ({games, designers, mechanics}) => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [game, setGame] = useState(initialValues)
   const {push} = useHistory()
@@ -60,6 +60,7 @@ const BoardgameEditor = ({games, designers}) => {
     if (gameId) {
       index = games.data.findIndex(({id}) => id === gameId)
     }
+    // TODO: Update mechanics list if new one was added
     const newData = [
       ...games.data.slice(0, index),
       val,
@@ -242,15 +243,16 @@ const BoardgameEditor = ({games, designers}) => {
           className='game-editor--rating'
           editable
         />
-        {/* <TagInput */}
-        {/*   id='game-mechanics' */}
-        {/*   label='Mechanics' */}
-        {/*   name='mechanics' */}
-        {/*   wrapperClass='game-editor--mechanics' */}
-        {/*   variant='filled' */}
-        {/*   value={values.mechanics} */}
-        {/*   onChange={onMechanicsChange} */}
-        {/* /> */}
+        <TagInputV2
+          id='game-mechanics'
+          label='Mechanics'
+          name='mechanics'
+          wrapperClass='game-editor--mechanics'
+          variant='filled'
+          options={mechanics.data}
+          value={values.mechanics}
+          onChange={onMechanicsChange}
+        />
       </FormWrapper>
       <AuthorEditor
         open={isModalOpen}

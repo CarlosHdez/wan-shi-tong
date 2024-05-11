@@ -19,7 +19,7 @@ const objToRefMechanics = async (mechanics) => {
   const refs = mechanics.map(async (mec) => {
     if (typeof mec === 'string') { // New mechanic
       console.log('New mechanic', mec)
-      return await mechanicsList.add({name: mec}) 
+      return await mechanicsList.add({name: mec})
     } else {
       return mechanicsList.doc(mec.id)
     }
