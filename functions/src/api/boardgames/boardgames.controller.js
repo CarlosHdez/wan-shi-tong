@@ -65,7 +65,7 @@ const boardgamesController = {
     console.log(`Updating boardgame with id ${id}`)
     try {
       const boardgameRef = collection.doc(id)
-      const {designer, mechanics, ...body} = req.body
+      const {designer, mechanics = [], ...body} = req.body
       const desRef = db.collection('designers').doc(designer)
       const mechRefs = await objToRefMechanics(mechanics)
       const game = {
@@ -89,11 +89,13 @@ const boardgamesController = {
     const collection = db.collection('boardgames')
     console.log('Creating a boardgame')
     try {
-      const {designer, ...body} = req.body
+      const {designer, mechanics = [], ...body} = req.body
       const desRef = db.collection('designers').doc(designer)
+      const mechRefs = await objToRefMechanics(mechanics)
       const game = {
         ...body,
-        designer: desRef
+        designer: desRef,
+        mechanics: mechRefs
       }
       const result = await collection.add(game)
       console.log(`Successful creation with id ${result.id}`)

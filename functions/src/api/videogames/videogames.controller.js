@@ -2,6 +2,7 @@ const admin = require('../../setup_firebase')
 
 const db = admin.firestore()
 
+// Convert from firebase reference to JSON
 const jsonParseTags = (tags, game) => {
   return tags.map(async (doc) => {
     const ref = await doc.get()
@@ -10,6 +11,20 @@ const jsonParseTags = (tags, game) => {
       ...ref.data()
     }
   })
+}
+
+// Convert from JSON to firebase reference, create if not existing
+const objToRefTags = async (tags) => {
+  const tagsList = db.collection('videogameTags')
+  const refs = tags.map(async (tag) => {
+    if (typeof tag === 'string') { // New tag
+      console.log('New tag', tag)
+      return await tagsList.add({name: tag})
+    } else {
+      return tagsList.doc(tag.id)
+    }
+  })
+  return Promise.all(refs)
 }
 
 const translateGame = async (game) => {
@@ -45,16 +60,17 @@ const videogamesController = {
     console.log(`Updating videogame with id ${id}`)
     try {
       const videogameRef = collection.doc(id)
-      const {body} = req
-      await videogameRef.set(body)
+      const {tags = [], ...body} = req.body
+      const tagRefs = await objToRefTags(tags);
+      await videogameRef.set({
+        ...body,
+        tags: tagRefs
+      })
       console.log('Successful Update')
       const newRef = await collection.doc(id).get()
-      const data = {
-        id,
-        ...newRef.data()
-      }
-      console.log(data)
-      return res.status(200).json(data)
+      const newGame = await translateGame(newRef)
+      console.log(newGame)
+      return res.status(200).json(newGame)
     } catch (err) {
       console.log('Error updating', {error: err, body: req.body})
       return res.status(500).json({message: err})
@@ -65,14 +81,16 @@ const videogamesController = {
     const collection = db.collection('videogames')
     console.log('Creating a videogame')
     try {
-      const {body} = req
+      const {tags = [], ...body} = req.body
+      const tagRefs = await objToRefTags(tags);
       const result = await collection.add(body)
       console.log(`Successful creation with id ${result.id}`)
       const newGame = await result.get()
       console.log(newGame)
+      const game = await translateGame(newGame)
       return res.status(200).json({
         id: result.id,
-        ...newGame.data()
+        ...game
       })
     } catch (err) {
       console.log('Error creating', {error: err, body: req.body})
