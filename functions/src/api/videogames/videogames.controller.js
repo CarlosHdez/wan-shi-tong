@@ -2,23 +2,38 @@ const admin = require('../../setup_firebase')
 
 const db = admin.firestore()
 
+const jsonParseTags = (tags, game) => {
+  return tags.map(async (doc) => {
+    const ref = await doc.get()
+    return {
+      id: doc.id,
+      ...ref.data()
+    }
+  })
+}
+
+const translateGame = async (game) => {
+  const {tags, ...data} = game.data()
+  const parsedTags = await Promise.all(jsonParseTags(tags, game))
+  return {
+    id: game.id,
+    ...data,
+    tags: parsedTags
+  }
+}
+
 const videogamesController = {
   listVideogames: async (req, res) => {
     try {
       console.log('Request received to list videogames')
       const collection = db.collection('videogames')
       const snapshot = await collection.get()
-      const videogameList = snapshot.docs.map((game) => {
-        const data = game.data()
-        return {
-          id: game.id,
-          ...data
-        }
-      })
+      const videogameList = snapshot.docs.map(translateGame)
       const videogames = await Promise.all(videogameList)
       console.log('List generated')
       return res.status(200).json({data: videogames})
     } catch (err) {
+      console.log('Error list', err)
       return res.status(500).json({message: err})
     }
   },
@@ -89,7 +104,23 @@ const videogamesController = {
       console.log(`Error while deleting: ${err}`)
       return res.status(500).json({message: err})
     }
-  }
+  },
+
+  listTags: async (req, res) => {
+    try {
+      console.log('Request received to list videogame tags')
+      const collection = db.collection('videogameTags')
+      const snapshot = await collection.get()
+      const tags = snapshot.docs.map((tag) => ({
+        id: tag.id,
+        ...tag.data()
+      }));
+      return res.status(200).json({data: tags})
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({message: err})
+    }
+  },
 }
 
 module.exports = videogamesController

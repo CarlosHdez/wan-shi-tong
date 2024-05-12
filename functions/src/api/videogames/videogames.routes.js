@@ -5,6 +5,8 @@ const initVGRoutes = (router) => {
   router.put('/videogames/:id', videogamesController.updateGame)
   router.post('/videogames', videogamesController.createGame)
   router.delete('/videogames/:id', videogamesController.deleteGame)
+
+  router.get('/videogameTags', videogamesController.listTags)
 }
 
 module.exports = initVGRoutes
