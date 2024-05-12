@@ -15,7 +15,7 @@ import {
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
-import TagInput from 'components/tag_input'
+import {TagInputV2} from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveVideogame} from 'api/videogames'
 import {PLATFORMS} from 'lib/constants'
@@ -44,7 +44,7 @@ const videogameValidator = ({name, platform}) => {
   return errors
 }
 
-const VideogameEditor = ({games}) => {
+const VideogameEditor = ({games, tags}) => {
   const [videogame, setVideogame] = useState(initialValues)
   const {push} = useHistory()
   const {videogameId} = useParams()
@@ -178,13 +178,14 @@ const VideogameEditor = ({games}) => {
           onChange={onChange}
           multiline
         />
-        <TagInput
+        <TagInputV2
           id='videogame__tags'
           label='Tags'
           name='tags'
           wrapperClass='videogames__editor__tags'
           inputClass='editor__input'
           variant='filled'
+          options={tags.data}
           value={values.tags}
           onChange={onTagChange}
         />

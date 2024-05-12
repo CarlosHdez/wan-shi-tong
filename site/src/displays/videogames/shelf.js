@@ -70,10 +70,10 @@ const VideogamesShelf = ({collection}) => {
           <>
             {value.map((val, i) => (
               <TableTagCell
-                key={i}
-                label={val}
-                filters={filters}
-                setFilters={setFilters}
+                key={val.id}
+                label={val.name}
+                filters={[]}
+                setFilters={() => {}}
               />
             ))}
           </>

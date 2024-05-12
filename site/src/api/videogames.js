@@ -2,6 +2,7 @@ import {formatTags} from 'lib/utils'
 import {requestCollection, getAPIValues} from 'api/utils'
 
 export const listVideogames = async () => await requestCollection('videogames')
+export const listVideogameTags = async () => await requestCollection('videogameTags')
 
 export const saveVideogame = async (game) => {
   const {tags, ...rest} = game

@@ -3,10 +3,12 @@
     margin-bottom: 2rem;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 1rem;
-    grid-template-areas: 'name name platform platform'
+    grid-template-areas:
+      'name name platform platform'
       'genre genre company company'
       'notes notes notes notes'
-      'tags completion rating format';
+      'completion rating format .'
+      'tags tags . . ';
 
     &__name {font-size: 20px; grid-area: name;}
     &__platform {grid-area: platform;}
