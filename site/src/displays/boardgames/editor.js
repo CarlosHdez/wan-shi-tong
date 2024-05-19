@@ -14,7 +14,7 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
-import {TagInputV2} from 'components/tag_input'
+import {TagInput} from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveBoardgame, saveDesigner} from 'api/boardgames'
 import 'stylesheets/boardgames/editor.scss'
@@ -243,7 +243,7 @@ const BoardgameEditor = ({games, designers, mechanics}) => {
           className='game-editor--rating'
           editable
         />
-        <TagInputV2
+        <TagInput
           id='game-mechanics'
           label='Mechanics'
           name='mechanics'

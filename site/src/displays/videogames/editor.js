@@ -15,7 +15,7 @@ import {
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
-import {TagInputV2} from 'components/tag_input'
+import {TagInput} from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveVideogame} from 'api/videogames'
 import {PLATFORMS} from 'lib/constants'
@@ -178,7 +178,7 @@ const VideogameEditor = ({games, tags}) => {
           onChange={onChange}
           multiline
         />
-        <TagInputV2
+        <TagInput
           id='videogame__tags'
           label='Tags'
           name='tags'

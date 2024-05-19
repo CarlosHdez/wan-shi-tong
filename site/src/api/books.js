@@ -4,6 +4,7 @@ import {requestCollection, getAPIValues} from 'api/utils'
 export const listBooks = async () => await requestCollection('books')
 
 export const listAuthors = async () => await requestCollection('authors')
+export const listTags = async () => await requestCollection('bookTags')
 
 export const saveAuthor = async (author) => {
   const options = {

@@ -14,7 +14,7 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
-import TagInput from 'components/tag_input'
+import {TagInput} from 'components/tag_input'
 import useForm from 'hooks/useForm'
 import {saveBook, saveAuthor} from 'api/books'
 import 'stylesheets/books/editor.scss'
@@ -57,7 +57,7 @@ const LanguageOptions = [
   <MenuItem key='es' value='Español'>Español</MenuItem>
 ]
 
-const BookEditor = ({books, authors}) => {
+const BookEditor = ({books, authors, tags}) => {
   const [open, setOpen] = useState(false)
   const [book, setBook] = useState(initialValues)
   const {push} = useHistory()
@@ -280,6 +280,7 @@ const BookEditor = ({books, authors}) => {
           name='tags'
           wrapperClass='books-editor--tags'
           inputClass='books-editor__input'
+          options={tags.data}
           value={values.tags}
           onChange={onTagChange}
         />
