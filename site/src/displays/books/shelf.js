@@ -82,9 +82,8 @@ const BooksShelf = ({collection}) => {
               <TableTagCell
                 key={val.id}
                 label={val.name}
-                column='tags'
-                filters={[]}
-                setFilters={() => {}}
+                filters={filters}
+                setFilters={setFilters}
               />
             ))}
           </>

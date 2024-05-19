@@ -72,8 +72,8 @@ const VideogamesShelf = ({collection}) => {
               <TableTagCell
                 key={val.id}
                 label={val.name}
-                filters={[]}
-                setFilters={() => {}}
+                filters={filters}
+                setFilters={setFilters}
               />
             ))}
           </>

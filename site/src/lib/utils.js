@@ -37,7 +37,7 @@ export const filterData = (data, filters) => {
         return rangeFilter(item[column].min, item[column].max, value)
       }
       if (type === 'array') {
-        return item[column].some((tag) => reg.test(tag))
+        return item[column].some((tag) => reg.test(tag.name))
       }
 
       let test = item[column]
