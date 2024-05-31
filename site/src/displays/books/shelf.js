@@ -76,7 +76,7 @@ const BooksShelf = ({collection}) => {
         accessor: 'tags',
         disableSortBy: true,
         className: 'cell__tags',
-        Cell: ({value}) => (
+        Cell: ({value = []}) => (
           <>
             {value.map((val, i) => (
               <TableTagCell

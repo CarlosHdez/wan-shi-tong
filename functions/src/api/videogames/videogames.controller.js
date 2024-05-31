@@ -83,7 +83,10 @@ const videogamesController = {
     try {
       const {tags = [], ...body} = req.body
       const tagRefs = await objToRefTags(tags);
-      const result = await collection.add(body)
+      const result = await collection.add({
+        ...body,
+        tags: tagRefs
+      })
       console.log(`Successful creation with id ${result.id}`)
       const newGame = await result.get()
       console.log(newGame)

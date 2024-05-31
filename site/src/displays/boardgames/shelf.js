@@ -69,7 +69,7 @@ const BoardgamesShelf = ({collection}) => {
         Header: 'Mechanics',
         accessor: 'mechanics',
         className: 'cell__tags',
-        Cell: ({value}) => (
+        Cell: ({value = []}) => (
           <>
             {value.map((val, i) => (
               <TableTagCell

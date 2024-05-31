@@ -69,10 +69,6 @@ export const VIDEOGAME_FILTERS = [{
   column: 'completion',
   label: 'Completion',
   type: 'percentage'
-  // }, {
-  // TODO: Check how to index all tags and use them as filter opionts
-  //   column: 'tags',
-  //   type: 'string'
 }]
 
 export const BOARDGAME_FILTERS = [{
