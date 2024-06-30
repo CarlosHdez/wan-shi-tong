@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState} from 'react'
 import {
   Dialog,
   DialogTitle,
@@ -10,7 +10,7 @@ import {
 import {FilterList} from '@material-ui/icons'
 
 import FormWrapper from 'components/form'
-import useForm from 'hooks/useForm'
+import 'stylesheets/components/filter.scss'
 
 const defaultFilter = {
   column: '', // key in the data array
@@ -26,118 +26,138 @@ const TRANSLATIONS = {
   lt: '<'
 }
 
-const validateFilter = ({column, value}) => {
-  const errors = {}
-  if (!value) {
-    errors.value = true
-  }
-  if (!column) {
-    errors.column = true
-  }
-  return errors
+const NumberFilter = ({filter}) => {
+  // return (
+  //   <div key={filter.column}>
+  //     <label>{filter.label}</label>
+  //     <TextField
+  //       select
+  //       label='Type'
+  //       variant='filled'
+  //       name={filter.column}
+  //       value={currentFilter.constraint}
+  //       onChange={setFilterConstraint}
+  //     >
+  //       <MenuItem value='gt'>Greater than</MenuItem>
+  //       <MenuItem value='lt'>Lower than</MenuItem>
+  //       <MenuItem value='eq'>Equal</MenuItem>
+  //     </TextField>
+  //     <TextField
+  //       label=''
+  //       type='number'
+  //       name='numberFilter'
+  //       variant='filled'
+  //       inputProps={{'data-filter': JSON.stringify(filter)}}
+  //       value={currentFilter.value}
+  //       onChange={setFilterNumberValue}
+  //     />
+  //   </div>
+  // )
 }
 
-const FilterModal = ({open, onClose, options, saveFilter}) => {
-  const [filter, setFilter] = useState(defaultFilter)
+const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFilter}) => {
+  const filterObj = initialFilters
+    .reduce((acc, filter) => ({...acc, [filter.column]: filter}), {})
+  const [filters, setFilters] = useState(filterObj)
 
-  const handleClose = () => {
+  const onSave = () => {
+    saveFilter(Object.values(filters))
     onClose()
-    setFilter(defaultFilter)
-  }
-
-  const onSave = (values) => {
-    saveFilter(values)
-    handleClose()
-  }
-
-  const selectColumn = ({currentTarget}) => {
-    const values = JSON.parse(currentTarget.dataset.content)
-    setFilter({...filter, ...values, value: ''})
-  }
-
-  const editValue = (value) => {
-    onChange({
-      target: {
-        name: 'value',
-        value
-      }
-    })
   }
 
   const setFilterValue = ({target}) => {
-    editValue(target.value)
-  }
-
-  const setFilterNumberValue = ({target}) => {
-    const value = filter.type === 'percentage' ?
-      target.value / 100 :
-      Number(target.value)
-    editValue(value)
-  }
-
-  const setFilterConstraint = ({target}) => {
-    onChange({
-      target: {
-        name: 'constraint',
+    const filter = JSON.parse(target.dataset.filter)
+    setFilters({
+      ...filters,
+      [filter.column]: {
+        ...defaultFilter,
+        ...filter,
         value: target.value
       }
     })
   }
 
-  const {values: formValues, onChange, handleSubmit, valid} = useForm({
-    onSave,
-    initialValues: filter,
-    validator: useCallback(validateFilter, [])
-  })
+  const setFilterNumberValue = ({target}) => {
+    const filter = JSON.parse(target.dataset.filter)
+    const value = filter.type === 'percentage' ?
+      target.value / 100 :
+      Number(target.value)
+    setFilters({
+      ...filters,
+      [filter.column]: {
+        ...defaultFilter,
+        ...filter,
+        value
+      }
+    })
+  }
 
-  const filterInput = () => {
+  const setFilterConstraint = ({target}) => {
+    const filter = filters[target.name] || defaultFilter
+    setFilters({
+      ...filters,
+      [target.name]: {
+        ...filter,
+        constraint: target.value
+      }
+    })
+  }
+
+  const filterInput = (filter) => {
+    const currentFilter = filters[filter.column] || defaultFilter
     switch (filter.type) {
       case 'string':
       case 'object':
         return (
           <TextField
-            label='Contains'
+            key={filter.column}
+            inputProps={{'data-filter': JSON.stringify(filter)}}
+            label={`${filter.label} (Contains)`}
             name='stringFilter'
             variant='filled'
-            value={formValues.value}
+            value={currentFilter.value}
             onChange={setFilterValue}
           />
         )
       case 'number':
       case 'percentage':
         return (
-          <>
+          <div key={filter.column}>
+            <label>{filter.label}</label>
             <TextField
-              label='Type'
-              name='numberType'
-              variant='filled'
-              value={formValues.constraint}
-              onChange={setFilterConstraint}
               select
+              label='Type'
+              variant='filled'
+              name={filter.column}
+              value={currentFilter.constraint}
+              onChange={setFilterConstraint}
             >
               <MenuItem value='gt'>Greater than</MenuItem>
               <MenuItem value='lt'>Lower than</MenuItem>
               <MenuItem value='eq'>Equal</MenuItem>
             </TextField>
             <TextField
-              label='Value'
+              label=''
               type='number'
               name='numberFilter'
-              value={formValues.value}
-              onChange={setFilterNumberValue}
               variant='filled'
+              inputProps={{'data-filter': JSON.stringify(filter)}}
+              value={currentFilter.value}
+              onChange={setFilterNumberValue}
             />
-          </>
+          </div>
         )
       case 'range':
         return (
           <TextField
-            label='Value'
+            key={filter.column}
+            label={filter.label}
             type='number'
             name='rangeFilter'
-            value={formValues.value}
-            onChange={setFilterNumberValue}
             variant='filled'
+            inputProps={{'data-filter': JSON.stringify(filter)}}
+            value={currentFilter.value}
+            onChange={setFilterNumberValue}
           />
         )
       case 'enum':
@@ -145,11 +165,18 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
           .map(({id, name}) => <MenuItem key={id} value={id}>{name}</MenuItem>)
         return (
           <TextField
-            label='Option'
+            key={filter.column}
+            label={filter.label}
             name='numberType'
             variant='filled'
-            value={formValues.value}
-            onChange={setFilterValue}
+            value={currentFilter.value}
+            onChange={({target}) => setFilterValue({
+              // Hack to mock the input data field
+              target: {
+                ...target,
+                dataset: {filter: JSON.stringify(currentFilter)}
+              }
+            })}
             select
           >
             {values}
@@ -161,31 +188,16 @@ const FilterModal = ({open, onClose, options, saveFilter}) => {
   }
 
   return (
-    <Dialog
-      aria-labelledby='filter-modal'
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog aria-labelledby='filter-modal' onClose={onClose} open >
       <DialogTitle id='filter-modal'>Filter by</DialogTitle>
       <FormWrapper
-        wrapperClass='author-editor'
-        onSave={handleSubmit}
-        onCancel={handleClose}
-        canSave={valid}
+        wrapperClass='filter-editor'
+        onSave={onSave}
+        onCancel={onClose}
+        canSave
         hasControls
       >
-        <TextField
-          label='Column'
-          name='column'
-          variant='filled'
-          value={formValues.column}
-          onChange={selectColumn}
-          autoFocus
-          select
-        >
-          {options}
-        </TextField>
-        {filterInput()}
+        {filterOptions.map(filterInput)}
       </FormWrapper>
     </Dialog>
   )
@@ -196,10 +208,6 @@ const FilterRow = ({filters, setFilters, filterOptions}) => {
 
   const openModal = () => setOpen(true)
   const closeModal = () => setOpen(false)
-
-  const saveFilter = (filter) => {
-    setFilters([...filters, filter])
-  }
 
   const removeFilter = (column) => {
     setFilters(filters.filter((i) => i.column !== column))
@@ -230,32 +238,20 @@ const FilterRow = ({filters, setFilters, filterOptions}) => {
       )
     })
 
-  const options = filterOptions.map((option) => {
-    const disabled = filters.find(({column}) => column === option.column)
-    return (
-      <MenuItem
-        key={option.column}
-        data-content={JSON.stringify(option)}
-        value={option.column}
-        disabled={!!disabled}
-      >
-        {option.label}
-      </MenuItem>
-    )
-  })
-
   return (
     <>
       <Button size='small' onClick={openModal}>
         <FilterList />
       </Button>
       {chips}
-      <FilterModal
-        open={open}
-        onClose={closeModal}
-        options={options}
-        saveFilter={saveFilter}
-      />
+      {open && (
+        <FilterModal
+          onClose={closeModal}
+          filterOptions={filterOptions}
+          initialFilters={filters}
+          saveFilter={setFilters}
+        />
+      )}
     </>
   )
 }
