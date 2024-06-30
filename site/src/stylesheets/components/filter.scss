@@ -1,0 +1,13 @@
+.filter-editor {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 16px;
+
+  .number-filter {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+
+    .MuiTextField-root { flex: 2; }
+  }
+}

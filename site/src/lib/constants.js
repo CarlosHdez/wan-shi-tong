@@ -96,3 +96,17 @@ export const BOARDGAME_FILTERS = [{
   label: 'Publisher',
   type: 'string'
 }]
+
+export const DEFAULT_FILTER = {
+  column: '', // key in the data array
+  value: '', // the value to match
+  type: '', // type of filter
+  label: '', // display value
+  constraint: 'eq' // The type of filter to apply (greater than, equal, lower than)
+}
+
+export const TRANSLATIONS = {
+  eq: '=',
+  gt: '>',
+  lt: '<'
+}

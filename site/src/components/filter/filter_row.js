@@ -10,50 +10,12 @@ import {
 import {FilterList} from '@material-ui/icons'
 
 import FormWrapper from 'components/form'
+import {NumberFilter} from 'components/filter/number_filter'
+import {
+  TRANSLATIONS,
+  DEFAULT_FILTER 
+} from 'lib/constants'
 import 'stylesheets/components/filter.scss'
-
-const defaultFilter = {
-  column: '', // key in the data array
-  value: '', // the value to match
-  type: '', // type of filter
-  label: '', // display value
-  constraint: 'eq' // The type of filter to apply (greater than, equal, lower than)
-}
-
-const TRANSLATIONS = {
-  eq: '=',
-  gt: '>',
-  lt: '<'
-}
-
-const NumberFilter = ({filter}) => {
-  // return (
-  //   <div key={filter.column}>
-  //     <label>{filter.label}</label>
-  //     <TextField
-  //       select
-  //       label='Type'
-  //       variant='filled'
-  //       name={filter.column}
-  //       value={currentFilter.constraint}
-  //       onChange={setFilterConstraint}
-  //     >
-  //       <MenuItem value='gt'>Greater than</MenuItem>
-  //       <MenuItem value='lt'>Lower than</MenuItem>
-  //       <MenuItem value='eq'>Equal</MenuItem>
-  //     </TextField>
-  //     <TextField
-  //       label=''
-  //       type='number'
-  //       name='numberFilter'
-  //       variant='filled'
-  //       inputProps={{'data-filter': JSON.stringify(filter)}}
-  //       value={currentFilter.value}
-  //       onChange={setFilterNumberValue}
-  //     />
-  //   </div>
-  // )
-}
 
 const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFilter}) => {
   const filterObj = initialFilters
@@ -61,7 +23,7 @@ const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFil
   const [filters, setFilters] = useState(filterObj)
 
   const onSave = () => {
-    saveFilter(Object.values(filters))
+    saveFilter(Object.values(filters).filter(({value}) => value))
     onClose()
   }
 
@@ -70,7 +32,7 @@ const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFil
     setFilters({
       ...filters,
       [filter.column]: {
-        ...defaultFilter,
+        ...DEFAULT_FILTER,
         ...filter,
         value: target.value
       }
@@ -85,26 +47,15 @@ const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFil
     setFilters({
       ...filters,
       [filter.column]: {
-        ...defaultFilter,
+        ...DEFAULT_FILTER,
         ...filter,
         value
       }
     })
   }
 
-  const setFilterConstraint = ({target}) => {
-    const filter = filters[target.name] || defaultFilter
-    setFilters({
-      ...filters,
-      [target.name]: {
-        ...filter,
-        constraint: target.value
-      }
-    })
-  }
-
   const filterInput = (filter) => {
-    const currentFilter = filters[filter.column] || defaultFilter
+    const currentFilter = filters[filter.column] || DEFAULT_FILTER
     switch (filter.type) {
       case 'string':
       case 'object':
@@ -122,30 +73,13 @@ const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFil
       case 'number':
       case 'percentage':
         return (
-          <div key={filter.column}>
-            <label>{filter.label}</label>
-            <TextField
-              select
-              label='Type'
-              variant='filled'
-              name={filter.column}
-              value={currentFilter.constraint}
-              onChange={setFilterConstraint}
-            >
-              <MenuItem value='gt'>Greater than</MenuItem>
-              <MenuItem value='lt'>Lower than</MenuItem>
-              <MenuItem value='eq'>Equal</MenuItem>
-            </TextField>
-            <TextField
-              label=''
-              type='number'
-              name='numberFilter'
-              variant='filled'
-              inputProps={{'data-filter': JSON.stringify(filter)}}
-              value={currentFilter.value}
-              onChange={setFilterNumberValue}
-            />
-          </div>
+          <NumberFilter
+            key={filter.column}
+            filters={filters}
+            filter={filter}
+            currentFilter={currentFilter}
+            setFilters={setFilters}
+          />
         )
       case 'range':
         return (
