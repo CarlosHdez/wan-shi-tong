@@ -76,7 +76,7 @@ const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFil
           <NumberFilter
             key={filter.column}
             filters={filters}
-            filter={filter}
+            filterConf={filter}
             currentFilter={currentFilter}
             setFilters={setFilters}
           />
@@ -108,7 +108,7 @@ const FilterModal = ({open, onClose, filterOptions, initialFilters = [], saveFil
               // Hack to mock the input data field
               target: {
                 ...target,
-                dataset: {filter: JSON.stringify(currentFilter)}
+                dataset: {filter: JSON.stringify(filter)}
               }
             })}
             select
@@ -159,7 +159,7 @@ const FilterRow = ({filters, setFilters, filterOptions}) => {
         label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${value}`
       }
       if (rest.type === 'percentage') {
-        const val = value.toLocaleString(undefined, {style: 'percent'})
+        const val = (value / 100).toLocaleString(undefined, {style: 'percent'})
         label = `${rest.label} ${TRANSLATIONS[rest.constraint]} ${val}`
       }
       return (

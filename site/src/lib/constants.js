@@ -49,6 +49,10 @@ export const BOOK_FILTERS = [{
 }]
 
 export const VIDEOGAME_FILTERS = [{
+  column: 'name',
+  label: 'Name',
+  type: 'string'
+}, {
   column: 'company',
   label: 'Company',
   type: 'string'

@@ -30,8 +30,11 @@ export const filterData = (data, filters) => {
       if (column === 'search') { // Special column to search directly
         return reg.test(item[rest.key])
       }
-      if (type === 'number' || type === 'percentage') {
+      if (type === 'number') {
         return numericFilter(rest.constraint, item[column], value)
+      }
+      if (type === 'percentage') {
+        return numericFilter(rest.constraint, item[column], value / 100)
       }
       if (type === 'range') {
         return rangeFilter(item[column].min, item[column].max, value)

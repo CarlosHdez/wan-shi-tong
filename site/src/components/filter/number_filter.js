@@ -5,32 +5,30 @@ import {
 } from '@material-ui/core'
 import {
   TRANSLATIONS,
-  DEFAULT_FILTER 
+  DEFAULT_FILTER
 } from 'lib/constants'
 
-export const NumberFilter = ({filters, filter, currentFilter, setFilters}) => {
+export const NumberFilter = ({filters, filterConf, currentFilter, setFilters}) => {
   const constraints = Object.keys(TRANSLATIONS)
   const setFilterConstraint = () => {
     const filter = currentFilter || DEFAULT_FILTER
     const index = constraints.indexOf(filter.constraint) + 1
     setFilters({
       ...filters,
-      [currentFilter.column]: {
+      [filterConf.column]: {
         ...filter,
         constraint: index === constraints.length ? 'eq' : constraints[index]
       }
     })
   }
   const setFilterNumberValue = ({target}) => {
-    const filter = JSON.parse(target.dataset.filter)
-    const value = filter.type === 'percentage' ?
-      target.value / 100 :
-      Number(target.value)
+    const value = Number(target.value)
+    const filter = currentFilter || DEFAULT_FILTER
     setFilters({
       ...filters,
-      [filter.column]: {
-        ...DEFAULT_FILTER,
+      [filterConf.column]: {
         ...filter,
+        ...filterConf,
         value
       }
     })
@@ -38,13 +36,13 @@ export const NumberFilter = ({filters, filter, currentFilter, setFilters}) => {
   const clearFilter = () => {
     setFilters({
       ...filters,
-      [currentFilter.column]: {...DEFAULT_FILTER, column: currentFilter.column}
+      [filterConf.column]: {...DEFAULT_FILTER, column: currentFilter.column}
     })
   }
 
   return (
     <div className='number-filter'>
-      <label>{filter.label}</label>
+      <label>{filterConf.label}</label>
       <IconButton size='small' onClick={setFilterConstraint}>
         {TRANSLATIONS[currentFilter.constraint]}
       </IconButton>
@@ -53,7 +51,7 @@ export const NumberFilter = ({filters, filter, currentFilter, setFilters}) => {
         type='number'
         name='numberFilter'
         variant='filled'
-        inputProps={{'data-filter': JSON.stringify(filter)}}
+        inputProps={{'data-filter': JSON.stringify(filterConf)}}
         value={currentFilter.value}
         onChange={setFilterNumberValue}
       />
