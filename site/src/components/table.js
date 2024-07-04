@@ -31,10 +31,12 @@ const Table = ({status, ...props}) => {
   } = useTable(props, useSortBy, usePagination)
 
   const renderTH = ({className, render, isSorted, isSortedDesc, ...col}) => {
+    const {key, ...rest} = col.getHeaderProps(col.getSortByToggleProps())
     return (
       <th
         className={className ? className : ''}
-        {...col.getHeaderProps(col.getSortByToggleProps())}
+        key={key}
+        {...rest}
       >
         {render('Header')}
         {isSorted ? (isSortedDesc ? <ArrowDownward />  : <ArrowUpward />) : ''}
@@ -43,16 +45,18 @@ const Table = ({status, ...props}) => {
   }
 
   const renderHeaderRow = (header) => {
+    const {key, ...rest} = header.getHeaderGroupProps()
     return (
-      <tr {...header.getHeaderGroupProps()}>
+      <tr key={key} {...rest}>
         {header.headers.map(renderTH)}
       </tr>
     )
   }
 
   const renderCell = (cell) => {
+    const {key, ...rest} = cell.getCellProps()
     return (
-      <td className={cell.column.className} {...cell.getCellProps()}>
+      <td className={cell.column.className} key={key} {...rest}>
         {cell.render('Cell')}
       </td>
     )
@@ -60,8 +64,9 @@ const Table = ({status, ...props}) => {
 
   const renderRow = (row) => {
     prepareRow(row)
+    const {key, ...rest} = row.getRowProps()
     return (
-      <tr {...row.getRowProps()}>
+      <tr key={key} {...rest}>
         {row.cells.map(renderCell)}
       </tr>
     )

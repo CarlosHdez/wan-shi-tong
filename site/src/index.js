@@ -1,7 +1,6 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import {createRoot} from 'react-dom/client'
 import {BrowserRouter as Router} from 'react-router-dom'
-import { ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
+import {ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme} from '@mui/material/styles';
 
 import App from 'App'
 import 'stylesheets/index.scss'
@@ -36,13 +35,14 @@ const theme = createTheme(adaptV4Theme({
   }
 }))
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'))
+
+root.render(
   <Router>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
     </StyledEngineProvider>
-  </Router>,
-  document.getElementById('root')
+  </Router>
 )

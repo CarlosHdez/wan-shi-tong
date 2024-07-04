@@ -1,7 +1,13 @@
 import React from 'react'
 import {Chip} from '@mui/material'
 
-export const TableTagCell = ({label, filters, setFilters, column, filterLabel}) => {
+export const TableTagCell = ({
+  label,
+  filters,
+  setFilters,
+  column = 'tags',
+  filterLabel = 'Tag'
+}) => {
   const clickOnTag = (ev) => {
     const hasTagFilter = filters.findIndex((f) => f.column === column)
     const value = ev.target.dataset.value || ev.target.innerHTML
@@ -37,9 +43,4 @@ export const TableTagCell = ({label, filters, setFilters, column, filterLabel}) 
       onClick={clickOnTag}
     />
   )
-}
-
-TableTagCell.defaultProps = {
-  column: 'tags',
-  filterLabel: 'Tag'
 }

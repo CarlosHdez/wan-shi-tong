@@ -6,7 +6,11 @@ import {
 
 import 'stylesheets/components/form.scss'
 
-const FormFooter = ({onCancel, canSave, className}) => {
+const FormFooter = ({
+  onCancel = () => {},
+  canSave = () => {},
+  className
+}) => {
   return (
     <footer className={className}>
       <Button
@@ -25,17 +29,15 @@ const FormFooter = ({onCancel, canSave, className}) => {
   )
 }
 
-const FormWrapper = (props) => {
-  const {
-    children,
-    wrapperClass = '',
-    hasControls,
-    onSave,
-    onCancel,
-    canSave = true,
-    saving = false
-  } = props
-
+const FormWrapper = ({
+  children,
+  wrapperClass = '',
+  hasControls,
+  onSave = () => {},
+  onCancel = () => {},
+  canSave = true,
+  saving = false
+}) => {
   return (
     <form onSubmit={onSave}>
       <div className={`${wrapperClass} form-wrapper`}>
@@ -67,11 +69,6 @@ const FormWrapper = (props) => {
       }
     </form>
   )
-}
-
-FormWrapper.defaultProps = {
-  onSave: () => {},
-  onCancel: () => {}
 }
 
 export default FormWrapper
