@@ -3,7 +3,7 @@ import {
   Paper,
   Button,
   TextField
-} from '@material-ui/core'
+} from '@mui/material'
 
 import styles from 'stylesheets/navigation/login.module.scss'
 

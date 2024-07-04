@@ -1,8 +1,8 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import {debounce} from 'lodash'
 import {Link, useHistory} from 'react-router-dom'
-import {Add} from '@material-ui/icons'
-import {Button, TextField} from '@material-ui/core'
+import {Add} from '@mui/icons-material'
+import {Button, TextField} from '@mui/material'
 
 import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'

@@ -3,7 +3,7 @@ import {
   TextField,
   Dialog,
   DialogTitle
-} from '@material-ui/core'
+} from '@mui/material'
 
 import FormWrapper from 'components/form'
 import useForm from 'hooks/useForm'

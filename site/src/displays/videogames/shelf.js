@@ -1,9 +1,9 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
-import {Add} from '@material-ui/icons'
+import {Add} from '@mui/icons-material'
 import {debounce} from 'lodash'
 import {Link, useHistory} from 'react-router-dom'
-import {Button, TextField} from '@material-ui/core'
+import {Button, TextField} from '@mui/material'
 
 import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'

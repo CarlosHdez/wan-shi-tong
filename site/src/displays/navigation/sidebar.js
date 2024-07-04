@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import classnames from 'classnames'
 import {useHistory, useRouteMatch} from 'react-router-dom'
-import {ChevronRight} from '@material-ui/icons'
-import {Paper} from '@material-ui/core'
+import {ChevronRight} from '@mui/icons-material'
+import {Paper} from '@mui/material'
 
 import {SECTIONS} from 'lib/constants'
 

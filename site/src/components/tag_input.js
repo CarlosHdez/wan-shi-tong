@@ -1,6 +1,5 @@
 import React from 'react';
-import {TextField, Chip} from '@material-ui/core'
-import {Autocomplete} from '@material-ui/lab'
+import {TextField, Chip, Autocomplete} from '@mui/material'
 
 export const TagInput = ({
   id,

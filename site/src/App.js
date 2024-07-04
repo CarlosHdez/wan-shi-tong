@@ -6,7 +6,7 @@ import Login from 'displays/navigation/login'
 import MainWrapper from 'displays/main_wrapper'
 import {initAuth} from 'lib/firebase'
 
-import {CircularProgress} from '@material-ui/core'
+import {CircularProgress} from '@mui/material'
 const Loading = () => (
   <div
     style={{

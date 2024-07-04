@@ -6,8 +6,8 @@ import {
   MenuItem,
   Button,
   Chip
-} from '@material-ui/core'
-import {FilterList} from '@material-ui/icons'
+} from '@mui/material'
+import {FilterList} from '@mui/icons-material'
 
 import FormWrapper from 'components/form'
 import {NumberFilter} from 'components/filter/number_filter'

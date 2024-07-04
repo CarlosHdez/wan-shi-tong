@@ -11,7 +11,7 @@ import {
   FormControlLabel,
   Checkbox,
   MenuItem
-} from '@material-ui/core'
+} from '@mui/material'
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'

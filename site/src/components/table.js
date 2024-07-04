@@ -5,14 +5,14 @@ import {
   usePagination,
   useSortBy
 } from 'react-table'
-import {Paper, Button} from '@material-ui/core'
+import {Paper, Button} from '@mui/material'
 import {
   ChevronLeft,
   ChevronRight,
   ArrowUpward,
   ArrowDownward
-} from '@material-ui/icons'
-import {CircularProgress} from '@material-ui/core'
+} from '@mui/icons-material'
+import {CircularProgress} from '@mui/material'
 
 import 'stylesheets/components/table.scss'
 

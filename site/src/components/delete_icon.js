@@ -5,7 +5,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent
-} from '@material-ui/core'
+} from '@mui/material'
 
 const DeleteIcon = ({id, name, onDelete}) => {
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -24,6 +24,7 @@ const DeleteIcon = ({id, name, onDelete}) => {
         className='cell__action--delete'
         data-id={id}
         onClick={openDialog}
+        size="large"
       >
         <span className='material-icons'>delete</span>
       </IconButton>

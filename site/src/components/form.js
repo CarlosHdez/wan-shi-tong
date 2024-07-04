@@ -2,7 +2,7 @@ import React from 'react'
 import {
   Button,
   CircularProgress
-} from '@material-ui/core'
+} from '@mui/material'
 
 import 'stylesheets/components/form.scss'
 
@@ -18,11 +18,7 @@ const FormFooter = ({onCancel, canSave, className}) => {
       >
         Save
       </Button>
-      <Button
-        color='default'
-        size='medium'
-        onClick={onCancel}
-      >
+      <Button size='medium' onClick={onCancel}>
         Cancel
       </Button>
     </footer>
