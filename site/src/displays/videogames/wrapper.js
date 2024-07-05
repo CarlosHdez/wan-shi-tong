@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Switch,
   Route,
@@ -7,23 +6,20 @@ import {
 
 import VideogamesShelf from 'displays/videogames/shelf'
 import VideogameEditor from 'displays/videogames/editor'
-import {useCollection} from 'hooks/useCollection'
-import {listVideogameTags} from 'api/videogames'
 import 'stylesheets/videogames/wrapper.scss'
 
-const VideogamesWrapper = ({collection}) => {
+const VideogamesWrapper = () => {
   const {path} = useRouteMatch()
-  const tags = useCollection(listVideogameTags)
   return (
     <div className='videogames--wrapper'>
       <h2>Videogames</h2>
       <Switch>
         <Route path='*'>
-          <VideogamesShelf collection={collection} />
+          <VideogamesShelf />
         </Route>
       </Switch>
       <Route path={[`${path}/new`, `${path}/:videogameId`]}>
-        <VideogameEditor games={collection} tags={tags} />
+        <VideogameEditor />
       </Route>
     </div>
   )

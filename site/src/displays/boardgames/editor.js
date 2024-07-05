@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect, useCallback} from 'react'
+import {useState, useMemo, useEffect, useCallback, useContext} from 'react'
 import {
   useHistory,
   useParams
@@ -14,8 +14,13 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
-import {TagInput} from 'components/tag_input'
 import useForm from 'hooks/useForm'
+import {
+  BoardgamesContext,
+  DesignersContext,
+  MechanicsContext
+} from 'lib/contexts/boardgames'
+import {TagInput} from 'components/tag_input'
 import {saveBoardgame, saveDesigner} from 'api/boardgames'
 import 'stylesheets/boardgames/editor.scss'
 
@@ -42,7 +47,16 @@ const validator = ({name, designer}) => {
   return errors
 }
 
-const BoardgameEditor = ({games, designers, mechanics}) => {
+const BoardgameEditor = () => {
+  const {
+    state: games,
+    dispatch: gamesDispatch
+  } = useContext(BoardgamesContext)
+  const {
+    state: designers,
+    dispatch: designersDispatch
+  } = useContext(DesignersContext)
+  const {state: mechanics} = useContext(MechanicsContext)
   const [isModalOpen, setModalOpen] = useState(false)
   const [game, setGame] = useState(initialValues)
   const {push} = useHistory()
@@ -66,7 +80,7 @@ const BoardgameEditor = ({games, designers, mechanics}) => {
       val,
       ...games.data.slice(index + 1)
     ]
-    games.dispatch({type: 'success', data: newData})
+    gamesDispatch({type: 'success', data: newData})
     push('/boardgames')
   }
 
@@ -126,7 +140,7 @@ const BoardgameEditor = ({games, designers, mechanics}) => {
   const onCloseModal = () => setModalOpen(false)
   const onSaveDesigner = (designer) => {
     const data = [...designers.data, designer]
-    designers.dispatch({type: 'success', data})
+    designersDispatch({type: 'success', data})
     onUpdateDesigner({target: {value: designer.id}})
     onCloseModal()
   }

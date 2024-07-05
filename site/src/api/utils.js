@@ -18,3 +18,17 @@ export const getAPIValues = (collection, id) => {
     endpoint: baseEndpoint
   }
 }
+
+const SUCCESS = 'success'
+const LOADING = 'loading'
+const ERROR = 'error'
+// TODO: Use middleware ?
+export const fetchCollection = async (fetchAction, dispatch) => {
+  try {
+    dispatch({type:LOADING})
+    const response = await fetchAction()
+    dispatch({type: SUCCESS, data: response})
+  } catch (err) {
+    dispatch({type: ERROR, error: err})
+  }
+}

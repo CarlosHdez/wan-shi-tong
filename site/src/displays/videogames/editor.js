@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import {useState, useEffect, useCallback, useContext} from 'react'
 import {
   useHistory,
   useParams
@@ -15,8 +15,9 @@ import {
 
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
-import {TagInput} from 'components/tag_input'
 import useForm from 'hooks/useForm'
+import {TagInput} from 'components/tag_input'
+import {VideogamesContext, VideogameTagsContext} from 'lib/contexts/videogames'
 import {saveVideogame} from 'api/videogames'
 import {PLATFORMS} from 'lib/constants'
 import 'stylesheets/videogames/editor.scss'
@@ -44,7 +45,12 @@ const videogameValidator = ({name, platform}) => {
   return errors
 }
 
-const VideogameEditor = ({games, tags}) => {
+const VideogameEditor = () => {
+  const {
+    state: games,
+    dispatch: gamesDispatch
+  } = useContext(VideogamesContext)
+  const {state: tags} = useContext(VideogameTagsContext)
   const [videogame, setVideogame] = useState(initialValues)
   const {push} = useHistory()
   const {videogameId} = useParams()
@@ -95,7 +101,7 @@ const VideogameEditor = ({games, tags}) => {
       val,
       ...games.data.slice(index + 1)
     ]
-    games.dispatch({type: 'success', data: newData})
+    gamesDispatch({type: 'success', data: newData})
     push('/videogames')
   }
 

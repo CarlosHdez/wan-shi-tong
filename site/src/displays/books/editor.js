@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo, useCallback} from 'react'
+import {useState, useEffect, useMemo, useCallback, useContext} from 'react'
 import {
   useHistory,
   useParams
@@ -14,8 +14,9 @@ import {
 import FormWrapper from 'components/form'
 import StarRating from 'components/star_rating'
 import AuthorEditor from 'displays/books/authors'
-import {TagInput} from 'components/tag_input'
 import useForm from 'hooks/useForm'
+import {BooksContext, AuthorsContext, TagsContext} from 'lib/contexts/books'
+import {TagInput} from 'components/tag_input'
 import {saveBook, saveAuthor} from 'api/books'
 import 'stylesheets/books/editor.scss'
 
@@ -57,16 +58,19 @@ const LanguageOptions = [
   <MenuItem key='es' value='Español'>Español</MenuItem>
 ]
 
-const BookEditor = ({books, authors, tags}) => {
+const BookEditor = () => {
+  const books = useContext(BooksContext)
+  const authors = useContext(AuthorsContext)
+  const tags = useContext(TagsContext)
   const [open, setOpen] = useState(false)
   const [book, setBook] = useState(initialValues)
   const {push} = useHistory()
   const {bookId} = useParams()
 
   useEffect(() => {
-    const book = books.data.find(({id}) => id === bookId) || initialValues
+    const book = books.state.data.find(({id}) => id === bookId) || initialValues
     setBook(book)
-  }, [bookId, books.data])
+  }, [bookId, books.state.data])
 
   const onRatingChange = (value) => {
     onChange({
@@ -99,14 +103,14 @@ const BookEditor = ({books, authors, tags}) => {
 
   const onSave = async (values) => {
     const val = await saveBook(values)
-    let index = books.data.length
+    let index = books.state.data.length
     if (bookId) {
-      index = books.data.findIndex(({id}) => id === bookId)
+      index = books.state.data.findIndex(({id}) => id === bookId)
     }
     const newData = [
-      ...books.data.slice(0, index),
+      ...books.state.data.slice(0, index),
       val,
-      ...books.data.slice(index + 1)
+      ...books.state.data.slice(index + 1)
     ]
     books.dispatch({type: 'success', data: newData})
     push('/books')
@@ -127,18 +131,18 @@ const BookEditor = ({books, authors, tags}) => {
   const onCloseModal = () => setOpen(false)
   const onOpenModal = () => setOpen(true)
   const onSaveAuthor = (author) => {
-    const data = [...authors.data, author]
+    const data = [...authors.state.data, author]
     authors.dispatch({type: 'success', data})
     onUpdateAuthor({target: {value: author.id}})
     onCloseModal()
   }
 
   const authorOptions = useMemo(() => {
-    return authors.data.map(({id, name, surname}) => {
+    return authors.state.data.map(({id, name, surname}) => {
       const key = `${name}-${surname}-${id}`
       return <MenuItem value={id} key={key}>{name} {surname}</MenuItem>
     }).sort((a, b) => a.key < b.key ? -1 : 1)
-  }, [authors.data])
+  }, [authors.state.data])
 
   return (
     <Dialog
@@ -280,7 +284,7 @@ const BookEditor = ({books, authors, tags}) => {
           name='tags'
           wrapperClass='books-editor--tags'
           inputClass='books-editor__input'
-          options={tags.data}
+          options={tags.state.data}
           value={values.tags}
           onChange={onTagChange}
         />

@@ -114,3 +114,39 @@ export const TRANSLATIONS = {
   gt: '>',
   lt: '<'
 }
+
+const NEVER_REQUESTED = 'neverRequested'
+const SUCCESS = 'success'
+const LOADING = 'loading'
+const ERROR = 'error'
+export const initialState = {
+  data: [],
+  error: '',
+  status: NEVER_REQUESTED
+}
+
+export const collectionReducer = (state, action) => {
+  switch (action.type) {
+    case LOADING:
+      return {
+        status: LOADING,
+        error: '',
+        data: []
+      }
+    case SUCCESS:
+      return {
+        status: SUCCESS,
+        error: '',
+        data: action.data
+      }
+    case ERROR:
+      return {
+        status: ERROR,
+        error: action.error,
+        data: []
+      }
+    case NEVER_REQUESTED:
+    default:
+      return initialState
+  }
+}

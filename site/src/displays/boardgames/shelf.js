@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useEffect} from 'react'
+import {useMemo, useState, useEffect, useContext} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import {Add} from '@mui/icons-material'
 import {debounce} from 'lodash'
@@ -8,6 +8,7 @@ import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
+import {BoardgamesContext} from 'lib/contexts/boardgames'
 import {TableTagCell} from 'components/table/tag_cell'
 import {deleteBoardgame} from 'api/boardgames'
 import {BOARDGAME_FILTERS} from 'lib/constants'
@@ -15,8 +16,12 @@ import {filterData} from 'lib/utils'
 import {useStorage} from 'hooks/useStorage'
 
 const BOARDGAMES_STORAGE_KEY = 'board-table-storage'
-const BoardgamesShelf = ({collection}) => {
-  const [tableData, setTableData] = useState(collection.data)
+const BoardgamesShelf = () => {
+  const {
+    state: games,
+    dispatch: gamesDispatch
+  } = useContext(BoardgamesContext)
+  const [tableData, setTableData] = useState(games.data)
   const {value, storage} = useStorage(BOARDGAMES_STORAGE_KEY)
   const [filters, setFilters] = useState(value || [])
   const {push} = useHistory()
@@ -24,7 +29,7 @@ const BoardgamesShelf = ({collection}) => {
   const columns = useMemo(() => {
     const onDeleteClick = async (id) => {
       const {data} = await deleteBoardgame(id)
-      collection.dispatch({type: 'success', data})
+      gamesDispatch({type: 'success', data})
     }
     return [
       {
@@ -108,7 +113,7 @@ const BoardgamesShelf = ({collection}) => {
         )
       }
     ]
-  }, [collection, filters])
+  }, [gamesDispatch, filters])
 
   useEffect(() => {
     const value = filters.filter(({column}) => column !== 'search') // Don't save the search column
@@ -120,8 +125,8 @@ const BoardgamesShelf = ({collection}) => {
   }, [filters, storage])
 
   useEffect(() => {
-    setTableData(filterData(collection.data, filters))
-  }, [filters, collection.data])
+    setTableData(filterData(games.data, filters))
+  }, [filters, games.data])
 
   const filterRow = (
     <FilterRow
@@ -156,7 +161,7 @@ const BoardgamesShelf = ({collection}) => {
       </div>
       <Table
         id='boardgames-table'
-        status={collection.status}
+        status={games.status}
         columns={columns}
         data={tableData}
         initialState={{pageSize: 20, sortBy: [{id: 'name', desc: false}]}}

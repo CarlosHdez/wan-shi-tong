@@ -1,5 +1,4 @@
-import React, {useMemo, useState, useEffect} from 'react'
-import PropTypes from 'prop-types'
+import {useMemo, useState, useEffect, useContext} from 'react'
 import {Add} from '@mui/icons-material'
 import {debounce} from 'lodash'
 import {Link, useHistory} from 'react-router-dom'
@@ -9,6 +8,7 @@ import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
+import {VideogamesContext} from 'lib/contexts/videogames'
 import {TableTagCell} from 'components/table/tag_cell'
 import {deleteVideogame} from 'api/videogames'
 import {PLATFORMS, VIDEOGAME_FILTERS} from 'lib/constants'
@@ -16,15 +16,19 @@ import {filterData} from 'lib/utils'
 import {useStorage} from 'hooks/useStorage'
 
 const VIDEOGAMES_STORAGE_KEY = 'video-table-storage'
-const VideogamesShelf = ({collection}) => {
-  const [tableData, setTableData] = useState(collection.data)
+const VideogamesShelf = () => {
+  const {
+    state: games,
+    dispatch
+  } = useContext(VideogamesContext)
+  const [tableData, setTableData] = useState(games.data)
   const {push} = useHistory()
   const {value, storage} = useStorage(VIDEOGAMES_STORAGE_KEY)
   const [filters, setFilters] = useState(value || [])
   const columns = useMemo(() => {
     const onDeleteClick = async (id) => {
       const {data} = await deleteVideogame(id)
-      collection.dispatch({type: 'success', data})
+      dispatch({type: 'success', data})
     }
     return [
       {
@@ -95,7 +99,7 @@ const VideogamesShelf = ({collection}) => {
         )
       }
     ]
-  }, [collection, filters])
+  }, [dispatch, filters])
 
   useEffect(() => {
     const value = filters.filter(({column}) => column !== 'search') // Don't save the search column
@@ -107,8 +111,8 @@ const VideogamesShelf = ({collection}) => {
   }, [filters, storage])
 
   useEffect(() => {
-    setTableData(filterData(collection.data, filters))
-  }, [filters, collection.data])
+    setTableData(filterData(games.data, filters))
+  }, [filters, games.data])
 
   const filterRow = (
     <FilterRow
@@ -144,19 +148,13 @@ const VideogamesShelf = ({collection}) => {
       </div>
       <Table
         id='video-games-table'
-        status={collection.status}
+        status={games.status}
         initialState={{pageSize: 20, sortBy: [{id: 'name', desc: false}]}}
         columns={columns}
         data={tableData}
       />
     </>
   )
-}
-
-VideogamesShelf.propTypes = {
-  collection: PropTypes.shape({
-    data: PropTypes.array
-  }).isRequired
 }
 
 export default VideogamesShelf

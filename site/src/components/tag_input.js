@@ -34,14 +34,18 @@ export const TagInput = ({
             variant='filled'
           />
         )}
-        renderTags={(value, getTagProps) => value.map((option, index) => (
-          <Chip key={index}
-            label={option?.name || option}
-            variant='outlined'
-            color='primary'
-            {...getTagProps({index})}
-          />
-        ))}
+        renderTags={(value, getTagProps) => value.map((option, index) => {
+          const {key, ...rest} = getTagProps({index})
+          return (
+            <Chip
+              key={key}
+              label={option?.name || option}
+              variant='outlined'
+              color='primary'
+              {...rest}
+            />
+          )
+        })}
       />
     </div>
   )

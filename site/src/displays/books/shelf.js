@@ -1,4 +1,4 @@
-import React, {useMemo, useState, useEffect} from 'react'
+import {useMemo, useState, useEffect, useContext} from 'react'
 import {debounce} from 'lodash'
 import {Link, useHistory} from 'react-router-dom'
 import {Add} from '@mui/icons-material'
@@ -8,6 +8,7 @@ import Table from 'components/table'
 import FilterRow from 'components/filter/filter_row'
 import StarRating from 'components/star_rating'
 import DeleteIcon from 'components/delete_icon'
+import {BooksContext} from 'lib/contexts/books'
 import {TableTagCell} from 'components/table/tag_cell'
 import {deleteBook} from 'api/books'
 import {BOOK_FILTERS} from 'lib/constants'
@@ -15,9 +16,10 @@ import {filterData} from 'lib/utils'
 import {useStorage} from 'hooks/useStorage'
 
 const BOOK_STORAGE_KEY = 'book-table-filters'
-const BooksShelf = ({collection}) => {
+const BooksShelf = () => {
+  const books = useContext(BooksContext)
   const {push} = useHistory()
-  const [tableData, setTableData] = useState(collection.data)
+  const [tableData, setTableData] = useState(books.state.data)
   const {value, storage} = useStorage(BOOK_STORAGE_KEY)
   const [filters, setFilters] = useState(value || [])
 
@@ -31,13 +33,13 @@ const BooksShelf = ({collection}) => {
   }, [filters, storage])
 
   useEffect(() => {
-    setTableData(filterData(collection.data, filters))
-  }, [filters, collection.data])
+    setTableData(filterData(books.state.data, filters))
+  }, [filters, books.state.data])
 
   const columns = useMemo(() => {
     const onDeleteClick = async (id) => {
       const {data} = await deleteBook(id)
-      collection.dispatch({type: 'success', data})
+      books.dispatch({type: 'success', data})
     }
 
     return [
@@ -122,7 +124,7 @@ const BooksShelf = ({collection}) => {
       },
       // {Header: 'DDC', accessor: 'code', className: 'cell__number'}
     ]
-  }, [collection, filters])
+  }, [books, filters])
 
   const doSearch = debounce(({target}) => {
     const newFilters = filters
@@ -160,7 +162,7 @@ const BooksShelf = ({collection}) => {
       </div>
       <Table
         id='books-table'
-        status={collection.status}
+        status={books.state.status}
         columns={columns}
         data={tableData}
         initialState={{pageSize: 20, sortBy: [{id: 'title', desc: false}]}}
